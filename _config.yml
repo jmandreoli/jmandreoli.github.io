@@ -1,0 +1,6 @@
+include:
+	- PYTOOLS/_images
+	- PYTOOLS/_modules
+	- PYTOOLS/_sources
+	- PYTOOLS/_static
+
