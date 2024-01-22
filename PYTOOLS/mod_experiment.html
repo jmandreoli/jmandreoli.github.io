@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PYTOOLS.experiment — Utilities for pytorch experiments &mdash; PYTOOLS  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="PYTOOLS.tensorboard_manager — A server of tensorboard servers" href="mod_tensorboard_manager.html" />
+    <link rel="prev" title="PYTOOLS.simpy — Utilities for simpy" href="mod_simpy.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PYTOOLS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="mod_init.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS</span></code> (top level) — Generic utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_torch.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.torch</span></code> — Utilities for pytorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_animation.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.animation</span></code> — Animation utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_cache.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.cache</span></code> — A persistent cache mechanism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_ipywidgets.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.ipywidgets</span></code> — Widget utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_polling.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.polling</span></code> — Generic polling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_simpy.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.simpy</span></code> — Utilities for simpy</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.experiment</span></code> — Utilities for pytorch experiments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-PYTOOLS.experiment">Available types and functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.experiment.udict"><code class="docutils literal notranslate"><span class="pre">udict</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.experiment.ProcessInfo"><code class="docutils literal notranslate"><span class="pre">ProcessInfo</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.ProcessInfo.origin"><code class="docutils literal notranslate"><span class="pre">ProcessInfo.origin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.ProcessInfo.host"><code class="docutils literal notranslate"><span class="pre">ProcessInfo.host</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.ProcessInfo.pid"><code class="docutils literal notranslate"><span class="pre">ProcessInfo.pid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.ProcessInfo.started"><code class="docutils literal notranslate"><span class="pre">ProcessInfo.started</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.experiment.OriginInfo"><code class="docutils literal notranslate"><span class="pre">OriginInfo</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.OriginInfo.path"><code class="docutils literal notranslate"><span class="pre">OriginInfo.path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.OriginInfo.mtime"><code class="docutils literal notranslate"><span class="pre">OriginInfo.mtime</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.OriginInfo.walltime"><code class="docutils literal notranslate"><span class="pre">OriginInfo.walltime</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.experiment.Monitor"><code class="docutils literal notranslate"><span class="pre">Monitor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Monitor.path"><code class="docutils literal notranslate"><span class="pre">Monitor.path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Monitor.interval"><code class="docutils literal notranslate"><span class="pre">Monitor.interval</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Monitor.penalty"><code class="docutils literal notranslate"><span class="pre">Monitor.penalty</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Monitor.progress"><code class="docutils literal notranslate"><span class="pre">Monitor.progress</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Monitor.checkpoint"><code class="docutils literal notranslate"><span class="pre">Monitor.checkpoint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Monitor.initial"><code class="docutils literal notranslate"><span class="pre">Monitor.initial()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.experiment.Run"><code class="docutils literal notranslate"><span class="pre">Run</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.device"><code class="docutils literal notranslate"><span class="pre">Run.device</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.net"><code class="docutils literal notranslate"><span class="pre">Run.net</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.train_split"><code class="docutils literal notranslate"><span class="pre">Run.train_split</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.valid_split"><code class="docutils literal notranslate"><span class="pre">Run.valid_split</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.test_split"><code class="docutils literal notranslate"><span class="pre">Run.test_split</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.optimiser_factory"><code class="docutils literal notranslate"><span class="pre">Run.optimiser_factory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.monitor"><code class="docutils literal notranslate"><span class="pre">Run.monitor</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.optimiser"><code class="docutils literal notranslate"><span class="pre">Run.optimiser</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.step"><code class="docutils literal notranslate"><span class="pre">Run.step</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.epoch"><code class="docutils literal notranslate"><span class="pre">Run.epoch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.loss"><code class="docutils literal notranslate"><span class="pre">Run.loss</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.walltime"><code class="docutils literal notranslate"><span class="pre">Run.walltime</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.progress"><code class="docutils literal notranslate"><span class="pre">Run.progress</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.threshold"><code class="docutils literal notranslate"><span class="pre">Run.threshold</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.checkpoint"><code class="docutils literal notranslate"><span class="pre">Run.checkpoint</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.r_step"><code class="docutils literal notranslate"><span class="pre">Run.r_step</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.r_loss"><code class="docutils literal notranslate"><span class="pre">Run.r_loss</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.eval_valid"><code class="docutils literal notranslate"><span class="pre">Run.eval_valid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.eval_test"><code class="docutils literal notranslate"><span class="pre">Run.eval_test</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.process_info"><code class="docutils literal notranslate"><span class="pre">Run.process_info</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.listeners"><code class="docutils literal notranslate"><span class="pre">Run.listeners</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.measures"><code class="docutils literal notranslate"><span class="pre">Run.measures</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.main"><code class="docutils literal notranslate"><span class="pre">Run.main()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.checkpoint_status"><code class="docutils literal notranslate"><span class="pre">Run.checkpoint_status()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.eval"><code class="docutils literal notranslate"><span class="pre">Run.eval()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.eval_cache"><code class="docutils literal notranslate"><span class="pre">Run.eval_cache()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.measure_factory"><code class="docutils literal notranslate"><span class="pre">Run.measure_factory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.listener_factory"><code class="docutils literal notranslate"><span class="pre">Run.listener_factory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.describe"><code class="docutils literal notranslate"><span class="pre">Run.describe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.addBaseListener"><code class="docutils literal notranslate"><span class="pre">Run.addBaseListener()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.addMlflowListener"><code class="docutils literal notranslate"><span class="pre">Run.addMlflowListener()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Run.addZeroOneMeasure"><code class="docutils literal notranslate"><span class="pre">Run.addZeroOneMeasure()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.experiment.Net"><code class="docutils literal notranslate"><span class="pre">Net</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Net.loss_factory"><code class="docutils literal notranslate"><span class="pre">Net.loss_factory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Net.loss"><code class="docutils literal notranslate"><span class="pre">Net.loss</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Net.embedding"><code class="docutils literal notranslate"><span class="pre">Net.embedding()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.Net.forward"><code class="docutils literal notranslate"><span class="pre">Net.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.experiment.SupervisedNet"><code class="docutils literal notranslate"><span class="pre">SupervisedNet</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.SupervisedNet.loss_factory"><code class="docutils literal notranslate"><span class="pre">SupervisedNet.loss_factory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.SupervisedNet.score"><code class="docutils literal notranslate"><span class="pre">SupervisedNet.score</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.SupervisedNet.embedding"><code class="docutils literal notranslate"><span class="pre">SupervisedNet.embedding()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.experiment.Measure"><code class="docutils literal notranslate"><span class="pre">Measure</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.experiment.ZeroOneMeasure"><code class="docutils literal notranslate"><span class="pre">ZeroOneMeasure</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.experiment.RunListener"><code class="docutils literal notranslate"><span class="pre">RunListener</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.RunListener.schedule"><code class="docutils literal notranslate"><span class="pre">RunListener.schedule</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.RunListener.cond"><code class="docutils literal notranslate"><span class="pre">RunListener.cond</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.RunListener.alias"><code class="docutils literal notranslate"><span class="pre">RunListener.alias</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.RunListener.info"><code class="docutils literal notranslate"><span class="pre">RunListener.info</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.RunListener.active"><code class="docutils literal notranslate"><span class="pre">RunListener.active</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.RunListener.setup"><code class="docutils literal notranslate"><span class="pre">RunListener.setup()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.experiment.BaseRunListener"><code class="docutils literal notranslate"><span class="pre">BaseRunListener</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.BaseRunListener.action"><code class="docutils literal notranslate"><span class="pre">BaseRunListener.action</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.BaseRunListener.setup"><code class="docutils literal notranslate"><span class="pre">BaseRunListener.setup()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.experiment.RunMlflowListener"><code class="docutils literal notranslate"><span class="pre">RunMlflowListener</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.RunMlflowListener.setup"><code class="docutils literal notranslate"><span class="pre">RunMlflowListener.setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.RunMlflowListener.load_model"><code class="docutils literal notranslate"><span class="pre">RunMlflowListener.load_model()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.experiment.DataInfo"><code class="docutils literal notranslate"><span class="pre">DataInfo</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.DataInfo.source"><code class="docutils literal notranslate"><span class="pre">DataInfo.source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.DataInfo.train"><code class="docutils literal notranslate"><span class="pre">DataInfo.train</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.DataInfo.valid"><code class="docutils literal notranslate"><span class="pre">DataInfo.valid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.DataInfo.test"><code class="docutils literal notranslate"><span class="pre">DataInfo.test</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.experiment.ClassificationDatasource"><code class="docutils literal notranslate"><span class="pre">ClassificationDatasource</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.ClassificationDatasource.classes"><code class="docutils literal notranslate"><span class="pre">ClassificationDatasource.classes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.ClassificationDatasource.train"><code class="docutils literal notranslate"><span class="pre">ClassificationDatasource.train</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.ClassificationDatasource.test"><code class="docutils literal notranslate"><span class="pre">ClassificationDatasource.test</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.ClassificationDatasource.mpl"><code class="docutils literal notranslate"><span class="pre">ClassificationDatasource.mpl()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.ClassificationDatasource.loaders"><code class="docutils literal notranslate"><span class="pre">ClassificationDatasource.loaders()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.experiment.ClassificationDatasource.display"><code class="docutils literal notranslate"><span class="pre">ClassificationDatasource.display()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.experiment.clone_module"><code class="docutils literal notranslate"><span class="pre">clone_module()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.experiment.training"><code class="docutils literal notranslate"><span class="pre">training()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mod_tensorboard_manager.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.tensorboard_manager</span></code> — A server of tensorboard servers</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PYTOOLS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.experiment</span></code> — Utilities for pytorch experiments</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/mod_experiment.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pytools-experiment-utilities-for-pytorch-experiments">
+<h1><a class="reference internal" href="#module-PYTOOLS.experiment" title="PYTOOLS.experiment"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.experiment</span></code></a> — Utilities for pytorch experiments<a class="headerlink" href="#pytools-experiment-utilities-for-pytorch-experiments" title="Link to this heading"></a></h1>
+<p>This module provides some utilities for pytorch experiments.</p>
+<section id="module-PYTOOLS.experiment">
+<span id="available-types-and-functions"></span><h2>Available types and functions<a class="headerlink" href="#module-PYTOOLS.experiment" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.udict">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.experiment.</span></span><span class="sig-name descname"><span class="pre">udict</span></span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#udict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.udict" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.ProcessInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.experiment.</span></span><span class="sig-name descname"><span class="pre">ProcessInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">started</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#ProcessInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.ProcessInfo" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NamedTuple</span></code></p>
+<p>Create new instance of ProcessInfo(origin, host, pid, started)</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.ProcessInfo.origin">
+<span class="sig-name descname"><span class="pre">origin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#PYTOOLS.experiment.OriginInfo" title="PYTOOLS.experiment.OriginInfo"><span class="pre">OriginInfo</span></a></em><a class="headerlink" href="#PYTOOLS.experiment.ProcessInfo.origin" title="Link to this definition"></a></dt>
+<dd><p>Origin of a run</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.ProcessInfo.host">
+<span class="sig-name descname"><span class="pre">host</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#PYTOOLS.experiment.ProcessInfo.host" title="Link to this definition"></a></dt>
+<dd><p>Host from which the run is invoked</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.ProcessInfo.pid">
+<span class="sig-name descname"><span class="pre">pid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#PYTOOLS.experiment.ProcessInfo.pid" title="Link to this definition"></a></dt>
+<dd><p>Process from which the run is invoked</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.ProcessInfo.started">
+<span class="sig-name descname"><span class="pre">started</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#PYTOOLS.experiment.ProcessInfo.started" title="Link to this definition"></a></dt>
+<dd><p>Date-time of a run invocation</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.OriginInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.experiment.</span></span><span class="sig-name descname"><span class="pre">OriginInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mtime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">walltime</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#OriginInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.OriginInfo" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NamedTuple</span></code></p>
+<p>Create new instance of OriginInfo(path, mtime, walltime)</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.OriginInfo.path">
+<span class="sig-name descname"><span class="pre">path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span></em><a class="headerlink" href="#PYTOOLS.experiment.OriginInfo.path" title="Link to this definition"></a></dt>
+<dd><p>File path from which the run was initialised</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.OriginInfo.mtime">
+<span class="sig-name descname"><span class="pre">mtime</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#PYTOOLS.experiment.OriginInfo.mtime" title="Link to this definition"></a></dt>
+<dd><p>Last modified time of that file</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.OriginInfo.walltime">
+<span class="sig-name descname"><span class="pre">walltime</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#PYTOOLS.experiment.OriginInfo.walltime" title="Link to this definition"></a></dt>
+<dd><p>Walltime instant of the run when it was saved to that file</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Monitor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.experiment.</span></span><span class="sig-name descname"><span class="pre">Monitor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval=inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty=1.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress=&lt;function</span> <span class="pre">Monitor.&lt;lambda&gt;&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#Monitor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.Monitor" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An instance of this class controls a run. It can</p>
+<ul class="simple">
+<li><p>initialise the run from scratch or from a previous checkpoint</p></li>
+<li><p>attempt to save a checkpoint at regular time intervals</p></li>
+<li><p>update the run’s progress</p></li>
+</ul>
+<dl class="field-list simple">
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Monitor.path">
+<span class="sig-name descname"><span class="pre">path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PYTOOLS.experiment.Monitor.path" title="Link to this definition"></a></dt>
+<dd><p>Checkpoint path</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Monitor.interval">
+<span class="sig-name descname"><span class="pre">interval</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#PYTOOLS.experiment.Monitor.interval" title="Link to this definition"></a></dt>
+<dd><p>Minimum time interval (in sec) between a successful checkpoint and its next checkpoint attempt</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Monitor.penalty">
+<span class="sig-name descname"><span class="pre">penalty</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#PYTOOLS.experiment.Monitor.penalty" title="Link to this definition"></a></dt>
+<dd><p>Multiplicative coefficient applied to the last interval when the last checkpoint attempt failed</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Monitor.progress">
+<span class="sig-name descname"><span class="pre">progress</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#PYTOOLS.experiment.Run" title="PYTOOLS.experiment.Run"><span class="pre">Run</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.experiment.Monitor.progress" title="Link to this definition"></a></dt>
+<dd><p>Progress indicator (return value must be between 0. and 1.)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Monitor.checkpoint">
+<span class="sig-name descname"><span class="pre">checkpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#Monitor.checkpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.Monitor.checkpoint" title="Link to this definition"></a></dt>
+<dd><p>Attempts to checkpoint <em>run</em> at regular interval.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Monitor.initial">
+<span class="sig-name descname"><span class="pre">initial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#Monitor.initial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.Monitor.initial" title="Link to this definition"></a></dt>
+<dd><p>Initialises <em>run</em> either from scratch or from a checkpoint.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.experiment.</span></span><span class="sig-name descname"><span class="pre">Run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#Run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.Run" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Dispatcher</span></code></p>
+<p>An instance of this class is a callable, taking no argument and returning no value. The execution of a run only changes its attribute values. All the keyword arguments of the constructor are passed to method <code class="xref py py-meth docutils literal notranslate"><span class="pre">setup()</span></code>.</p>
+<p>Runs may emit messages during their execution. Callbacks attached to each message are passed a single argument, which is the run itself. Listeners (instances of class <a class="reference internal" href="#PYTOOLS.experiment.RunListener" title="PYTOOLS.experiment.RunListener"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunListener</span></code></a>) define sets of consistent callbacks. A run can invoke a method <code class="xref py py-meth docutils literal notranslate"><span class="pre">add&lt;name&gt;Listener()</span></code> to attach a listener of type <cite>&lt;name&gt;</cite> to itself. Some such methods are defined in class <a class="reference internal" href="#PYTOOLS.experiment.Run" title="PYTOOLS.experiment.Run"><code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code></a> and its subclasses (see their documentation for details).</p>
+<p>A typical event callback stores the result of a campaign of measures on the run. Measures (instances of class <a class="reference internal" href="#PYTOOLS.experiment.Measure" title="PYTOOLS.experiment.Measure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measure</span></code></a>) are in charge of reporting individual measures. A run can invoke a method <code class="xref py py-meth docutils literal notranslate"><span class="pre">add&lt;name&gt;Measure()</span></code> to attach a measure of type <cite>&lt;name&gt;</cite> to itself. Some such methods are defined in class <a class="reference internal" href="#PYTOOLS.experiment.Run" title="PYTOOLS.experiment.Run"><code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code></a> and its subclasses (see their documentation for details). In particular, all the pytorch losses can be added in this way.</p>
+<p>Attributes (*) must be explicitly instantiated at creation time.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.device">
+<span class="sig-name descname"><span class="pre">device</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.device" title="Link to this definition"></a></dt>
+<dd><p>(*)The device on which to run the model</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.net">
+<span class="sig-name descname"><span class="pre">net</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#PYTOOLS.experiment.Net" title="PYTOOLS.experiment.Net"><span class="pre">Net</span></a></em><a class="headerlink" href="#PYTOOLS.experiment.Run.net" title="Link to this definition"></a></dt>
+<dd><p>(*)The model (initially on cpu, but loaded on <a class="reference internal" href="#PYTOOLS.experiment.Run.device" title="PYTOOLS.experiment.Run.device"><code class="xref py py-attr docutils literal notranslate"><span class="pre">device</span></code></a> at the beginning of the run and restored to cpu at the end)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.train_split">
+<span class="sig-name descname"><span class="pre">train_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.train_split" title="Link to this definition"></a></dt>
+<dd><p>(*)Iterable of batches. Each batch is a tuple of input tensors (first dim = size of batch)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.valid_split">
+<span class="sig-name descname"><span class="pre">valid_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.valid_split" title="Link to this definition"></a></dt>
+<dd><p>(*)Same format as <code class="xref py py-attr docutils literal notranslate"><span class="pre">train_data</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.test_split">
+<span class="sig-name descname"><span class="pre">test_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.test_split" title="Link to this definition"></a></dt>
+<dd><p>(*)Same format as <code class="xref py py-attr docutils literal notranslate"><span class="pre">train_data</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.optimiser_factory">
+<span class="sig-name descname"><span class="pre">optimiser_factory</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Parameter</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optimizer</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.optimiser_factory" title="Link to this definition"></a></dt>
+<dd><p>(*)The optimiser factory</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.monitor">
+<span class="sig-name descname"><span class="pre">monitor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#PYTOOLS.experiment.Monitor" title="PYTOOLS.experiment.Monitor"><span class="pre">Monitor</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PYTOOLS.experiment.Monitor</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.monitor" title="Link to this definition"></a></dt>
+<dd><p>(*)The monitor of the run, in charge of checkpoints and progress control</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.optimiser">
+<span class="sig-name descname"><span class="pre">optimiser</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optimizer</span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.optimiser" title="Link to this definition"></a></dt>
+<dd><p>The optimiser</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.step">
+<span class="sig-name descname"><span class="pre">step</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.step" title="Link to this definition"></a></dt>
+<dd><p>Number of optimiser updates</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.epoch">
+<span class="sig-name descname"><span class="pre">epoch</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.epoch" title="Link to this definition"></a></dt>
+<dd><p>Number of passes through the data</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.loss" title="Link to this definition"></a></dt>
+<dd><p>Last step loss, if any</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.walltime">
+<span class="sig-name descname"><span class="pre">walltime</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.walltime" title="Link to this definition"></a></dt>
+<dd><p>Wall time elapsed (in sec) since real start of run, set by monitor</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.progress">
+<span class="sig-name descname"><span class="pre">progress</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.progress" title="Link to this definition"></a></dt>
+<dd><p>Progress as a number between 0. and 1., set by monitor</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.threshold">
+<span class="sig-name descname"><span class="pre">threshold</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.999999999</span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.threshold" title="Link to this definition"></a></dt>
+<dd><p>Threshold on progress to stop the run</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.checkpoint">
+<span class="sig-name descname"><span class="pre">checkpoint</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">MutableSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Exception</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.checkpoint" title="Link to this definition"></a></dt>
+<dd><p>Checkpoint history, set by monitor</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.r_step">
+<span class="sig-name descname"><span class="pre">r_step</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.r_step" title="Link to this definition"></a></dt>
+<dd><p>Running number of optimiser updates in current data pass</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.r_loss">
+<span class="sig-name descname"><span class="pre">r_loss</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">inf</span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.r_loss" title="Link to this definition"></a></dt>
+<dd><p>Running loss average in current data pass</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.eval_valid">
+<span class="sig-name descname"><span class="pre">eval_valid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.eval_valid" title="Link to this definition"></a></dt>
+<dd><p>Function returning the validation performance at the end of the last completed step (cached)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.eval_test">
+<span class="sig-name descname"><span class="pre">eval_test</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.eval_test" title="Link to this definition"></a></dt>
+<dd><p>Function returning the test performance at the end of the last completed step (cached)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.process_info">
+<span class="sig-name descname"><span class="pre">process_info</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#PYTOOLS.experiment.ProcessInfo" title="PYTOOLS.experiment.ProcessInfo"><span class="pre">ProcessInfo</span></a></em><a class="headerlink" href="#PYTOOLS.experiment.Run.process_info" title="Link to this definition"></a></dt>
+<dd><p>Information about the run</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.listeners">
+<span class="sig-name descname"><span class="pre">listeners</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#PYTOOLS.experiment.RunListener" title="PYTOOLS.experiment.RunListener"><span class="pre">RunListener</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.listeners" title="Link to this definition"></a></dt>
+<dd><p>Named listener objects</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.measures">
+<span class="sig-name descname"><span class="pre">measures</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Accumulator</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.experiment.Run.measures" title="Link to this definition"></a></dt>
+<dd><p>Named measure objects</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.main">
+<span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#Run.main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.Run.main" title="Link to this definition"></a></dt>
+<dd><p>Executes the run.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.checkpoint_status">
+<span class="sig-name descname"><span class="pre">checkpoint_status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#Run.checkpoint_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.Run.checkpoint_status" title="Link to this definition"></a></dt>
+<dd><p>Returns information about the (error) status of checkpointing attempts.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.eval">
+<span class="sig-name descname"><span class="pre">eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#Run.eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.Run.eval" title="Link to this definition"></a></dt>
+<dd><p>Evaluates the embedding part of model <a class="reference internal" href="#PYTOOLS.experiment.Run.net" title="PYTOOLS.experiment.Run.net"><code class="xref py py-attr docutils literal notranslate"><span class="pre">net</span></code></a> on <em>data</em> according to <a class="reference internal" href="#PYTOOLS.experiment.Run.measures" title="PYTOOLS.experiment.Run.measures"><code class="xref py py-attr docutils literal notranslate"><span class="pre">measures</span></code></a>. With measures aggregated by mean (default), the batches may not be constant-sized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>Iterable</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>Tuple</em><em>[</em><em>Tensor</em><em>, </em><em>...</em><em>]</em><em>, </em><em>Tuple</em><em>[</em><em>Tensor</em><em>, </em><em>...</em><em>]</em><em>]</em><em>]</em>) – a list of data entries</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.eval_cache">
+<span class="sig-name descname"><span class="pre">eval_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#Run.eval_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.Run.eval_cache" title="Link to this definition"></a></dt>
+<dd><p>Returns a cached version of <a class="reference internal" href="#PYTOOLS.experiment.Run.eval" title="PYTOOLS.experiment.Run.eval"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eval()</span></code></a> on <em>data</em>. The cache is cleared at each step.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.measure_factory">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">measure_factory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#Run.measure_factory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.Run.measure_factory" title="Link to this definition"></a></dt>
+<dd><p>Used as decorator to attach a measure factory (the decorated object, assumed callable) to a subclass <em>cls</em> of this class. The factory is then available as method <code class="xref py py-meth docutils literal notranslate"><span class="pre">add&lt;name&gt;Measure()</span></code> using the provided <em>name</em>. Its invocation accepts a parameter <code class="xref py py-attr docutils literal notranslate"><span class="pre">label</span></code> under which its result in stored in the measures registry (by default, the label is the lowercase version of <em>name</em>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – short name for the factory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.listener_factory">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">listener_factory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#Run.listener_factory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.Run.listener_factory" title="Link to this definition"></a></dt>
+<dd><p>Used as decorator to attach a listener factory (the decorated object, assumed callable) to a subclass <em>cls</em> of this class. The factory is then available as method <code class="xref py py-meth docutils literal notranslate"><span class="pre">add&lt;name&gt;Listener()</span></code> using the provided <em>name</em>. Its invocation accepts a parameter <code class="xref py py-attr docutils literal notranslate"><span class="pre">label</span></code> under which its result in stored in the listeners registry (by default, the label is the lowercase version of <em>name</em>). The decorated object may have an attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">tools</span></code> listing the name of tool attributes, which are passed into as attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">&lt;name&gt;_tools</span></code> of <em>cls</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – short name for the factory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tab</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#Run.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.Run.describe" title="Link to this definition"></a></dt>
+<dd><p>Prints out the list of configuration attributes (with their values) as well as the list of measures and listeners.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tab</strong> (<em>str</em>) – an indentation string</p></li>
+<li><p><strong>file</strong> – passed to the print function</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.addBaseListener">
+<span class="sig-name descname"><span class="pre">addBaseListener</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'base'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PYTOOLS.experiment.Run.addBaseListener" title="Link to this definition"></a></dt>
+<dd><p>Listener factory for <a class="reference internal" href="#PYTOOLS.experiment.BaseRunListener" title="PYTOOLS.experiment.BaseRunListener"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseRunListener</span></code></a>. The result is assigned as attribute <em>label</em> in the listeners register.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.addMlflowListener">
+<span class="sig-name descname"><span class="pre">addMlflowListener</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mlflow'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PYTOOLS.experiment.Run.addMlflowListener" title="Link to this definition"></a></dt>
+<dd><p>Listener factory for <a class="reference internal" href="#PYTOOLS.experiment.RunMlflowListener" title="PYTOOLS.experiment.RunMlflowListener"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunMlflowListener</span></code></a>. The result is assigned as attribute <em>label</em> in the listeners register.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Run.addZeroOneMeasure">
+<span class="sig-name descname"><span class="pre">addZeroOneMeasure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'zeroone'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PYTOOLS.experiment.Run.addZeroOneMeasure" title="Link to this definition"></a></dt>
+<dd><p>Measure factory for <a class="reference internal" href="#PYTOOLS.experiment.ZeroOneMeasure" title="PYTOOLS.experiment.ZeroOneMeasure"><code class="xref py py-class docutils literal notranslate"><span class="pre">ZeroOneMeasure</span></code></a>. The result is assigned as attribute <em>label</em> in the measures register.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Net">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.experiment.</span></span><span class="sig-name descname"><span class="pre">Net</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#Net"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.Net" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Instances of this class are nets with an embedding phase immediately followed by a loss.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>loss</strong> (<em>Callable</em><em>[</em><em>[</em><em>Tensor</em><em>, </em><em>...</em><em>]</em><em>, </em><em>Tensor</em><em>]</em>) – a loss function, or layer if it is parametrized</p>
+</dd>
+</dl>
+<p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Net.loss_factory">
+<span class="sig-name descname"><span class="pre">loss_factory</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.experiment.Net.loss_factory" title="Link to this definition"></a></dt>
+<dd><p>Factory for the <a class="reference internal" href="#PYTOOLS.experiment.Net.loss" title="PYTOOLS.experiment.Net.loss"><code class="xref py py-attr docutils literal notranslate"><span class="pre">loss</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Net.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.experiment.Net.loss" title="Link to this definition"></a></dt>
+<dd><p>Returns the loss (scalar tensor) for an input as a sequence of tensors</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Net.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#Net.embedding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.Net.embedding" title="Link to this definition"></a></dt>
+<dd><p>Returns a (seq of) embedding representations for each (seq of) input feature in the batch. This implementation raises a <code class="xref py py-class docutils literal notranslate"><span class="pre">NotImplementedError</span></code> exception.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Net.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#Net.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.Net.forward" title="Link to this definition"></a></dt>
+<dd><p>Sequentially composes embedding and loss.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.SupervisedNet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.experiment.</span></span><span class="sig-name descname"><span class="pre">SupervisedNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Module()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#SupervisedNet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.SupervisedNet" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.experiment.Net" title="PYTOOLS.experiment.Net"><code class="xref py py-class docutils literal notranslate"><span class="pre">Net</span></code></a></p>
+<p>Instances of this class are supervised task models, where each component of a batch consists of one or more feature tensors(s) and a label tensor. All tensors have the batch size as first dimension. The <a class="reference internal" href="#PYTOOLS.experiment.SupervisedNet.embedding" title="PYTOOLS.experiment.SupervisedNet.embedding"><code class="xref py py-meth docutils literal notranslate"><span class="pre">embedding()</span></code></a> method returns the result of applying a scoring net to the features and leaves the label unchanged.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>net</strong> (<em>torch.nn.Module</em>) – The scoring net</p>
+</dd>
+</dl>
+<p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.SupervisedNet.loss_factory">
+<span class="sig-name descname"><span class="pre">loss_factory</span></span><a class="headerlink" href="#PYTOOLS.experiment.SupervisedNet.loss_factory" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">CrossEntropyLoss</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.SupervisedNet.score">
+<span class="sig-name descname"><span class="pre">score</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">torch.nn.Module</span></em><a class="headerlink" href="#PYTOOLS.experiment.SupervisedNet.score" title="Link to this definition"></a></dt>
+<dd><p>The scoring net, acting only on the feature inputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.SupervisedNet.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#SupervisedNet.embedding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.SupervisedNet.embedding" title="Link to this definition"></a></dt>
+<dd><p>Returns a (seq of) embedding representations for each (seq of) input feature in the batch. This implementation raises a <code class="xref py py-class docutils literal notranslate"><span class="pre">NotImplementedError</span></code> exception.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.Measure">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.experiment.</span></span><span class="sig-name descname"><span class="pre">Measure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#Measure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.Measure" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for measures.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.ZeroOneMeasure">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.experiment.</span></span><span class="sig-name descname"><span class="pre">ZeroOneMeasure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#ZeroOneMeasure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.ZeroOneMeasure" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.experiment.Measure" title="PYTOOLS.experiment.Measure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measure</span></code></a></p>
+<p>Instances of this class measure accuracy for classification runs.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.RunListener">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.experiment.</span></span><span class="sig-name descname"><span class="pre">RunListener</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#RunListener"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.RunListener" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Instances of this class are listener objects, which can be bound to a <a class="reference internal" href="#PYTOOLS.experiment.Run" title="PYTOOLS.experiment.Run"><code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code></a> instance. All parameters of the constructor are processed by method <a class="reference internal" href="#PYTOOLS.experiment.RunListener.setup" title="PYTOOLS.experiment.RunListener.setup"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setup()</span></code></a>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.RunListener.schedule">
+<span class="sig-name descname"><span class="pre">schedule</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Schedule</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.experiment.RunListener.schedule" title="Link to this definition"></a></dt>
+<dd><p>Schedule to control the action of the listener per (relevant) event</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.RunListener.cond">
+<span class="sig-name descname"><span class="pre">cond</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#PYTOOLS.experiment.Run" title="PYTOOLS.experiment.Run"><span class="pre">Run</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.experiment.RunListener.cond" title="Link to this definition"></a></dt>
+<dd><p>Filtering condition to control the action of the listener per (relevant) event, based on <a class="reference internal" href="#PYTOOLS.experiment.RunListener.schedule" title="PYTOOLS.experiment.RunListener.schedule"><code class="xref py py-attr docutils literal notranslate"><span class="pre">schedule</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.RunListener.alias">
+<span class="sig-name descname"><span class="pre">alias</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'epoch':</span> <span class="pre">'end_epoch',</span> <span class="pre">'step':</span> <span class="pre">'end_step'}</span></em><a class="headerlink" href="#PYTOOLS.experiment.RunListener.alias" title="Link to this definition"></a></dt>
+<dd><p>Alias for (relevant) events</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.RunListener.info">
+<span class="sig-name descname"><span class="pre">info</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#PYTOOLS.experiment.Run" title="PYTOOLS.experiment.Run"><span class="pre">Run</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.experiment.RunListener.info" title="Link to this definition"></a></dt>
+<dd><p>Run information generator per info-type</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.RunListener.active">
+<span class="sig-name descname"><span class="pre">active</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#PYTOOLS.experiment.RunListener.active" title="Link to this definition"></a></dt>
+<dd><p>Whether this instance is actively listening to events</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.RunListener.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">itrain=&lt;function</span> <span class="pre">RunListener.&lt;lambda&gt;&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ivalid=&lt;function</span> <span class="pre">RunListener.&lt;lambda&gt;&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">itest=&lt;function</span> <span class="pre">RunListener.&lt;lambda&gt;&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icheckpoint=&lt;function</span> <span class="pre">RunListener.&lt;lambda&gt;&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cond={}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active=True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#RunListener.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.RunListener.setup" title="Link to this definition"></a></dt>
+<dd><p>Processes the constructor parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>itrain</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#PYTOOLS.experiment.Run" title="PYTOOLS.experiment.Run"><em>Run</em></a><em>]</em><em>, </em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – extracts train information about a run</p></li>
+<li><p><strong>ivalid</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#PYTOOLS.experiment.Run" title="PYTOOLS.experiment.Run"><em>Run</em></a><em>]</em><em>, </em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – extracts valid information about a run</p></li>
+<li><p><strong>itest</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#PYTOOLS.experiment.Run" title="PYTOOLS.experiment.Run"><em>Run</em></a><em>]</em><em>, </em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – extracts test information about a run</p></li>
+<li><p><strong>icheckpoint</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#PYTOOLS.experiment.Run" title="PYTOOLS.experiment.Run"><em>Run</em></a><em>]</em><em>, </em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – extracts checkpoint information about a run</p></li>
+<li><p><strong>cond</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Tuple</em><em>[</em><em>float</em><em> | </em><em>Iterable</em><em>[</em><em>float</em><em>] </em><em>| </em><em>int</em><em> | </em><em>Iterable</em><em>[</em><em>int</em><em>]</em><em>, </em><em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#PYTOOLS.experiment.Run" title="PYTOOLS.experiment.Run"><em>Run</em></a><em>]</em><em>, </em><em>float</em><em> | </em><em>int</em><em>]</em><em>] </em><em>| </em><em>str</em><em>]</em>) – assignment of a target and a schedule to control the actions of the listener</p></li>
+<li><p><strong>active</strong> (<em>bool</em>) – whether to bind the listener on execution</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.BaseRunListener">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.experiment.</span></span><span class="sig-name descname"><span class="pre">BaseRunListener</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#BaseRunListener"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.BaseRunListener" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.experiment.RunListener" title="PYTOOLS.experiment.RunListener"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunListener</span></code></a></p>
+<p>An instance of this class logs run events through a <code class="xref py py-class docutils literal notranslate"><span class="pre">logging.Logger</span></code> instance.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.BaseRunListener.action">
+<span class="sig-name descname"><span class="pre">action</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#PYTOOLS.experiment.Run" title="PYTOOLS.experiment.Run"><span class="pre">Run</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.experiment.BaseRunListener.action" title="Link to this definition"></a></dt>
+<dd><p>Logging action per stage</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.BaseRunListener.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger=&lt;Logger</span> <span class="pre">PYTOOLS.experiment</span> <span class="pre">(WARNING)&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status=(('TIME'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'COMP'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'STEP'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'EPO'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'BAT')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;function</span> <span class="pre">BaseRunListener.&lt;lambda&gt;&gt;)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_fmt=('%6s</span> <span class="pre">%5s%%</span> <span class="pre">%6s</span> <span class="pre">%4s/%5s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'%6.1f</span> <span class="pre">%5.1f%%</span> <span class="pre">%6d</span> <span class="pre">%4d/%5d')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#BaseRunListener.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.BaseRunListener.setup" title="Link to this definition"></a></dt>
+<dd><p>Processes the constructor parameters. Parameters in <em>ka</em> are passed on to the method of the super class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>logger</strong> (<em>Logger</em><em> | </em><em>None</em>) – logger to use to report information</p></li>
+<li><p><strong>status</strong> (<em>Tuple</em><em>[</em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>...</em><em>]</em><em>, </em><em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#PYTOOLS.experiment.Run" title="PYTOOLS.experiment.Run"><em>Run</em></a><em>]</em><em>, </em><em>Tuple</em><em>]</em><em>]</em>) – a pair of a sequence of field names and a matching sequence of field retrievers</p></li>
+<li><p><strong>status_fmt</strong> (<em>Tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – a pair of format strings (% convention) for the sequence of field name and the sequences of retrieved field values</p></li>
+<li><p><strong>fmt</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – a dictionary assigning a format to each free field name (default is .3f)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.RunMlflowListener">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.experiment.</span></span><span class="sig-name descname"><span class="pre">RunMlflowListener</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#RunMlflowListener"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.RunMlflowListener" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.experiment.RunListener" title="PYTOOLS.experiment.RunListener"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunListener</span></code></a></p>
+<p>An instance of this class logs run events to a MLFlow experiment repository.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.RunMlflowListener.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#RunMlflowListener.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.RunMlflowListener.setup" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uri</strong> (<em>str</em>) – mlflow tracking uri</p></li>
+<li><p><strong>exp</strong> (<em>str</em>) – experiment name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.RunMlflowListener.load_model">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#RunMlflowListener.load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.RunMlflowListener.load_model" title="Link to this definition"></a></dt>
+<dd><p>Returns a model saved in a run.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.DataInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.experiment.</span></span><span class="sig-name descname"><span class="pre">DataInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#DataInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.DataInfo" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NamedTuple</span></code></p>
+<p>Create new instance of DataInfo(source, train, valid, test)</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.DataInfo.source">
+<span class="sig-name descname"><span class="pre">source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#PYTOOLS.experiment.ClassificationDatasource" title="PYTOOLS.experiment.ClassificationDatasource"><span class="pre">ClassificationDatasource</span></a></em><a class="headerlink" href="#PYTOOLS.experiment.DataInfo.source" title="Link to this definition"></a></dt>
+<dd><p>Source of the data</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.DataInfo.train">
+<span class="sig-name descname"><span class="pre">train</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#PYTOOLS.experiment.DataInfo.train" title="Link to this definition"></a></dt>
+<dd><p>Size of the train split</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.DataInfo.valid">
+<span class="sig-name descname"><span class="pre">valid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#PYTOOLS.experiment.DataInfo.valid" title="Link to this definition"></a></dt>
+<dd><p>Size of the validation split</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.DataInfo.test">
+<span class="sig-name descname"><span class="pre">test</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#PYTOOLS.experiment.DataInfo.test" title="Link to this definition"></a></dt>
+<dd><p>Size of the test split</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.ClassificationDatasource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.experiment.</span></span><span class="sig-name descname"><span class="pre">ClassificationDatasource</span></span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#ClassificationDatasource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.ClassificationDatasource" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An instance of this class is a data source for classification training. Attributes (*) must be instantiated at creation time.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.ClassificationDatasource.classes">
+<span class="sig-name descname"><span class="pre">classes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.experiment.ClassificationDatasource.classes" title="Link to this definition"></a></dt>
+<dd><p>(*)Descriptive names for the classes</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.ClassificationDatasource.train">
+<span class="sig-name descname"><span class="pre">train</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dataset</span></em><a class="headerlink" href="#PYTOOLS.experiment.ClassificationDatasource.train" title="Link to this definition"></a></dt>
+<dd><p>(*)The train split of the data source</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.ClassificationDatasource.test">
+<span class="sig-name descname"><span class="pre">test</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dataset</span></em><a class="headerlink" href="#PYTOOLS.experiment.ClassificationDatasource.test" title="Link to this definition"></a></dt>
+<dd><p>(*)The test split of the data source</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.ClassificationDatasource.mpl">
+<span class="sig-name descname"><span class="pre">mpl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#ClassificationDatasource.mpl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.ClassificationDatasource.mpl" title="Link to this definition"></a></dt>
+<dd><p>Returns a callable, which, when passed a data instance, displays it on <em>ax</em> (its label is also used as title of <em>ax</em>). This implementation raises a <code class="xref py py-class docutils literal notranslate"><span class="pre">NotImplementedError</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ax</strong> (<em>matplotlib.Axes</em>) – a display area for a data instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.ClassificationDatasource.loaders">
+<span class="sig-name descname"><span class="pre">loaders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pcval</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#ClassificationDatasource.loaders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.ClassificationDatasource.loaders" title="Link to this definition"></a></dt>
+<dd><p>Returns a dictionary which can be passed as keyword arguments to the <a class="reference internal" href="#PYTOOLS.experiment.Run" title="PYTOOLS.experiment.Run"><code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code></a> constructor to initialise its required attributes:</p>
+<ul class="simple">
+<li><p>non visible attributes <code class="xref py py-attr docutils literal notranslate"><span class="pre">train_data</span></code>, <code class="xref py py-attr docutils literal notranslate"><span class="pre">valid_data</span></code>, <code class="xref py py-attr docutils literal notranslate"><span class="pre">test_data</span></code>, obtained by calling <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader</span></code> on the corresponding split with key-word parameters <em>ka</em> (with prefix <cite>_</cite> removed from keys);</p></li>
+<li><p>a visible attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">data</span></code> holding a description of the datasource;</p></li>
+<li><p>all the attributes (visible or not) in <em>ka</em>, so they appear as attributes of the run.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pcval</strong> (<em>float</em>) – proportion (between 0. and 1.) of instances from the train split to use for validation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.ClassificationDatasource.display">
+<span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rowspec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colspec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#ClassificationDatasource.display"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.ClassificationDatasource.display" title="Link to this definition"></a></dt>
+<dd><p>Displays a set of labelled data instances <em>dataset</em> in a grid. The specification of the rows (resp. cols) of the grid consists of three numbers:</p>
+<ul class="simple">
+<li><p>height (resp. width) of the cells; required</p></li>
+<li><p>number of rows (resp. cols); if -1 it is adjusted so the the whole dataset fits in the grid; default: 1</p></li>
+<li><p>additional space in the row (resp. col) dimension; default: 0.</p></li>
+</ul>
+<p>At most one of the number of rows or columns can be -1. When both are positive and the dataset does not fit in the grid, a slider is created to allow page browsing through the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rowspec</strong><strong>,</strong><strong>colspec</strong> – specification of the rows/cols of the grid</p></li>
+<li><p><strong>dataset</strong> (<em>Iterable</em><em>[</em><em>Tuple</em><em>[</em><em>Any</em><em>, </em><em>int</em><em>]</em><em>]</em>) – the data to display</p></li>
+<li><p><strong>ka</strong> – keyword arguments passed to <code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.subplots()</span></code> to create the grid</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.clone_module">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.experiment.</span></span><span class="sig-name descname"><span class="pre">clone_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#clone_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.clone_module" title="Link to this definition"></a></dt>
+<dd><p>Clones a <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Module</span></code> <em>m</em> into another one <em>out</em> or a new one if <em>out</em> is <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.experiment.training">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.experiment.</span></span><span class="sig-name descname"><span class="pre">training</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/experiment.html#training"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.experiment.training" title="Link to this definition"></a></dt>
+<dd><p>Returns a context which saves the value of <a class="reference internal" href="#PYTOOLS.experiment.training" title="PYTOOLS.experiment.training"><code class="xref py py-attr docutils literal notranslate"><span class="pre">training</span></code></a> in <em>obj</em> on enter and restores it on exit.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mod_simpy.html" class="btn btn-neutral float-left" title="PYTOOLS.simpy — Utilities for simpy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mod_tensorboard_manager.html" class="btn btn-neutral float-right" title="PYTOOLS.tensorboard_manager — A server of tensorboard servers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

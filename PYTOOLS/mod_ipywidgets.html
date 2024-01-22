@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PYTOOLS.ipywidgets — Widget utilities &mdash; PYTOOLS  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="PYTOOLS.polling — Generic polling" href="mod_polling.html" />
+    <link rel="prev" title="PYTOOLS.cache — A persistent cache mechanism" href="mod_cache.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PYTOOLS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="mod_init.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS</span></code> (top level) — Generic utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_torch.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.torch</span></code> — Utilities for pytorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_animation.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.animation</span></code> — Animation utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_cache.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.cache</span></code> — A persistent cache mechanism</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.ipywidgets</span></code> — Widget utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-PYTOOLS.ipywidgets">Available types and functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.ipywidgets.app"><code class="docutils literal notranslate"><span class="pre">app</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.ipywidgets.app.main"><code class="docutils literal notranslate"><span class="pre">app.main</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.ipywidgets.app.console"><code class="docutils literal notranslate"><span class="pre">app.console</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.ipywidgets.app.toolbar"><code class="docutils literal notranslate"><span class="pre">app.toolbar</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.ipywidgets.app.mpl_figure"><code class="docutils literal notranslate"><span class="pre">app.mpl_figure()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.ipywidgets.app.protect"><code class="docutils literal notranslate"><span class="pre">app.protect()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.ipywidgets.seq_browser"><code class="docutils literal notranslate"><span class="pre">seq_browser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.ipywidgets.file_browser"><code class="docutils literal notranslate"><span class="pre">file_browser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.ipywidgets.db_browser"><code class="docutils literal notranslate"><span class="pre">db_browser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.ipywidgets.hastrait_editor"><code class="docutils literal notranslate"><span class="pre">hastrait_editor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.ipywidgets.hastrait_editor.label_layout"><code class="docutils literal notranslate"><span class="pre">hastrait_editor.label_layout</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.ipywidgets.animator"><code class="docutils literal notranslate"><span class="pre">animator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.ipywidgets.animator.add_clock"><code class="docutils literal notranslate"><span class="pre">animator.add_clock()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.ipywidgets.animator.bind"><code class="docutils literal notranslate"><span class="pre">animator.bind()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.ipywidgets.animator.unbind"><code class="docutils literal notranslate"><span class="pre">animator.unbind()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.ipywidgets.animator.pause"><code class="docutils literal notranslate"><span class="pre">animator.pause()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.ipywidgets.animator.value"><code class="docutils literal notranslate"><span class="pre">animator.value</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.ipywidgets.SelectMultipleOrdered"><code class="docutils literal notranslate"><span class="pre">SelectMultipleOrdered</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.ipywidgets.SimpleButton"><code class="docutils literal notranslate"><span class="pre">SimpleButton</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mod_polling.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.polling</span></code> — Generic polling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_simpy.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.simpy</span></code> — Utilities for simpy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_experiment.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.experiment</span></code> — Utilities for pytorch experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_tensorboard_manager.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.tensorboard_manager</span></code> — A server of tensorboard servers</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PYTOOLS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.ipywidgets</span></code> — Widget utilities</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/mod_ipywidgets.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pytools-ipywidgets-widget-utilities">
+<h1><a class="reference internal" href="#module-PYTOOLS.ipywidgets" title="PYTOOLS.ipywidgets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.ipywidgets</span></code></a> — Widget utilities<a class="headerlink" href="#pytools-ipywidgets-widget-utilities" title="Link to this heading"></a></h1>
+<p>This module provides basic utilities for <code class="xref py py-mod docutils literal notranslate"><span class="pre">ipywidgets</span></code> object manipulations.</p>
+<section id="module-PYTOOLS.ipywidgets">
+<span id="available-types-and-functions"></span><h2>Available types and functions<a class="headerlink" href="#module-PYTOOLS.ipywidgets" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.app">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.ipywidgets.</span></span><span class="sig-name descname"><span class="pre">app</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">children</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toolbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/ipywidgets.html#app"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.ipywidgets.app" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An instance of this class is an app based on module <code class="xref py py-mod docutils literal notranslate"><span class="pre">ipywidgets</span></code>, consisting of a toolbar, a console and additional child widgets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>toolbar</strong> (<em>HBox</em>) – widgets added at the end of the toolbar (in addition to the default toolbar widgets)</p></li>
+<li><p><strong>children</strong> (<em>Sequence</em><em>[</em><em>Widget</em><em>]</em>) – additional children widgets appended to the main widget</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.app.main">
+<span class="sig-name descname"><span class="pre">main</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">VBox</span></em><a class="headerlink" href="#PYTOOLS.ipywidgets.app.main" title="Link to this definition"></a></dt>
+<dd><p>The main widget</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.app.console">
+<span class="sig-name descname"><span class="pre">console</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Output</span></em><a class="headerlink" href="#PYTOOLS.ipywidgets.app.console" title="Link to this definition"></a></dt>
+<dd><p>A console terminal (just below <a class="reference internal" href="#PYTOOLS.ipywidgets.app.toolbar" title="PYTOOLS.ipywidgets.app.toolbar"><code class="xref py py-attr docutils literal notranslate"><span class="pre">toolbar</span></code></a>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.app.toolbar">
+<span class="sig-name descname"><span class="pre">toolbar</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HBox</span></em><a class="headerlink" href="#PYTOOLS.ipywidgets.app.toolbar" title="Link to this definition"></a></dt>
+<dd><p>The toolbar widget (first child of <a class="reference internal" href="#PYTOOLS.ipywidgets.app.main" title="PYTOOLS.ipywidgets.app.main"><code class="xref py py-attr docutils literal notranslate"><span class="pre">main</span></code></a>)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.app.mpl_figure">
+<span class="sig-name descname"><span class="pre">mpl_figure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/ipywidgets.html#app.mpl_figure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.ipywidgets.app.mpl_figure" title="Link to this definition"></a></dt>
+<dd><p>Adds a <code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code> figure to this app.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.app.protect">
+<span class="sig-name descname"><span class="pre">protect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/ipywidgets.html#app.protect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.ipywidgets.app.protect" title="Link to this definition"></a></dt>
+<dd><p>A decorator to redirect output and errors to the console.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.seq_browser">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.ipywidgets.</span></span><span class="sig-name descname"><span class="pre">seq_browser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">D</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pgsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/ipywidgets.html#seq_browser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.ipywidgets.seq_browser" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.ipywidgets.app" title="PYTOOLS.ipywidgets.app"><code class="xref py py-class docutils literal notranslate"><span class="pre">app</span></code></a></p>
+<p>An instance of this class is an app to display a (long) sequence object in pagination mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>D</strong> (<em>Sequence</em>) – a sequence object</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – the index of the initial page</p></li>
+<li><p><strong>pgsize</strong> (<em>int</em>) – the size of the pages</p></li>
+<li><p><strong>ka</strong> – dictionary of layout values for the main widget</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.file_browser">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.ipywidgets.</span></span><span class="sig-name descname"><span class="pre">file_browser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">track</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(10,</span> <span class="pre">5)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/ipywidgets.html#file_browser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.ipywidgets.file_browser" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.ipywidgets.app" title="PYTOOLS.ipywidgets.app"><code class="xref py py-class docutils literal notranslate"><span class="pre">app</span></code></a></p>
+<p>An instance of this class is an app to browse the file at <em>path</em>, possibly while it expands. If <em>start</em> is <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>, the start position is end-of-file. If <em>start</em> is of type <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, it denotes the exact start position in bytes. If <em>start</em> is of type <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, it must be between <code class="xref py py-const docutils literal notranslate"><span class="pre">0.</span></code> and <code class="xref py py-const docutils literal notranslate"><span class="pre">1.</span></code>, and the start position is set (approximatively) at that position relative to the whole file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em><em> | </em><em>Path</em>) – a path to an existing file</p></li>
+<li><p><strong>start</strong> (<em>int</em><em> | </em><em>float</em>) – index of start pointed</p></li>
+<li><p><strong>step</strong> (<em>int</em>) – step size in bytes</p></li>
+<li><p><strong>track</strong> (<em>bool</em>) – whether to track changes in the file</p></li>
+<li><p><strong>context</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – pair of number of lines before and after to display around current position</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.db_browser">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.ipywidgets.</span></span><span class="sig-name descname"><span class="pre">db_browser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/ipywidgets.html#db_browser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.ipywidgets.db_browser" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.ipywidgets.app" title="PYTOOLS.ipywidgets.app"><code class="xref py py-class docutils literal notranslate"><span class="pre">app</span></code></a></p>
+<p>An instance of this class is an app to explore a database specified by <em>spec</em>. If a metadata structure is specified, it must be bound to an existing engine and reflected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spec</strong> (<em>str</em><em> | </em><em>sqlalchemy.engine.Engine</em><em> | </em><em>sqlalchemy.MetaData</em>) – an sqlalchemy url or engine or metadata structure, defining the database to explore</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.hastrait_editor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.ipywidgets.</span></span><span class="sig-name descname"><span class="pre">hastrait_editor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_widget_layout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_layout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/ipywidgets.html#hastrait_editor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.ipywidgets.hastrait_editor" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.ipywidgets.app" title="PYTOOLS.ipywidgets.app"><code class="xref py py-class docutils literal notranslate"><span class="pre">app</span></code></a></p>
+<p>An instance of this class is an app to edit a traitlets structure. The construction of the widget is directed by metadata which must be associated to each editable trait in <em>target</em> under the key <code class="docutils literal notranslate"><span class="pre">widget</span></code>. This is either a callable, which produces a widget for that trait, or a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, passed as keyword arguments to a widget guesser. Guessing is based on the trait class. Each property in <em>default_trait_layout</em> is applied to all the trait widget layouts which assign a <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code> value to that property. The overall editor widget can be further customised using the following attributes:</p>
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">header,footer</span></span></dt>
+<dd><p>They can be modified freely. The <code class="xref py py-attr docutils literal notranslate"><span class="pre">header</span></code> and <code class="xref py py-attr docutils literal notranslate"><span class="pre">footer</span></code> widgets (<code class="xref py py-class docutils literal notranslate"><span class="pre">VBox</span></code> instances) appear immediately before and after, respectively, the trait widgets. A reset buttons is present in the toolbar by default.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.hastrait_editor.label_layout">
+<span class="sig-name descname"><span class="pre">label_layout</span></span><a class="headerlink" href="#PYTOOLS.ipywidgets.hastrait_editor.label_layout" title="Link to this definition"></a></dt>
+<dd><p>A shared <code class="xref py py-class docutils literal notranslate"><span class="pre">Layout</span></code> instance formatting the label of all the traits. Modifications of this layout therefore applies to all trait labels.</p>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>target</strong> (<em>traitlets.HasTraits</em>) – a structure with traits</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.animator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.ipywidgets.</span></span><span class="sig-name descname"><span class="pre">animator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">children</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toolbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">track</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">continuity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/ipywidgets.html#animator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.ipywidgets.animator" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.ipywidgets.app" title="PYTOOLS.ipywidgets.app"><code class="xref py py-class docutils literal notranslate"><span class="pre">app</span></code></a></p>
+<p>An instance of this class is an app to control abstract animations. An animation is any callback which can be passed a frame number, enumerated by the animation widgets. The set of frame numbers is split into a sequence of contiguous intervals called tracks. Parameter <em>track</em> is a function which returns, for each valid frame number, the bounds of its track interval, and <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code> for invalid frame numbers.</p>
+<ul class="simple">
+<li><p>If <em>track</em> is an <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> instance, the intervals are of constant length <em>track</em></p></li>
+<li><p>If <em>track</em> is an increasing sequence of <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> instances, the intervals are the consecutive pairs in the sequence</p></li>
+<li><p>Otherwise, <em>track</em> must be a function of one <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> input returning two <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> outputs</p></li>
+</ul>
+<p>A number of other widgets are accessible in addition to <code class="xref py py-attr docutils literal notranslate"><span class="pre">main</span></code>: <code class="xref py py-attr docutils literal notranslate"><span class="pre">toolbar</span></code>, <code class="xref py py-attr docutils literal notranslate"><span class="pre">w_console</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>int</em><em> | </em><em>Sequence</em><em>[</em><em>int</em><em>] </em><em>| </em><em>Callable</em><em>[</em><em>[</em><em>int</em><em>]</em><em>, </em><em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em><em>]</em>) – track function</p></li>
+<li><p><strong>children</strong> – additional children widgets</p></li>
+<li><p><strong>toolbar</strong> (<em>HBox</em>) – additional toolbar widgets</p></li>
+<li><p><strong>continuity</strong> (<em>bool</em>) – if <code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code> (default), proceeds to the next track at the end of each track</p></li>
+<li><p><strong>ka</strong> – passed to the <code class="xref py py-class docutils literal notranslate"><span class="pre">Play</span></code> constructor</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.animator.add_clock">
+<span class="sig-name descname"><span class="pre">add_clock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/ipywidgets.html#animator.add_clock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.ipywidgets.animator.add_clock" title="Link to this definition"></a></dt>
+<dd><p>Adds a clock to the player, displaying (and allowing edition of) an index quantity proportional to the frame number. <em>rate</em> is the proportion in index per frame.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.animator.bind">
+<span class="sig-name descname"><span class="pre">bind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trait</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'value'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/ipywidgets.html#animator.bind"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.ipywidgets.animator.bind" title="Link to this definition"></a></dt>
+<dd><p>Assigns a callback <em>f</em> to a trait on the <code class="xref py py-attr docutils literal notranslate"><span class="pre">w_play</span></code> widget.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.animator.unbind">
+<span class="sig-name descname"><span class="pre">unbind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trait</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'value'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/ipywidgets.html#animator.unbind"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.ipywidgets.animator.unbind" title="Link to this definition"></a></dt>
+<dd><p>Unassigns a callback assigned by method <a class="reference internal" href="#PYTOOLS.ipywidgets.animator.bind" title="PYTOOLS.ipywidgets.animator.bind"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bind()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.animator.pause">
+<span class="sig-name descname"><span class="pre">pause</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/ipywidgets.html#animator.pause"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.ipywidgets.animator.pause" title="Link to this definition"></a></dt>
+<dd><p>Pauses the animation</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.animator.value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#PYTOOLS.ipywidgets.animator.value" title="Link to this definition"></a></dt>
+<dd><p>Value of the current frame number; uses the track function to redefine the current track interval when set</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.SelectMultipleOrdered">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.ipywidgets.</span></span><span class="sig-name descname"><span class="pre">SelectMultipleOrdered</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/ipywidgets.html#SelectMultipleOrdered"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.ipywidgets.SelectMultipleOrdered" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">VBox</span></code></p>
+<p>Essentially like <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectMultiple</span></code> but preserves order of selection.</p>
+<p>Public constructor</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.ipywidgets.SimpleButton">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.ipywidgets.</span></span><span class="sig-name descname"><span class="pre">SimpleButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/ipywidgets.html#SimpleButton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.ipywidgets.SimpleButton" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Button</span></code></p>
+<p>Helper class to define buttons with a single callback and predefined default layout components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>None</em><em>]</em>) – the callback for the button (optional)</p></li>
+<li><p><strong>ka</strong> – override the default layout components</p></li>
+</ul>
+</dd>
+</dl>
+<p>Public constructor</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mod_cache.html" class="btn btn-neutral float-left" title="PYTOOLS.cache — A persistent cache mechanism" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mod_polling.html" class="btn btn-neutral float-right" title="PYTOOLS.polling — Generic polling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

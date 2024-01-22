@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PYTOOLS.polling — Generic polling &mdash; PYTOOLS  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="PYTOOLS.simpy — Utilities for simpy" href="mod_simpy.html" />
+    <link rel="prev" title="PYTOOLS.ipywidgets — Widget utilities" href="mod_ipywidgets.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PYTOOLS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="mod_init.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS</span></code> (top level) — Generic utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_torch.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.torch</span></code> — Utilities for pytorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_animation.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.animation</span></code> — Animation utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_cache.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.cache</span></code> — A persistent cache mechanism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_ipywidgets.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.ipywidgets</span></code> — Widget utilities</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.polling</span></code> — Generic polling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#an-example">An example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-PYTOOLS.polling">Available types and functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.polling.PollingThread"><code class="docutils literal notranslate"><span class="pre">PollingThread</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mod_simpy.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.simpy</span></code> — Utilities for simpy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_experiment.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.experiment</span></code> — Utilities for pytorch experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_tensorboard_manager.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.tensorboard_manager</span></code> — A server of tensorboard servers</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PYTOOLS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.polling</span></code> — Generic polling</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/mod_polling.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pytools-polling-generic-polling">
+<h1><a class="reference internal" href="#module-PYTOOLS.polling" title="PYTOOLS.polling"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.polling</span></code></a> — Generic polling<a class="headerlink" href="#pytools-polling-generic-polling" title="Link to this heading"></a></h1>
+<p>This module provides basic polling functionalities.</p>
+<section id="an-example">
+<h2>An example<a class="headerlink" href="#an-example" title="Link to this heading"></a></h2>
+<p>The following piece of code illustrates the use of this module:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># File:                 demo/polling.py</span>
+<span class="c1"># Contributors:         Jean-Marc Andreoli</span>
+<span class="c1"># Language:             python</span>
+<span class="c1"># Purpose:              Illustration of the polling module</span>
+<span class="kn">from</span> <span class="nn">make</span> <span class="kn">import</span> <span class="n">RUN</span><span class="p">;</span> <span class="n">RUN</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span><span class="vm">__file__</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">logging</span><span class="o">,</span><span class="nn">time</span><span class="o">,</span><span class="nn">sqlite3</span>
+<span class="kn">from</span> <span class="nn">PYTOOLS.polling</span> <span class="kn">import</span> <span class="n">PollingThread</span>
+
+<span class="k">def</span> <span class="nf">demo</span><span class="p">():</span>
+  <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+  <span class="n">current</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">DB</span> <span class="o">=</span> <span class="n">RUN</span><span class="o">.</span><span class="n">dir</span><span class="o">/</span><span class="s1">&#39;polling.dir&#39;</span><span class="o">/</span><span class="s1">&#39;test.db&#39;</span>
+  <span class="k">with</span> <span class="n">PollingThread</span><span class="p">(</span><span class="n">DB</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;current&#39;</span><span class="p">,(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">current</span><span class="p">)),</span>
+    <span class="c1">#(&#39;generate_an_error FLOAT&#39;,(lambda: 1/0)),</span>
+    <span class="n">fortytwo</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+  <span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">61</span><span class="p">):</span>
+      <span class="n">current</span> <span class="o">+=</span> <span class="mi">1</span>
+      <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">.05</span><span class="p">)</span>
+  <span class="k">with</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">DB</span><span class="p">))</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM Status&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:12s}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">status</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span><span class="n">status</span><span class="p">))</span>
+  <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Typical output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">PYTOOLS</span><span class="o">.</span><span class="n">demo</span><span class="o">.</span><span class="n">polling</span>
+<span class="n">started</span>     <span class="p">:</span> <span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">03</span> <span class="mi">23</span><span class="p">:</span><span class="mi">44</span><span class="p">:</span><span class="mf">30.726036</span>
+<span class="n">pid</span>         <span class="p">:</span> <span class="n">thurston</span><span class="o">.</span><span class="n">ad</span><span class="o">.</span><span class="n">europe</span><span class="o">.</span><span class="n">naverlabs</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">2232</span>
+<span class="n">fortytwo</span>    <span class="p">:</span> <span class="mi">42</span>
+<span class="n">elapsed</span>     <span class="p">:</span> <span class="mf">3.076988458633423</span>
+<span class="n">error</span>       <span class="p">:</span> <span class="kc">None</span>
+<span class="n">current</span>     <span class="p">:</span> <span class="mi">60</span>
+</pre></div>
+</div>
+</section>
+<section id="module-PYTOOLS.polling">
+<span id="available-types-and-functions"></span><h2>Available types and functions<a class="headerlink" href="#module-PYTOOLS.polling" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.polling.PollingThread">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.polling.</span></span><span class="sig-name descname"><span class="pre">PollingThread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">fields</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxerror</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">staticfields</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/polling.html#PollingThread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.polling.PollingThread" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Thread</span></code></p>
+<p>Objects of this class are python contexts which can be used to encapsulate any piece of code into a monitor executing on a separate thread. The monitor polls the code at regular intervals and stores a report. Only one report is stored at all time (any new report replaces the previous one).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em><em> | </em><em>Path</em>) – location of the monitor reporting file</p></li>
+<li><p><strong>interval</strong> (<em>float</em>) – polling rate in seconds</p></li>
+<li><p><strong>maxerror</strong> (<em>int</em>) – maximum number of consecutive errors before giving up</p></li>
+<li><p><strong>fields</strong> – list of field descriptors (see below) specifying what to record at each polling</p></li>
+<li><p><strong>staticfields</strong> – dictionary of static values specifying what to record initially</p></li>
+</ul>
+</dd>
+</dl>
+<p>Each field descriptor is a pair of an sql column specification and a function with no input which returns a value compatible with the column type. An optional third component can specify an other function to be used in case of error.</p>
+<p>This constructor should always be called with keyword arguments. Arguments are:</p>
+<p><em>group</em> should be None; reserved for future extension when a ThreadGroup
+class is implemented.</p>
+<p><em>target</em> is the callable object to be invoked by the run()
+method. Defaults to None, meaning nothing is called.</p>
+<p><em>name</em> is the thread name. By default, a unique name is constructed of
+the form “Thread-N” where N is a small decimal number.</p>
+<p><em>args</em> is a list or tuple of arguments for the target invocation. Defaults to ().</p>
+<p><em>kwargs</em> is a dictionary of keyword arguments for the target
+invocation. Defaults to {}.</p>
+<p>If a subclass overrides the constructor, it must make sure to invoke
+the base class constructor (Thread.__init__()) before doing anything
+else to the thread.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mod_ipywidgets.html" class="btn btn-neutral float-left" title="PYTOOLS.ipywidgets — Widget utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mod_simpy.html" class="btn btn-neutral float-right" title="PYTOOLS.simpy — Utilities for simpy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

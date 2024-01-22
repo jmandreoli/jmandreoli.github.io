@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PYTOOLS.simpy &mdash; PYTOOLS  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PYTOOLS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_init.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS</span></code> (top level) — Generic utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_torch.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.torch</span></code> — Utilities for pytorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_animation.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.animation</span></code> — Animation utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_cache.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.cache</span></code> — A persistent cache mechanism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_ipywidgets.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.ipywidgets</span></code> — Widget utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_polling.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.polling</span></code> — Generic polling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_simpy.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.simpy</span></code> — Utilities for simpy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_experiment.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.experiment</span></code> — Utilities for pytorch experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_tensorboard_manager.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.tensorboard_manager</span></code> — A server of tensorboard servers</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PYTOOLS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../PYTOOLS.html">PYTOOLS</a></li>
+      <li class="breadcrumb-item active">PYTOOLS.simpy</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for PYTOOLS.simpy</h1><div class="highlight"><pre>
+<span></span><span class="c1"># File:                 simpy.py</span>
+<span class="c1"># Creation date:        2018-05-18</span>
+<span class="c1"># Contributors:         Jean-Marc Andreoli</span>
+<span class="c1"># Language:             python</span>
+<span class="c1"># Purpose:              utilities for simpy based simulation</span>
+<span class="c1">#</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cached_property</span>
+
+<span class="kn">import</span> <span class="nn">simpy</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="s1">&#39;RobustEnvironment&#39;</span><span class="p">,</span> <span class="s1">&#39;SimpySimulation&#39;</span>
+
+<span class="c1"># ==================================================================================================</span>
+<div class="viewcode-block" id="RobustEnvironment">
+<a class="viewcode-back" href="../../mod_simpy.html#PYTOOLS.simpy.RobustEnvironment">[docs]</a>
+<span class="k">class</span> <span class="nc">RobustEnvironment</span> <span class="p">(</span><span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">):</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Instances of this class are :class:`simpy.Environment` instances with method :meth:`run_robust`, which extends method :class:`run` to allow jumping back in the past (by rerunning since the initial time until the specified point in the past).</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1"># ==================================================================================================</span>
+
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">init_t</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">init_t</span> <span class="o">=</span> <span class="n">init_t</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">n_reset</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+  <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">init_t</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">n_reset</span> <span class="o">+=</span> <span class="mi">1</span>
+
+  <span class="k">def</span> <span class="nf">run_robust</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># same as run(s) but allows going back in time</span>
+    <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">s</span><span class="o">&gt;</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">s</span><span class="o">&lt;</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+      <span class="k">if</span> <span class="n">s</span><span class="o">!=</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">span</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># caution: only for environments which end naturally</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">run_robust</span><span class="p">()</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">init_t</span></div>
+
+
+<span class="c1"># ==================================================================================================</span>
+<div class="viewcode-block" id="SimpySimulation">
+<a class="viewcode-back" href="../../mod_simpy.html#PYTOOLS.simpy.SimpySimulation">[docs]</a>
+<span class="k">class</span> <span class="nc">SimpySimulation</span><span class="p">:</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">An instance of this class controls the rollout of a set *content* of pairs where the first component is a :class:`RobustEnvironment` instance and the second component is display specification. Attribute :attr:`player` holds a player object, created by invoking method :meth:`player_factory` with keyword arguments *play_kw*. The player object executes the rollout in a timely fashion under user control on a display board (typically a :class:`matplotlib.Figure`).</span>
+
+<span class="sd">A display specification is a function which takes as input a :mod:`simpy.Environment` instance and a part of the display board as returned by generator method :meth:`parts`, and returns a display function with no input which displays the environment on the specified part as of the time of invocation.</span>
+
+<span class="sd">:param content: list of environments with displayers</span>
+<span class="sd">:type content: :class:`Sequence[Tuple[simpy.Environment,Callable[[simpy.Environment,Any],Callable[[],None]],...]]`</span>
+<span class="sd">:param play_kw: a dictionary of keyword arguments, passed to the player constructor (attribute :attr:`factory`)</span>
+<span class="sd">:param ka: passed to method :meth:`parts`</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1"># ==================================================================================================</span>
+  <span class="n">player</span><span class="p">:</span> <span class="kc">None</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The player object to run the simulation&quot;&quot;&quot;</span>
+  <span class="n">play_default</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;interval&#39;</span><span class="p">:</span><span class="mi">40</span><span class="p">}</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The default arguments passed to the player factory&quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">content</span><span class="p">,</span><span class="n">play_kw</span><span class="p">:</span><span class="n">Mapping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="n">RobustEnvironment</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">callable</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">L</span><span class="p">))</span> <span class="k">for</span> <span class="n">env</span><span class="p">,</span><span class="o">*</span><span class="n">L</span> <span class="ow">in</span> <span class="n">content</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">displayer</span><span class="p">(</span><span class="n">board</span><span class="p">):</span>
+      <span class="n">content_</span> <span class="o">=</span> <span class="p">[(</span><span class="n">env</span><span class="p">,</span><span class="nb">tuple</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="n">part</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">L</span><span class="p">))</span> <span class="k">for</span> <span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="o">*</span><span class="n">L</span><span class="p">),</span><span class="n">part</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">content</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">parts</span><span class="p">(</span><span class="n">board</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">))]</span>
+      <span class="k">def</span> <span class="nf">disp_</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">env</span><span class="p">,</span><span class="n">L</span> <span class="ow">in</span> <span class="n">content_</span><span class="p">:</span>
+          <span class="n">env</span><span class="o">.</span><span class="n">run_robust</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">init_t</span><span class="o">+</span><span class="n">v</span><span class="p">)</span>
+          <span class="k">for</span> <span class="n">disp</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span> <span class="n">disp</span><span class="p">()</span>
+      <span class="k">return</span> <span class="n">disp_</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_factory</span><span class="p">(</span><span class="n">displayer</span><span class="p">,</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">play_default</span><span class="p">,</span><span class="o">**</span><span class="p">(</span><span class="n">play_kw</span> <span class="ow">or</span> <span class="p">{})))</span>
+    <span class="k">try</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repr_mimebundle_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">_repr_mimebundle_</span>
+    <span class="k">except</span><span class="p">:</span> <span class="k">pass</span>
+
+  <span class="nd">@cached_property</span>
+  <span class="k">def</span> <span class="nf">player_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Callable</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">get_backend</span>
+    <span class="kn">from</span> <span class="nn">.animation</span> <span class="kn">import</span> <span class="n">widget_animation_player</span><span class="p">,</span> <span class="n">mpl_animation_player</span>
+    <span class="k">return</span> <span class="n">widget_animation_player</span> <span class="k">if</span> <span class="s1">&#39;ipympl&#39;</span> <span class="ow">in</span> <span class="n">get_backend</span><span class="p">()</span> <span class="k">else</span> <span class="n">mpl_animation_player</span>
+
+  <span class="n">ax_default</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;aspect&#39;</span><span class="p">:</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span><span class="s1">&#39;gridlines&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">}</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The default arguments passed to the ``ax_kw`` parameter in method :meth:`parts`&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SimpySimulation.parts">
+<a class="viewcode-back" href="../../mod_simpy.html#PYTOOLS.simpy.SimpySimulation.parts">[docs]</a>
+  <span class="k">def</span> <span class="nf">parts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">fig</span><span class="p">,</span><span class="n">nrows</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">ncols</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">sharex</span><span class="p">:</span><span class="nb">str</span><span class="o">|</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">sharey</span><span class="p">:</span><span class="nb">str</span><span class="o">|</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">gridspec_kw</span><span class="p">:</span><span class="n">Mapping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Generator of parts. This implementation assumes the board is a :mod:`matplotlib` grid-figure, and yields its subplots (each subplot is a part). The number of parts must be at least equal to the number of environments to which they are assigned, otherwise some environments are not processed.</span>
+
+<span class="sd">:param ka: a dictionary of keyword arguments passed to the :meth:`matplotlib.figure.add_subplot` method of each part (key ``gridlines`` is also allowed and denotes whether gridlines should be displayed)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">zeros</span>
+    <span class="n">share</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="o">|</span><span class="nb">bool</span><span class="p">,</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">int</span><span class="p">,</span><span class="nb">int</span><span class="p">],</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="s1">&#39;all&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)),</span>
+      <span class="kc">True</span><span class="p">:</span>  <span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)),</span>   <span class="c1"># alias</span>
+      <span class="s1">&#39;row&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">:</span> <span class="p">(</span><span class="n">row</span><span class="p">,</span><span class="mi">0</span><span class="p">)),</span>
+      <span class="s1">&#39;col&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">col</span><span class="p">)),</span>
+      <span class="s1">&#39;none&#39;</span><span class="p">:(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)),</span>
+      <span class="kc">False</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)),</span> <span class="c1"># alias</span>
+    <span class="p">}</span>
+    <span class="n">share_</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">((</span><span class="n">dim</span><span class="p">,</span><span class="n">share</span><span class="p">[</span><span class="n">s</span><span class="p">])</span> <span class="k">for</span> <span class="n">dim</span><span class="p">,</span><span class="n">s</span> <span class="ow">in</span> <span class="p">((</span><span class="s1">&#39;sharex&#39;</span><span class="p">,</span><span class="n">sharex</span><span class="p">),(</span><span class="s1">&#39;sharey&#39;</span><span class="p">,</span><span class="n">sharey</span><span class="p">)))</span>
+    <span class="n">ka</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ax_default</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">)</span>
+    <span class="n">gridlines</span> <span class="o">=</span> <span class="n">ka</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;gridlines&#39;</span><span class="p">)</span>
+    <span class="n">gridspec</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_gridspec</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="n">nrows</span><span class="p">,</span><span class="n">ncols</span><span class="o">=</span><span class="n">ncols</span><span class="p">,</span><span class="o">**</span><span class="p">(</span><span class="n">gridspec_kw</span> <span class="ow">or</span> <span class="p">{}))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">((</span><span class="n">nrows</span><span class="p">,</span><span class="n">ncols</span><span class="p">),</span><span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nrows</span><span class="p">):</span>
+      <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncols</span><span class="p">):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gridspec</span><span class="p">[</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">],</span><span class="o">**</span><span class="nb">dict</span><span class="p">((</span><span class="n">dim</span><span class="p">,</span><span class="n">axes</span><span class="p">[</span><span class="n">s</span><span class="p">(</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">)])</span> <span class="k">for</span> <span class="n">dim</span><span class="p">,</span><span class="n">s</span> <span class="ow">in</span> <span class="n">share_</span><span class="p">),</span><span class="o">**</span><span class="n">ka</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">gridlines</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">ax</span>
+        <span class="k">yield</span> <span class="n">ax</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Insufficient number of parts on this board: </span><span class="si">{</span><span class="n">nrows</span><span class="o">*</span><span class="n">ncols</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

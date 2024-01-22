@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PYTOOLS.animation — Animation utilities &mdash; PYTOOLS  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="PYTOOLS.cache — A persistent cache mechanism" href="mod_cache.html" />
+    <link rel="prev" title="PYTOOLS.torch — Utilities for pytorch" href="mod_torch.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PYTOOLS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="mod_init.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS</span></code> (top level) — Generic utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_torch.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.torch</span></code> — Utilities for pytorch</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.animation</span></code> — Animation utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-PYTOOLS.animation">Available types and functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.animation.track_function"><code class="docutils literal notranslate"><span class="pre">track_function()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.animation.animation_player_base"><code class="docutils literal notranslate"><span class="pre">animation_player_base</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.animation.animation_player_base.board"><code class="docutils literal notranslate"><span class="pre">animation_player_base.board</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.animation.animation_player_base.running"><code class="docutils literal notranslate"><span class="pre">animation_player_base.running</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.animation.animation_player_base.frame"><code class="docutils literal notranslate"><span class="pre">animation_player_base.frame</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.animation.animation_player_base.anim"><code class="docutils literal notranslate"><span class="pre">animation_player_base.anim</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.animation.animation_player_base.track"><code class="docutils literal notranslate"><span class="pre">animation_player_base.track</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.animation.animation_player_base.frame_per_stu"><code class="docutils literal notranslate"><span class="pre">animation_player_base.frame_per_stu</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.animation.animation_player_base.setrunning"><code class="docutils literal notranslate"><span class="pre">animation_player_base.setrunning()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.animation.animation_player_base.show_running"><code class="docutils literal notranslate"><span class="pre">animation_player_base.show_running()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.animation.animation_player_base.setval"><code class="docutils literal notranslate"><span class="pre">animation_player_base.setval()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.animation.widget_animation_player"><code class="docutils literal notranslate"><span class="pre">widget_animation_player</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.animation.mpl_animation_player"><code class="docutils literal notranslate"><span class="pre">mpl_animation_player</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mod_cache.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.cache</span></code> — A persistent cache mechanism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_ipywidgets.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.ipywidgets</span></code> — Widget utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_polling.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.polling</span></code> — Generic polling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_simpy.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.simpy</span></code> — Utilities for simpy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_experiment.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.experiment</span></code> — Utilities for pytorch experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_tensorboard_manager.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.tensorboard_manager</span></code> — A server of tensorboard servers</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PYTOOLS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.animation</span></code> — Animation utilities</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/mod_animation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pytools-animation-animation-utilities">
+<h1><a class="reference internal" href="#module-PYTOOLS.animation" title="PYTOOLS.animation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.animation</span></code></a> — Animation utilities<a class="headerlink" href="#pytools-animation-animation-utilities" title="Link to this heading"></a></h1>
+<p>This module provides basic utilities to play animations in <code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code>. An animation is any callback which can be passed a simulation time, enumerated by a player object. The set of simulation times is split into a sequence of contiguous intervals called tracks. A track map is a function of simulation time which returns the bounds of its track interval if the simulation time is valid, and <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code> otherwise.</p>
+<section id="module-PYTOOLS.animation">
+<span id="available-types-and-functions"></span><h2>Available types and functions<a class="headerlink" href="#module-PYTOOLS.animation" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.animation.track_function">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.animation.</span></span><span class="sig-name descname"><span class="pre">track_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stype=&lt;class</span> <span class="pre">'float'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/animation.html#track_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.animation.track_function" title="Link to this definition"></a></dt>
+<dd><p>Builds a track map from a specification <em>track</em>. A track map is a callable of one scalar input returning two scalar outputs (bounds of its track interval), or <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code> (when input is out of domain).</p>
+<ul class="simple">
+<li><p>Its domain must be an interval (not necessarily bounded) containing 0</p></li>
+<li><p>The mapping of a scalar to the lower bound of its track interval should be non decreasing and right-continuous.</p></li>
+</ul>
+<p>The specification <em>track</em> can be the track map itself, returned as such after minimal checks. As a helper, <em>track</em> can also be</p>
+<ul class="simple">
+<li><p>a positive scalar, in which case the track map is based on intervals of constant length equal to that scalar, starting at 0 and never ending</p></li>
+<li><p>an increasing sequence of positive scalars, in which case the track map is based on intervals which are the consecutive pairs in that sequence (prefixed with 0)</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>float</em><em> | </em><em>Sequence</em><em>[</em><em>float</em><em>] </em><em>| </em><em>Callable</em><em>[</em><em>[</em><em>float</em><em>]</em><em>, </em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>]</em>) – the track map specification</p></li>
+<li><p><strong>stype</strong> (<em>type</em>) – the type of scalars passed to the track map</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.animation.animation_player_base">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.animation.</span></span><span class="sig-name descname"><span class="pre">animation_player_base</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">display</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_per_stu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">track</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/animation.html#animation_player_base"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.animation.animation_player_base" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An instance of this class is a controllable <code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code> animation, created by this constructor and attached to a <code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code> instance stored as attribute <a class="reference internal" href="#PYTOOLS.animation.animation_player_base.board" title="PYTOOLS.animation.animation_player_base.board"><code class="xref py py-attr docutils literal notranslate"><span class="pre">board</span></code></a>. The board creation is not performed in this class, so it must be performed in the constructor of a subclass, prior to invoking this constructor.</p>
+<p>The speed of the animation is controlled by two parameters whose product determines the number of real milli-seconds per simulation time unit (stu):</p>
+<ul class="simple">
+<li><p>parameter <em>frame_per_stu</em>: the number of frames per stu</p></li>
+<li><p>parameter <em>interval</em>: the number of real milli-seconds per frame</p></li>
+</ul>
+<p>Note that the <em>interval</em> is bounded below by the real time needed to construct and display the frames. Furthermore, below 40ms per frame, the human eye tends to loose vision persistency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>display</strong> (<em>Callable</em><em>[</em><em>[</em><em>float</em><em>]</em><em>, </em><em>None</em><em>]</em>) – the function which takes a simulation time and displays the corresponding (closest) frame</p></li>
+<li><p><strong>track</strong> (<em>Callable</em><em>[</em><em>[</em><em>float</em><em>]</em><em>, </em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>]</em>) – track map decomposing the simulation domain into tracks (typically obtained by <a class="reference internal" href="#PYTOOLS.animation.track_function" title="PYTOOLS.animation.track_function"><code class="xref py py-func docutils literal notranslate"><span class="pre">track_function()</span></code></a>)</p></li>
+<li><p><strong>frame_per_stu</strong> (<em>float</em>) – frame rate, in frames per simulation time (if <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code> use animation real time rate)</p></li>
+<li><p><strong>ka</strong> – passed to the <code class="xref py py-class docutils literal notranslate"><span class="pre">FuncAnimation</span></code> constructor</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.animation.animation_player_base.board">
+<span class="sig-name descname"><span class="pre">board</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Figure</span></em><a class="headerlink" href="#PYTOOLS.animation.animation_player_base.board" title="Link to this definition"></a></dt>
+<dd><p>The figure on which to start the animation</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.animation.animation_player_base.running">
+<span class="sig-name descname"><span class="pre">running</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#PYTOOLS.animation.animation_player_base.running" title="Link to this definition"></a></dt>
+<dd><p>The running state of the animation</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.animation.animation_player_base.frame">
+<span class="sig-name descname"><span class="pre">frame</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#PYTOOLS.animation.animation_player_base.frame" title="Link to this definition"></a></dt>
+<dd><p>The current frame displayed by the animation</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.animation.animation_player_base.anim">
+<span class="sig-name descname"><span class="pre">anim</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">FuncAnimation</span></em><a class="headerlink" href="#PYTOOLS.animation.animation_player_base.anim" title="Link to this definition"></a></dt>
+<dd><p>The animation</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.animation.animation_player_base.track">
+<span class="sig-name descname"><span class="pre">track</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.animation.animation_player_base.track" title="Link to this definition"></a></dt>
+<dd><p>The track map</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.animation.animation_player_base.frame_per_stu">
+<span class="sig-name descname"><span class="pre">frame_per_stu</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#PYTOOLS.animation.animation_player_base.frame_per_stu" title="Link to this definition"></a></dt>
+<dd><p>The frame rate, in frames per simulation time units</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.animation.animation_player_base.setrunning">
+<span class="sig-name descname"><span class="pre">setrunning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/animation.html#animation_player_base.setrunning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.animation.animation_player_base.setrunning" title="Link to this definition"></a></dt>
+<dd><p>Sets the running state of the animation to <em>b</em> (if <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>, the inverse of current running state).</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.animation.animation_player_base.show_running">
+<span class="sig-name descname"><span class="pre">show_running</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/animation.html#animation_player_base.show_running"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.animation.animation_player_base.show_running" title="Link to this definition"></a></dt>
+<dd><p>Shows the current running state as <em>b</em>. This implementation raises an error.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.animation.animation_player_base.setval">
+<span class="sig-name descname"><span class="pre">setval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/animation.html#animation_player_base.setval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.animation.animation_player_base.setval" title="Link to this definition"></a></dt>
+<dd><p>Sets the current frame to be displayed by the animation so that it represents simulation time <em>v</em>. Return a non <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code> value if <em>v</em> is out of the frame range. This implementation raises an error.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.animation.widget_animation_player">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.animation.</span></span><span class="sig-name descname"><span class="pre">widget_animation_player</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">displayer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_kw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/animation.html#widget_animation_player"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.animation.widget_animation_player" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="mod_ipywidgets.html#PYTOOLS.ipywidgets.app" title="PYTOOLS.ipywidgets.app"><code class="xref py py-class docutils literal notranslate"><span class="pre">app</span></code></a>, <a class="reference internal" href="#PYTOOLS.animation.animation_player_base" title="PYTOOLS.animation.animation_player_base"><code class="xref py py-class docutils literal notranslate"><span class="pre">animation_player_base</span></code></a></p>
+<p>A instance of this class is a player for <code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code> animations controlled from <cite>mod:ipywidgets</cite> widgets. The animation board is created by invoking <code class="xref py py-func docutils literal notranslate"><span class="pre">figure()</span></code> with arguments <em>fig_kw</em>. The frame display function is obtained by calling function <em>displayer</em> on the board.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>displayer</strong> (<em>Callable</em><em>[</em><em>[</em><em>Figure</em><em>]</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>float</em><em>]</em><em>, </em><em>None</em><em>]</em><em>]</em>) – the frame display factory</p></li>
+<li><p><strong>fig_kw</strong> – configuration of the animation figure</p></li>
+<li><p><strong>ka</strong> – passed to the superclass accepting the corresponding keys</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.animation.mpl_animation_player">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.animation.</span></span><span class="sig-name descname"><span class="pre">mpl_animation_player</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">displayer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_kw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tbsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">((0.15,</span> <span class="pre">1.0,</span> <span class="pre">0.8),</span> <span class="pre">0.15)</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/animation.html#mpl_animation_player"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.animation.mpl_animation_player" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.animation.animation_player_base" title="PYTOOLS.animation.animation_player_base"><code class="xref py py-class docutils literal notranslate"><span class="pre">animation_player_base</span></code></a></p>
+<p>Instances of this class are players for <code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code> animations, controlled within matplotlib. The animation board is created by invoking <code class="xref py py-func docutils literal notranslate"><span class="pre">figure()</span></code> with arguments <em>fig_kw</em>. The frame display function is obtained by calling function <em>displayer</em> on the board.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>displayer</strong> (<em>Callable</em><em>[</em><em>[</em><em>Figure</em><em>]</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>float</em><em>]</em><em>, </em><em>None</em><em>]</em><em>]</em>) – the frame display factory</p></li>
+<li><p><strong>fig_kw</strong> – configuration of the animation figure (excluding the toolbar)</p></li>
+<li><p><strong>tbsize</strong> – size (inches) of the toolbar as ((hsize(play-button),hsize(track-manager),hsize(clock)),vsize(toolbar))</p></li>
+<li><p><strong>ka</strong> – passed to the superclass</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mod_torch.html" class="btn btn-neutral float-left" title="PYTOOLS.torch — Utilities for pytorch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mod_cache.html" class="btn btn-neutral float-right" title="PYTOOLS.cache — A persistent cache mechanism" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

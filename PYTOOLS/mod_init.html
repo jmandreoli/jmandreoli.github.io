@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PYTOOLS (top level) — Generic utilities &mdash; PYTOOLS  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="PYTOOLS.torch — Utilities for pytorch" href="mod_torch.html" />
+    <link rel="prev" title="PYTOOLS package documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PYTOOLS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS</span></code> (top level) — Generic utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-PYTOOLS">Available types and functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.owrap"><code class="docutils literal notranslate"><span class="pre">owrap</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.fmtwrap"><code class="docutils literal notranslate"><span class="pre">fmtwrap</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.fmtwrap.fmt"><code class="docutils literal notranslate"><span class="pre">fmtwrap.fmt</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.fmtwrap.ref"><code class="docutils literal notranslate"><span class="pre">fmtwrap.ref</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.fmtwrap.describe"><code class="docutils literal notranslate"><span class="pre">fmtwrap.describe()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.namedtuple"><code class="docutils literal notranslate"><span class="pre">namedtuple()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.config_xdg"><code class="docutils literal notranslate"><span class="pre">config_xdg()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.config_env"><code class="docutils literal notranslate"><span class="pre">config_env()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.autoconfig"><code class="docutils literal notranslate"><span class="pre">autoconfig()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.HtmlPlugin"><code class="docutils literal notranslate"><span class="pre">HtmlPlugin</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.Expr"><code class="docutils literal notranslate"><span class="pre">Expr</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.Expr.rearg"><code class="docutils literal notranslate"><span class="pre">Expr.rearg()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.Expr.refunc"><code class="docutils literal notranslate"><span class="pre">Expr.refunc()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.MapExpr"><code class="docutils literal notranslate"><span class="pre">MapExpr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.CallExpr"><code class="docutils literal notranslate"><span class="pre">CallExpr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.html_parlist"><code class="docutils literal notranslate"><span class="pre">html_parlist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.html_table"><code class="docutils literal notranslate"><span class="pre">html_table()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.html_stack"><code class="docutils literal notranslate"><span class="pre">html_stack()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.SQliteStack"><code class="docutils literal notranslate"><span class="pre">SQliteStack</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.SQliteNew"><code class="docutils literal notranslate"><span class="pre">SQliteNew()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.gitcheck"><code class="docutils literal notranslate"><span class="pre">gitcheck()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.gitcheck_package"><code class="docutils literal notranslate"><span class="pre">gitcheck_package()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.SQLinitMetainfoException"><code class="docutils literal notranslate"><span class="pre">SQLinitMetainfoException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.SQLinit"><code class="docutils literal notranslate"><span class="pre">SQLinit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.SQLHandler"><code class="docutils literal notranslate"><span class="pre">SQLHandler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.SQLHandler.emit"><code class="docutils literal notranslate"><span class="pre">SQLHandler.emit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.ormsroot"><code class="docutils literal notranslate"><span class="pre">ormsroot</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.ormsroot.items"><code class="docutils literal notranslate"><span class="pre">ormsroot.items()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.spark"><code class="docutils literal notranslate"><span class="pre">spark</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.spark.display_monitor_link"><code class="docutils literal notranslate"><span class="pre">spark.display_monitor_link()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.spark.SparkContext"><code class="docutils literal notranslate"><span class="pre">spark.SparkContext()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.ImapFolder"><code class="docutils literal notranslate"><span class="pre">ImapFolder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.basic_stats"><code class="docutils literal notranslate"><span class="pre">basic_stats</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.iso2date"><code class="docutils literal notranslate"><span class="pre">iso2date()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.size_fmt"><code class="docutils literal notranslate"><span class="pre">size_fmt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.time_fmt"><code class="docutils literal notranslate"><span class="pre">time_fmt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.versioned"><code class="docutils literal notranslate"><span class="pre">versioned()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.unid"><code class="docutils literal notranslate"><span class="pre">unid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.printast"><code class="docutils literal notranslate"><span class="pre">printast()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.pickleclass"><code class="docutils literal notranslate"><span class="pre">pickleclass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.einsum_nd"><code class="docutils literal notranslate"><span class="pre">einsum_nd()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mod_torch.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.torch</span></code> — Utilities for pytorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_animation.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.animation</span></code> — Animation utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_cache.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.cache</span></code> — A persistent cache mechanism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_ipywidgets.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.ipywidgets</span></code> — Widget utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_polling.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.polling</span></code> — Generic polling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_simpy.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.simpy</span></code> — Utilities for simpy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_experiment.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.experiment</span></code> — Utilities for pytorch experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_tensorboard_manager.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.tensorboard_manager</span></code> — A server of tensorboard servers</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PYTOOLS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS</span></code> (top level) — Generic utilities</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/mod_init.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pytools-top-level-generic-utilities">
+<h1><a class="reference internal" href="#module-PYTOOLS" title="PYTOOLS"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS</span></code></a> (top level) — Generic utilities<a class="headerlink" href="#pytools-top-level-generic-utilities" title="Link to this heading"></a></h1>
+<section id="module-PYTOOLS">
+<span id="available-types-and-functions"></span><h2>Available types and functions<a class="headerlink" href="#module-PYTOOLS" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.owrap">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">owrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">__ref__</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#owrap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.owrap" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Objects of this class present an attribute oriented proxy interface to an underlying mapping object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>__ref__</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – a reference to a (possibly mutable) mapping object, of which this instance is to be a proxy</p>
+</dd>
+</dl>
+<p>Keys in the reference are turned into attributes of the proxy. If <em>__ref__</em> is <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>, the reference is a new empty dictionary, otherwise <em>__ref__</em> must be a mapping object, and <em>__ref__</em> (or its own reference if it is itself of class <a class="reference internal" href="#PYTOOLS.owrap" title="PYTOOLS.owrap"><code class="xref py py-class docutils literal notranslate"><span class="pre">owrap</span></code></a>) is taken as reference. The reference is first updated with the keyword arguments <em>ka</em>. Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="mi">6</span><span class="p">);</span> <span class="n">x</span> <span class="o">=</span> <span class="n">owrap</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">a</span> <span class="o">==</span> <span class="mi">3</span>
+<span class="k">del</span> <span class="n">x</span><span class="o">.</span><span class="n">a</span><span class="p">;</span> <span class="n">x</span><span class="o">.</span><span class="n">b</span> <span class="o">+=</span> <span class="mi">7</span>
+<span class="k">assert</span> <span class="n">r</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span><span class="mi">13</span><span class="p">}</span>
+<span class="n">r</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">c</span> <span class="o">==</span> <span class="mi">42</span>
+<span class="k">assert</span> <span class="n">x</span> <span class="o">==</span> <span class="n">r</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.fmtwrap">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">fmtwrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#fmtwrap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.fmtwrap" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MutableMapping</span></code></p>
+<p>Instances of this class provide a formatting wrapper to an underlying mapping object. Each instance keeps a list of visible keys in the reference object.</p>
+<ul class="simple">
+<li><p>accessing a key raises an error if it is not visible, otherwises returns the formatted value of that same key in the reference object</p></li>
+<li><p>assigning a key to a value forwards the assignment to the reference object, and also memorises the key as visible. If the key starts with <cite>_</cite>, that character is first dropped and the key is, on the contrary, removed from the visible list if present.</p></li>
+<li><p>deleting a key deletes it from both the reference object and the visible list.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ref</strong> (<em>MutableMapping</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – the reference object (a possibly mutable mapping), of which this instance is to be a partial proxy</p>
+</dd>
+</dl>
+<p>E.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="p">{};</span> <span class="n">x</span> <span class="o">=</span> <span class="n">fmtwrap</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="n">x</span><span class="o">.</span><span class="n">fmt</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pi</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:.3f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">,</span><span class="n">title</span><span class="o">=</span><span class="nb">str</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+<span class="n">x</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pi</span><span class="o">=</span><span class="mf">3.14</span><span class="p">,</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;the value of pi&#39;</span><span class="p">,</span><span class="n">a</span><span class="o">=</span><span class="s1">&#39;something&#39;</span><span class="p">,</span><span class="n">_b</span><span class="o">=</span><span class="s1">&#39;another&#39;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">x</span><span class="o">==</span><span class="nb">dict</span><span class="p">(</span><span class="n">pi</span><span class="o">=</span><span class="s1">&#39;3.140&#39;</span><span class="p">,</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;The Value Of Pi&#39;</span><span class="p">,</span><span class="n">a</span><span class="o">=</span><span class="s2">&quot;&#39;something&#39;&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">r</span><span class="o">==</span><span class="nb">dict</span><span class="p">(</span><span class="n">pi</span><span class="o">=</span><span class="mf">3.14</span><span class="p">,</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;the value of pi&#39;</span><span class="p">,</span><span class="n">a</span><span class="o">=</span><span class="s1">&#39;something&#39;</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="s1">&#39;another&#39;</span><span class="p">)</span>
+<span class="k">del</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+<span class="k">assert</span> <span class="n">x</span><span class="o">==</span><span class="nb">dict</span><span class="p">(</span><span class="n">pi</span><span class="o">=</span><span class="s1">&#39;3.140&#39;</span><span class="p">,</span><span class="n">a</span><span class="o">=</span><span class="s2">&quot;&#39;something&#39;&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">r</span><span class="o">==</span><span class="nb">dict</span><span class="p">(</span><span class="n">pi</span><span class="o">=</span><span class="mf">3.14</span><span class="p">,</span><span class="n">a</span><span class="o">=</span><span class="s1">&#39;something&#39;</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="s1">&#39;another&#39;</span><span class="p">)</span>
+<span class="n">x</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pi</span><span class="o">=</span><span class="mf">3.141592</span><span class="p">,</span><span class="n">_a</span><span class="o">=</span><span class="s1">&#39;boo&#39;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">x</span><span class="o">==</span><span class="nb">dict</span><span class="p">(</span><span class="n">pi</span><span class="o">=</span><span class="s1">&#39;3.142&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">r</span><span class="o">==</span><span class="nb">dict</span><span class="p">(</span><span class="n">pi</span><span class="o">=</span><span class="mf">3.141592</span><span class="p">,</span><span class="n">a</span><span class="o">=</span><span class="s1">&#39;boo&#39;</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="s1">&#39;another&#39;</span><span class="p">)</span>
+<span class="n">x</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">x</span><span class="o">.</span><span class="n">fmt</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:x}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">x</span><span class="o">==</span><span class="nb">dict</span><span class="p">(</span><span class="n">pi</span><span class="o">=</span><span class="s1">&#39;3.142&#39;</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="s1">&#39;2a&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">r</span><span class="o">==</span><span class="nb">dict</span><span class="p">(</span><span class="n">pi</span><span class="o">=</span><span class="mf">3.141592</span><span class="p">,</span><span class="n">a</span><span class="o">=</span><span class="s1">&#39;boo&#39;</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="s1">&#39;another&#39;</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.fmtwrap.fmt">
+<span class="sig-name descname"><span class="pre">fmt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.fmtwrap.fmt" title="Link to this definition"></a></dt>
+<dd><p>The formatters (default is function <code class="xref py py-func docutils literal notranslate"><span class="pre">repr()</span></code>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PYTOOLS.fmtwrap.ref">
+<span class="sig-name descname"><span class="pre">ref</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PYTOOLS.fmtwrap.ref" title="Link to this definition"></a></dt>
+<dd><p>The reference mapping object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.fmtwrap.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tab</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">120</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#fmtwrap.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.fmtwrap.describe" title="Link to this definition"></a></dt>
+<dd><p>Pretty-prints out this instance. Each of the possibly multiple lines of output are indented by a prefix given by parameter <em>tab</em> and clipped at a number of characters (including the prefix) given by parameter <em>lim</em>.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.namedtuple">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">namedtuple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#namedtuple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.namedtuple" title="Link to this definition"></a></dt>
+<dd><p>Returns a class of tuples with named fields. It is identical to <code class="xref py py-func docutils literal notranslate"><span class="pre">collections.namedtuple()</span></code>, with only two additions:</p>
+<ul>
+<li><p>The returned class has an attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">_field_index</span></code> which is an instance of that class where each field is set to its index in the field list. e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;u v&#39;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">c</span><span class="o">.</span><span class="n">_field_index</span><span class="o">.</span><span class="n">u</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">c</span><span class="o">.</span><span class="n">_field_index</span><span class="o">.</span><span class="n">v</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</li>
+<li><p>Furthermore, if <em>f</em> and <em>x</em> are instances of the returned class <em>c</em>, then calling <em>f</em> with argument <em>x</em> returns a new instance of class <em>c</em> in which each field is set to the result of applying the corresponding field in <em>f</em> (which must be a callable) to the corresponding field in <em>x</em>. Additional keyword arguments can be passed to the calls. E.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;u v&#39;</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="n">u</span><span class="o">=</span><span class="p">(</span><span class="k">lambda</span> <span class="n">z</span><span class="p">,</span><span class="n">r</span><span class="o">=</span><span class="mf">0.</span><span class="p">:</span> <span class="mf">2.</span><span class="o">*</span><span class="n">z</span><span class="o">+</span><span class="n">r</span><span class="p">),</span><span class="n">v</span><span class="o">=</span><span class="p">(</span><span class="k">lambda</span> <span class="n">z</span><span class="p">,</span><span class="n">r</span><span class="o">=</span><span class="mf">0.</span><span class="p">:</span> <span class="mf">3.</span><span class="o">*</span><span class="n">z</span><span class="o">+</span><span class="mf">5.</span><span class="o">*</span><span class="n">r</span><span class="p">))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="n">u</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">v</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">k</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="o">**</span><span class="n">k</span><span class="p">)</span> <span class="o">==</span> <span class="n">c</span><span class="p">(</span><span class="n">u</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">u</span><span class="p">,</span><span class="o">**</span><span class="n">k</span><span class="p">),</span><span class="n">v</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">v</span><span class="p">,</span><span class="o">**</span><span class="n">k</span><span class="p">))</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.config_xdg">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">config_xdg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rsc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dflt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#config_xdg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.config_xdg" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rsc</strong> (<em>str</em>) – the name of an XDG resource</p></li>
+<li><p><strong>dflt</strong> (<em>Any</em>) – a default value</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns the content of the XDG resource named <em>rsc</em> or <em>dflt</em> if the resource is not found.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.config_env">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">config_env</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dflt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#config_env"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.config_env" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – the name of an environment variable</p></li>
+<li><p><strong>dflt</strong> (<em>str</em>) – a default value</p></li>
+<li><p><strong>asfile</strong> (<em>bool</em>) – whether to treat the value of the environment variable as a path to a file</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns the string value of an environment variable (or the content of the file pointed by it if <em>asfile</em> is set) or <em>dflt</em> if the environment variable is not assigned.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.autoconfig">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">autoconfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dflt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#autoconfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.autoconfig" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>module</strong> (<em>str</em>) – the name of a module</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – the name of a configuration parameter for that module</p></li>
+<li><p><strong>dflt</strong> (<em>Any</em>) – a default value for the configuration parameter</p></li>
+<li><p><strong>asfile</strong> (<em>bool</em>) – whether to treat the value of the environment variable as a path to a file</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns an object obtained from an environment variable whose name is derived from <em>module</em> and <em>name</em>. For example, if <em>module</em> is <code class="docutils literal notranslate"><span class="pre">mypackage.mymodule</span></code> and <em>name</em> is <code class="docutils literal notranslate"><span class="pre">myparam</span></code> then the environment variable is <code class="docutils literal notranslate"><span class="pre">MYPACKAGE_MYMODULE_MYPARAM</span></code>. The value of that variable (or the content of the file pointed by it if <em>asfile</em> is set) is executed in an empty dictionary and the value attached to key <em>name</em> is returned. If the variable is not assigned, <em>dflt</em> is returned.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.HtmlPlugin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">HtmlPlugin</span></span><a class="reference internal" href="_modules/PYTOOLS.html#HtmlPlugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.HtmlPlugin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Instances of this class have an ipython HTML representation. The representation is by default simply the string representation of the instance (enclosed in a <code class="docutils literal notranslate"><span class="pre">span</span></code> element), but can be customised if it supports method <code class="xref py py-meth docutils literal notranslate"><span class="pre">as_html()</span></code>.</p>
+<p>Method <code class="xref py py-meth docutils literal notranslate"><span class="pre">as_html()</span></code> should only be defined for hashable objects. It takes as input a function <em>_</em> and returns the base HTML representation of the object (as understood by module <code class="xref py py-mod docutils literal notranslate"><span class="pre">lxml.html</span></code>). If invoked on a compound object, it should not recursively invoke method <code class="xref py py-meth docutils literal notranslate"><span class="pre">as_html()</span></code> on its components to obtain their HTML representations, because that would be liable to unmanageable repetitions (if two components share a common sub-component) or infinite recursions. Instead, the representation of a component object should be obtained by calling function <em>_</em> with that object as argument. It returns a “pointer” in the form of a string <code class="docutils literal notranslate"><span class="pre">?</span></code><em>n</em> (within a <code class="docutils literal notranslate"><span class="pre">span</span></code> element) where <em>n</em> is a unique reference number. The scope of such pointers is the toplevel call of method <code class="xref py py-meth docutils literal notranslate"><span class="pre">_repr_html_()</span></code>, which guarantees that two occurrences of equal objects will have the same pointer.</p>
+<p>The <a class="reference internal" href="#PYTOOLS.HtmlPlugin" title="PYTOOLS.HtmlPlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">HtmlPlugin</span></code></a> representation of an object is a <code class="docutils literal notranslate"><span class="pre">table</span></code> element whose head row is the base HTML representation of that object (including its pointers), and whose body rows align each pointer reference to the base HTML representation of its referenced object (possibly containing pointers itself, recursively). In the following example, the base HTML representation of a node in a graph is given by its label followed by the sequence of pointers to its successor nodes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">N</span> <span class="p">(</span><span class="n">HtmlPlugin</span><span class="p">):</span> <span class="c1"># class of nodes in a (possibly cyclic) directed graph</span>
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">tag</span><span class="p">,</span><span class="o">*</span><span class="n">succ</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">succ</span> <span class="o">=</span> <span class="n">tag</span><span class="p">,</span><span class="nb">list</span><span class="p">(</span><span class="n">succ</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">as_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">_</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">lxml.html.builder</span> <span class="kn">import</span> <span class="n">E</span>
+    <span class="k">return</span> <span class="n">E</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">E</span><span class="o">.</span><span class="n">b</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="p">),</span><span class="s1">&#39;[|&#39;</span><span class="p">,</span><span class="o">*</span><span class="p">(</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">succ</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="s1">&#39;|&#39;</span><span class="p">)),</span><span class="s1">&#39;]&#39;</span><span class="p">)</span>
+<span class="c1"># Let&#39;s build a trellis DAG</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">N</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">na</span><span class="p">,</span><span class="n">nb</span><span class="p">,</span><span class="n">nc</span> <span class="o">=</span> <span class="n">N</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="n">n</span><span class="p">),</span><span class="n">N</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="n">n</span><span class="p">),</span><span class="n">N</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+<span class="n">nab</span><span class="p">,</span><span class="n">nbc</span><span class="p">,</span><span class="n">nac</span> <span class="o">=</span> <span class="n">N</span><span class="p">(</span><span class="s1">&#39;ab&#39;</span><span class="p">,</span><span class="n">na</span><span class="p">,</span><span class="n">nb</span><span class="p">),</span><span class="n">N</span><span class="p">(</span><span class="s1">&#39;bc&#39;</span><span class="p">,</span><span class="n">nb</span><span class="p">,</span><span class="n">nc</span><span class="p">),</span><span class="n">N</span><span class="p">(</span><span class="s1">&#39;ac&#39;</span><span class="p">,</span><span class="n">na</span><span class="p">,</span><span class="n">nc</span><span class="p">)</span>
+<span class="n">nabc</span> <span class="o">=</span> <span class="n">N</span><span class="p">(</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span><span class="n">nab</span><span class="p">,</span><span class="n">nbc</span><span class="p">,</span><span class="n">nac</span><span class="p">)</span>
+<span class="c1"># n.succ.append(nabc) # makes the graph cyclic</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="n">display</span><span class="p">(</span><span class="n">nabc</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>produces (up to some attributes):</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">table</span><span class="p">&gt;</span>
+  <span class="cm">&lt;!-- thead: base HTML representation (with pointers) of the initial object --&gt;</span>
+  <span class="p">&lt;</span><span class="nt">thead</span><span class="p">&gt;&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span> <span class="na">colspan</span><span class="o">=</span><span class="s">&quot;2&quot;</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;&lt;</span><span class="nt">b</span><span class="p">&gt;</span>abc<span class="p">&lt;/</span><span class="nt">b</span><span class="p">&gt;</span>[|<span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>?1<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>|<span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>?5<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>|<span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>?7<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>|]<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span> <span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;/</span><span class="nt">tr</span><span class="p">&gt;&lt;/</span><span class="nt">thead</span><span class="p">&gt;</span>
+  <span class="cm">&lt;!-- tbody: mapping each pointer to the base HTML representation of its reference --&gt;</span>
+  <span class="p">&lt;</span><span class="nt">tbody</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">th</span><span class="p">&gt;</span>?1<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;&lt;</span><span class="nt">b</span><span class="p">&gt;</span>ab<span class="p">&lt;/</span><span class="nt">b</span><span class="p">&gt;</span>[|<span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>?2<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>|<span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>?4<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>|]<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span> <span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span> <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">th</span><span class="p">&gt;</span>?2<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;&lt;</span><span class="nt">b</span><span class="p">&gt;</span>a<span class="p">&lt;/</span><span class="nt">b</span><span class="p">&gt;</span>[|<span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>?3<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>|]<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span> <span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span> <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">th</span><span class="p">&gt;</span>?3<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;&lt;</span><span class="nt">b</span><span class="p">&gt;&lt;/</span><span class="nt">b</span><span class="p">&gt;</span>[|]<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span> <span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span> <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">th</span><span class="p">&gt;</span>?4<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;&lt;</span><span class="nt">b</span><span class="p">&gt;</span>b<span class="p">&lt;/</span><span class="nt">b</span><span class="p">&gt;</span>[|<span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>?3<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>|]<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span> <span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span> <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">th</span><span class="p">&gt;</span>?5<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;&lt;</span><span class="nt">b</span><span class="p">&gt;</span>bc<span class="p">&lt;/</span><span class="nt">b</span><span class="p">&gt;</span>[|<span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>?4<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>|<span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>?6<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>|]<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span> <span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span> <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">th</span><span class="p">&gt;</span>?6<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;&lt;</span><span class="nt">b</span><span class="p">&gt;</span>c<span class="p">&lt;/</span><span class="nt">b</span><span class="p">&gt;</span>[|<span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>?3<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>|]<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span> <span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span> <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">th</span><span class="p">&gt;</span>?7<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;&lt;</span><span class="nt">b</span><span class="p">&gt;</span>ac<span class="p">&lt;/</span><span class="nt">b</span><span class="p">&gt;</span>[|<span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>?2<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>|<span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>?6<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>|]<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span> <span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span> <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">tbody</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>which displays roughly as:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td colspan="2"><p><strong>abc</strong>[|?1|?5|?7|]</p></td>
+</tr>
+<tr class="row-even"><td><p>?1</p></td>
+<td><p><strong>ab</strong>[|?2|?4|]</p></td>
+</tr>
+<tr class="row-odd"><td><p>?2</p></td>
+<td><p><strong>a</strong>[|?3|]</p></td>
+</tr>
+<tr class="row-even"><td><p>?3</p></td>
+<td><p>[|]</p></td>
+</tr>
+<tr class="row-odd"><td><p>?4</p></td>
+<td><p><strong>b</strong>[|?3|]</p></td>
+</tr>
+<tr class="row-even"><td><p>?5</p></td>
+<td><p><strong>bc</strong>[|?4|?6|]</p></td>
+</tr>
+<tr class="row-odd"><td><p>?6</p></td>
+<td><p><strong>c</strong>[|?3|]</p></td>
+</tr>
+<tr class="row-even"><td><p>?7</p></td>
+<td><p><strong>ac</strong>[|?2|?6|]</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.Expr">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">Expr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#Expr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.Expr" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.HtmlPlugin" title="PYTOOLS.HtmlPlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">HtmlPlugin</span></code></a></p>
+<p>Instances of this class implement closed symbolic expressions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>Callable</em>) – the function of the symbolic expression</p></li>
+<li><p><strong>a</strong> – list of positional arguments of the symbolic expression</p></li>
+<li><p><strong>ka</strong> – dictionary of keyword arguments of the symbolic expression</p></li>
+</ul>
+</dd>
+</dl>
+<p>The triple <em>func</em>, <em>a</em>, <em>ka</em> forms the configuration of the <a class="reference internal" href="#PYTOOLS.Expr" title="PYTOOLS.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a> instance. Its value is defined as the result of calling function <em>func</em> with positional and keyword arguments <em>a</em> and <em>ka</em>. The value is actually computed only once (and cached), and only when method <code class="xref py py-meth docutils literal notranslate"><span class="pre">incarnate()</span></code> is invoked. Subclasses should define automatic triggers of incarnation (see e.g. classes <a class="reference internal" href="#PYTOOLS.MapExpr" title="PYTOOLS.MapExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">MapExpr</span></code></a> and <a class="reference internal" href="#PYTOOLS.CallExpr" title="PYTOOLS.CallExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">CallExpr</span></code></a>). The incarnation cache can be reset by invoking method <code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code>.</p>
+<p>Initially, a <a class="reference internal" href="#PYTOOLS.Expr" title="PYTOOLS.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a> instance is mutable, and its configuration can be changed. It becomes immutable (frozen) after any of the following operations: incarnation (even after it is reset), hashing, and pickling. Incarnation is not saved on pickling, hence lost on unpickling, but can of course be restored using method <code class="xref py py-meth docutils literal notranslate"><span class="pre">incarnate()</span></code>. Thus, when receiving a foreign <a class="reference internal" href="#PYTOOLS.Expr" title="PYTOOLS.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a> instance, a process can decide whether it wants to access its value or only inspect its configuration. If recomputing the value is costly, use a persistent cache for <em>func</em>.</p>
+<p>Caveat: function <em>func</em> should be defined at the top-level of its module, and the values in <em>a</em> and <em>ka</em> should be deterministically picklable and hashable (in particular: no dicts nor lists). Hence, any <a class="reference internal" href="#PYTOOLS.Expr" title="PYTOOLS.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a> instance is itself deterministically picklable and hashable, and can thus be used as argument in the configuration of another <a class="reference internal" href="#PYTOOLS.Expr" title="PYTOOLS.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a> instance.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.Expr.rearg">
+<span class="sig-name descname"><span class="pre">rearg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#Expr.rearg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.Expr.rearg" title="Link to this definition"></a></dt>
+<dd><p>Updates the config arguments of this instance: <em>a</em> is appended to the list of positional arguments and <em>ka</em> is updated into the dictionary of keyword arguments. Raises an error if the instance is frozen.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.Expr.refunc">
+<span class="sig-name descname"><span class="pre">refunc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#Expr.refunc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.Expr.refunc" title="Link to this definition"></a></dt>
+<dd><p>Set <em>f</em> as the config function of this instance. Raises an error if the instance is frozen.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.MapExpr">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">MapExpr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#MapExpr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.MapExpr" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.Expr" title="PYTOOLS.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></p>
+<p>Symbolic expressions of this class are also (read-only) mappings and trigger incarnation on all the mapping operations, then delegate such operations to their value (expected to be a mapping).</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.CallExpr">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">CallExpr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#CallExpr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.CallExpr" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.Expr" title="PYTOOLS.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<p>Symbolic expressions of this class are also callables, and trigger incarnation on invocation, then delegate the invocation to their value (expected to be a callable).</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.html_parlist">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">html_parlist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">html</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">La</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Lka</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opening</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">closing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'padding:</span> <span class="pre">5px'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#html_parlist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.html_parlist" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>html</strong> (<em>Callable</em><em>[</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>lxml.html.Element</em><em>]</em>) – callable to use on components to get their HTML representation</p></li>
+<li><p><strong>La</strong> (<em>Iterable</em><em>[</em><em>Any</em><em>]</em>) – anonymous components</p></li>
+<li><p><strong>Lka</strong> (<em>Iterable</em><em>[</em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – named components</p></li>
+<li><p><strong>opening</strong> (<em>Iterable</em><em>[</em><em>lxml.html.Element</em><em>]</em>) – lists of HTML elements used as prolog</p></li>
+<li><p><strong>closing</strong> (<em>Iterable</em><em>[</em><em>lxml.html.Element</em><em>]</em>) – lists of HTML elements used as epilog</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns a default HTML representation of a compound object, where <em>La,Lka</em> are the lists of unnamed and named components.The representation consists of the HTML elements in <em>opening</em> followed by the representation of the components in <em>La</em> and <em>Lka</em> (the latter are prefixed with their names in bold), followed by the HTML elements in <em>closing</em>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.html_table">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">html_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hdrs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opening</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">closing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#html_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.html_table" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>irows</strong> (<em>Iterable</em><em>[</em><em>Tuple</em><em>[</em><em>Any</em><em>, </em><em>Tuple</em><em>[</em><em>Any</em><em>, </em><em>...</em><em>]</em><em>]</em><em>]</em>) – a generator of pairs of an object (key) and a tuple of objects (value)</p></li>
+<li><p><strong>fmts</strong> (<em>Tuple</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>str</em><em>]</em><em>, </em><em>...</em><em>]</em>) – a tuple of format functions matching the length of the value tuples</p></li>
+<li><p><strong>hdrs</strong> (<em>Tuple</em><em>[</em><em>str</em><em>, </em><em>...</em><em>]</em>) – a tuple of strings matching the length of the value tuples</p></li>
+<li><p><strong>opening</strong> (<em>str</em>) – lists of HTML elements used as head of table</p></li>
+<li><p><strong>closing</strong> (<em>str</em>) – lists of HTML elements used as foot of table</p></li>
+<li><p><strong>encoding</strong> (<em>type</em><em> | </em><em>str</em>) – encoding of the result</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns an HTML table object (as understood by <code class="xref py py-mod docutils literal notranslate"><span class="pre">lxml</span></code>) with one row for each pair generated from <em>irow</em>. The key of each pair is in a column of its own with no header, and the value must be a tuple whose length matches the number of columns. The format functions in <em>fmts</em>, one for each column, are expected to return HTML objects. <em>hdrs</em> may specify headers as a tuple of strings, one for each column. If <em>encoding</em> is <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>, the result is returned as an <code class="xref py py-mod docutils literal notranslate"><span class="pre">lxml.html</span></code> object, otherwise it is returned as a string with the specified encoding.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.html_stack">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">html_stack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#html_stack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.html_stack" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – a list of (lists of) HTML objects (as understood by <code class="xref py py-mod docutils literal notranslate"><span class="pre">lxml.html</span></code>)</p></li>
+<li><p><strong>ka</strong> – a dictionary of HTML attributes for the DIV encapsulating each object</p></li>
+</ul>
+</dd>
+</dl>
+<p>Merges the list of HTML objects into a single HTML object, which is returned.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.SQliteStack">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">SQliteStack</span></span><a class="reference internal" href="_modules/PYTOOLS.html#SQliteStack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.SQliteStack" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Objects of this class are aggregation functions which simply collect results in a list, for use with a SQlite database. Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;/path/to/db&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+  <span class="n">rstack</span> <span class="o">=</span> <span class="n">SQliteStack</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span><span class="s1">&#39;stack&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">school</span><span class="p">,</span><span class="n">x</span> <span class="ow">in</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT school,stack(age,height) FROM PupilsTable GROUP BY school&#39;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">school</span><span class="p">,</span><span class="n">rstack</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>prints pairs <em>school</em>, <em>L</em> where <em>L</em> is a list of pairs <em>age</em>, <em>height</em>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.SQliteNew">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">SQliteNew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#SQliteNew"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.SQliteNew" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – a path to an sqlite database</p></li>
+<li><p><strong>schema</strong> (<em>str</em>) – the schema specification</p></li>
+</ul>
+</dd>
+</dl>
+<p>Makes sure the file at <em>path</em> is a SQlite3 database with schema exactly equal to <em>schema</em>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.gitcheck">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">gitcheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#gitcheck"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.gitcheck" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – a path to a git repository</p></li>
+<li><p><strong>update</strong> (<em>bool</em>) – whether to update if stale</p></li>
+</ul>
+</dd>
+</dl>
+<p>Checks directory at <em>path</em>, assumed to be a git repository. If <em>update</em> is true, attempts to synch with its origin. Returns a tuple of the status  (a string) followed by a list of details. The details are fields <code class="docutils literal notranslate"><span class="pre">ref</span></code>, <code class="docutils literal notranslate"><span class="pre">flags</span></code> and <code class="docutils literal notranslate"><span class="pre">note</span></code> from the <code class="xref py py-class docutils literal notranslate"><span class="pre">git.remote.FetchInfo</span></code> object returned by the pull operation. Status is</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dirty</span></code>: repository is dirty (no details)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uptodate</span></code>: repository is up to date (details only if remote exists)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uptodate-now</span></code>: repository was stale but has been successfully updated (when <em>update</em> is <code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stale</span></code>: repository is stale but has not been touched (when <em>update</em> is <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code>)</p></li>
+</ul>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">GIT_PYTHON_GIT_EXECUTABLE</span></code> environment variable to set the Git executable if it is not the default <code class="docutils literal notranslate"><span class="pre">/usr/bin/git</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.gitcheck_package">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">gitcheck_package</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkgname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#gitcheck_package"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.gitcheck_package" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pkgname</strong> (<em>str</em>) – full name of a package</p></li>
+<li><p><strong>update</strong> – whether to update (git pull) if stale</p></li>
+</ul>
+</dd>
+</dl>
+<p>Assumes that <em>pkgname</em> is the name of a python regular (non namespace) package and invokes <a class="reference internal" href="#PYTOOLS.gitcheck" title="PYTOOLS.gitcheck"><code class="xref py py-meth docutils literal notranslate"><span class="pre">gitcheck()</span></code></a> on its path. Reloads the package if <code class="docutils literal notranslate"><span class="pre">uptodate-now</span></code> is returned.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="PYTOOLS.SQLinitMetainfoException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">SQLinitMetainfoException</span></span><a class="reference internal" href="_modules/PYTOOLS.html#SQLinitMetainfoException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.SQLinitMetainfoException" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.SQLinit">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">SQLinit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#SQLinit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.SQLinit" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine</strong> (<em>str</em><em> | </em><em>sqlalchemy.engine.Engine</em>) – a sqlalchemy engine (or its url)</p></li>
+<li><p><strong>meta</strong> (<em>sqlalchemy.MetaData</em>) – a sqlalchemy metadata structure</p></li>
+</ul>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>When the database is empty, a <code class="docutils literal notranslate"><span class="pre">Metainfo</span></code> table with a single row matching exactly the <code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> attribute of <em>meta</em> is created, then the database is populated using <em>meta</em>.</p></li>
+<li><p>When the database is not empty, it must contain a <code class="docutils literal notranslate"><span class="pre">Metainfo</span></code> table with a single row matching exactly the <code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> attribute of <em>meta</em>, otherwise an exception is raised.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.SQLHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">SQLHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#SQLHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.SQLHandler" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Handler</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine</strong> (<em>str</em><em> | </em><em>sqlalchemy.Engine</em>) – a sqlalchemy engine (or its url)</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – a text label</p></li>
+</ul>
+</dd>
+</dl>
+<p>A logging handler class which writes the log messages into a database.</p>
+<p>Initializes the instance - basically setting the formatter to None
+and the filter list to empty.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.SQLHandler.emit">
+<span class="sig-name descname"><span class="pre">emit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#SQLHandler.emit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.SQLHandler.emit" title="Link to this definition"></a></dt>
+<dd><p>Do whatever it takes to actually log the specified logging record.</p>
+<p>This version is intended to be implemented by subclasses and so
+raises a NotImplementedError.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.ormsroot">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">ormsroot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#ormsroot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.ormsroot" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MutableMapping</span></code>, <a class="reference internal" href="#PYTOOLS.HtmlPlugin" title="PYTOOLS.HtmlPlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">HtmlPlugin</span></code></a></p>
+<p>Instances of this class implement very simple persistent object managers based on the sqlalchemy ORM. This class should not be instantiated directly.</p>
+<p>Each subclass <em>C</em> of this class should define a class attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">base</span></code> assigned an sqlalchemy declarative persistent class <em>B</em>. Once this is done, a specialised session maker can be obtained by invoking class method <code class="xref py py-meth docutils literal notranslate"><span class="pre">sessionmaker()</span></code> of class <em>C</em>, with the url of an sqlalchemy supported database as first argument, the other arguments being the same as those for <code class="xref py py-meth docutils literal notranslate"><span class="pre">sqlalchemy.orm.sessionmaker()</span></code>. This sessionmaker will produce sessions with the following characteristics:</p>
+<ul class="simple">
+<li><p>they are attached to an sqlalchemy engine at this url (note that engines are reused across multiple sessionmakers with the same url)</p></li>
+<li><p>they have a <code class="xref py py-attr docutils literal notranslate"><span class="pre">root</span></code> attribute, pointing to an instance of <em>C</em>, which acts as a mapping where the keys are the primary keys of <em>B</em> and the values the corresponding ORM entries. The root object has a convenient ipython HTML representation.</p></li>
+</ul>
+<p>Class <em>C</em> should provide a method to insert new objects in the persistent class <em>B</em>, and they will then be reflected in the session root (and made persitent on session commit). Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span><span class="p">;</span> <span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Text</span><span class="p">,</span> <span class="n">Integer</span>
+
+<span class="k">class</span> <span class="nc">Entry</span> <span class="p">(</span><span class="n">Base</span><span class="p">):</span> <span class="c1"># example of sqlalchemy declarative persistent class definition</span>
+  <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;Entry&#39;</span>
+  <span class="n">oid</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">(),</span><span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Text</span><span class="p">())</span>
+  <span class="n">age</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">())</span>
+  <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="s1">&#39;Entry&lt;</span><span class="si">{0.oid}</span><span class="s1">,</span><span class="si">{0.name}</span><span class="s1">,</span><span class="si">{0.age}</span><span class="s1">&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">ormsroot</span><span class="p">):</span> <span class="c1"># manager for class Entry</span>
+  <span class="n">base</span> <span class="o">=</span> <span class="n">Entry</span>
+
+<span class="n">sessionmaker</span> <span class="o">=</span> <span class="n">Root</span><span class="o">.</span><span class="n">sessionmaker</span>
+</pre></div>
+</div>
+<p>Example of use (assuming <code class="xref py py-func docutils literal notranslate"><span class="pre">sessionmaker()</span></code> as above has been imported):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">(</span><span class="s1">&#39;sqlite://&#39;</span><span class="p">)</span> <span class="c1"># memory db for the example</span>
+
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">mysession</span><span class="p">():</span> <span class="c1"># basic sessions as simple block of instructions</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="n">Session</span><span class="p">(</span><span class="n">autocommit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+  <span class="k">try</span><span class="p">:</span> <span class="k">yield</span> <span class="n">s</span>
+  <span class="k">finally</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="n">mysession</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span> <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">root</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span>
+
+<span class="k">with</span> <span class="n">mysession</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+  <span class="c1"># first session, define two entries. Use key None in assignment because Entry is autokey</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Entry</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;jack&#39;</span><span class="p">,</span><span class="n">age</span><span class="o">=</span><span class="mi">42</span><span class="p">);</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Entry</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;jill&#39;</span><span class="p">,</span><span class="n">age</span><span class="o">=</span><span class="mi">29</span><span class="p">)</span>
+  <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">root</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">s</span><span class="o">.</span><span class="n">root</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="o">==</span><span class="s1">&#39;jack&#39;</span> <span class="ow">and</span> <span class="n">s</span><span class="o">.</span><span class="n">root</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="o">==</span><span class="s1">&#39;jill&#39;</span>
+
+<span class="k">with</span> <span class="n">mysession</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span> <span class="c1"># second session, possibly on another process (if not memory db)</span>
+  <span class="n">jack</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># also removes from db</span>
+  <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">root</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">jack</span><span class="o">.</span><span class="n">name</span><span class="o">==</span><span class="s1">&#39;jack&#39;</span>
+
+<span class="k">with</span> <span class="n">mysession</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span> <span class="c1"># But of course direct sqlalchemy operations are available</span>
+  <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">root</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+  <span class="n">x</span><span class="p">,</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Entry</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Entry</span><span class="o">.</span><span class="n">age</span><span class="o">&gt;</span><span class="mi">25</span><span class="p">))</span>
+<span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;jill&#39;</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.ormsroot.items">
+<span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">set-like</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">items</span></span></span><a class="reference internal" href="_modules/PYTOOLS.html#ormsroot.items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.ormsroot.items" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.spark">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">spark</span></span><a class="reference internal" href="_modules/PYTOOLS.html#spark"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.spark" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>If a resource <code class="docutils literal notranslate"><span class="pre">spark/pyspark.py</span></code> exists in an XDG configuration file, that resource is executed (locally) and should define a function <code class="xref py py-func docutils literal notranslate"><span class="pre">init()</span></code> used as class method <code class="xref py py-meth docutils literal notranslate"><span class="pre">init()</span></code> and meant to initialise Spark. The initialisation must assign a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> (even an empty one) to attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">conf</span></code>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.spark.display_monitor_link">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">display_monitor_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#spark.display_monitor_link"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.spark.display_monitor_link" title="Link to this definition"></a></dt>
+<dd><p>Displays a link to the monitor of <code class="xref py py-class docutils literal notranslate"><span class="pre">pyspark.SparkContext</span></code> <em>sc</em>. Recall that the monitor is active only between the creation of <em>sc</em> and its termination (when method <code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code> is invoked).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.spark.SparkContext">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SparkContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">display</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#spark.SparkContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.spark.SparkContext" title="Link to this definition"></a></dt>
+<dd><p>Returns an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">pyspark.SparkContext</span></code> created with the predefined configuration held in attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">conf</span></code> of this class, updated by <em>conf</em> (its value must then be a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>). If <em>debug</em> is <code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code>, prints the exact configuration used. If <em>display</em> is <code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code>, displays a link to the monitor of the created context.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.ImapFolder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">ImapFolder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#ImapFolder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.ImapFolder" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An instance of this class is an iterable enumerating the unread messages in a folder of an IMAP server. On calling method <code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code>, the messages which have been enumerated since the last commit or rollback (triggered by method <code class="xref py py-meth docutils literal notranslate"><span class="pre">rollback()</span></code>) are marked as read. The total number of messages in the folder is held in attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">total</span></code>, and the number of unread message is given by function <code class="xref py py-func docutils literal notranslate"><span class="pre">len()</span></code>.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.basic_stats">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">basic_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#basic_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.basic_stats" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Instances of this class maintain basic statistics about a group of values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weight</strong> (<em>int</em><em> | </em><em>float</em><em> | </em><em>complex</em>) – total weight of the group</p></li>
+<li><p><strong>avg</strong> (<em>int</em><em> | </em><em>float</em><em> | </em><em>complex</em>) – weighted average of the group</p></li>
+<li><p><strong>var</strong> (<em>int</em><em> | </em><em>float</em><em> | </em><em>complex</em>) – weighted variance of the group</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.iso2date">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">iso2date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iso</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#iso2date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.iso2date" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>iso</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em>) – triple as returned by <code class="xref py py-meth docutils literal notranslate"><span class="pre">datetime.date.isocalendar()</span></code></p>
+</dd>
+</dl>
+<p>Returns the <code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.date</span></code> instance for which the <code class="xref py py-meth docutils literal notranslate"><span class="pre">datetime.date.isocalendar()</span></code> method returns <em>iso</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">();</span> <span class="k">assert</span> <span class="n">iso2date</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">isocalendar</span><span class="p">())</span> <span class="o">==</span> <span class="n">d</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.size_fmt">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">size_fmt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'B'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#size_fmt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.size_fmt" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size</strong> (<em>int</em><em> | </em><em>float</em>) – a positive number representing a size</p></li>
+<li><p><strong>binary</strong> (<em>bool</em>) – whether to use IEC binary or decimal convention</p></li>
+<li><p><strong>precision</strong> (<em>int</em>) – number of digits displayed (at least 4)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns the representation of <em>size</em> with IEC prefix. Each prefix is <em>K</em> times the previous one for some constant <em>K</em> which depends on the convention: <em>K</em> =1024 with the binary convention (marked with an <code class="docutils literal notranslate"><span class="pre">i</span></code> after the prefix); <em>K</em> =1000 with the decimal convention. Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">size_fmt</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">30</span><span class="p">),</span> <span class="n">size_fmt</span><span class="p">(</span><span class="mi">5300</span><span class="p">),</span> <span class="n">size_fmt</span><span class="p">(</span><span class="mi">5300</span><span class="p">,</span><span class="n">binary</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">size_fmt</span><span class="p">(</span><span class="mf">42897.3</span><span class="p">,</span><span class="n">binary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">))</span>
+<span class="c1">#&gt; 1GiB 5.176KiB 5.3KB 42.9Km</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.time_fmt">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">time_fmt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#time_fmt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.time_fmt" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time</strong> (<em>int</em><em> | </em><em>float</em>) – a number representing a time in seconds</p></li>
+<li><p><strong>precision</strong> (<em>int</em>) – number of digits displayed</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns the representation of <em>time</em> in one of days,hours,minutes,seconds,milli-seconds (depending on magnitude). Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">time_fmt</span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="n">time_fmt</span><span class="p">(</span><span class="mf">4238.45</span><span class="p">),</span><span class="n">time_fmt</span><span class="p">(</span><span class="mf">5.35</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">time_fmt</span><span class="p">(</span><span class="mf">.932476</span><span class="p">))</span>
+<span class="c1">#&gt; 1.1574day 1.18hr 5sec 932msec</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.versioned">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">versioned</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#versioned"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.versioned" title="Link to this definition"></a></dt>
+<dd><p>A decorator which assigns attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">version</span></code> of the target function to <em>v</em>. The function must be defined at the toplevel of its module. The version must be a simple value.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.unid">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">unid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">post</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PYTOOLS'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#unid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.unid" title="Link to this definition"></a></dt>
+<dd><p>Returns a “unique” id for miscellanous uses.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.printast">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">printast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#printast"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.printast" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>str</em><em> | </em><em>ast.AST</em>) – an AST or string (parsed into an AST)</p>
+</dd>
+</dl>
+<p>Pretty-prints the AST object (python abstract syntax tree).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.pickleclass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">pickleclass</span></span><a class="reference internal" href="_modules/PYTOOLS.html#pickleclass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.pickleclass" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This namespace class defines class methods <code class="xref py py-meth docutils literal notranslate"><span class="pre">load()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">loads()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">dump()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">dumps()</span></code>, similar to those of the standard <code class="xref py py-mod docutils literal notranslate"><span class="pre">pickle</span></code> module, but with class specific Pickler/Unpickler which must be defined in subclasses.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PYTOOLS.einsum_nd">
+<span class="sig-prename descclassname"><span class="pre">PYTOOLS.</span></span><span class="sig-name descname"><span class="pre">einsum_nd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sgn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">re.compile('(\\w+)\\.?')</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS.html#einsum_nd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.einsum_nd" title="Link to this definition"></a></dt>
+<dd><p>Equivalent of numpy.einsum with named dimensions (limited to 26 like the original!). Dimension names must be words in the sense of the <code class="xref py py-mod docutils literal notranslate"><span class="pre">re</span></code> module (unicode allowed) and must be separated by ‘.’ in operand shapes.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="PYTOOLS package documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mod_torch.html" class="btn btn-neutral float-right" title="PYTOOLS.torch — Utilities for pytorch" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

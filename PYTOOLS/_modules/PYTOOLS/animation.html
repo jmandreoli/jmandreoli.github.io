@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PYTOOLS.animation &mdash; PYTOOLS  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PYTOOLS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_init.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS</span></code> (top level) — Generic utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_torch.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.torch</span></code> — Utilities for pytorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_animation.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.animation</span></code> — Animation utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_cache.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.cache</span></code> — A persistent cache mechanism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_ipywidgets.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.ipywidgets</span></code> — Widget utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_polling.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.polling</span></code> — Generic polling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_simpy.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.simpy</span></code> — Utilities for simpy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_experiment.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.experiment</span></code> — Utilities for pytorch experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_tensorboard_manager.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PYTOOLS.tensorboard_manager</span></code> — A server of tensorboard servers</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PYTOOLS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../PYTOOLS.html">PYTOOLS</a></li>
+      <li class="breadcrumb-item active">PYTOOLS.animation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for PYTOOLS.animation</h1><div class="highlight"><pre>
+<span></span><span class="c1"># File:                 animation.py</span>
+<span class="c1"># Creation date:        2021-06-01</span>
+<span class="c1"># Contributors:         Jean-Marc Andreoli</span>
+<span class="c1"># Language:             python</span>
+<span class="c1"># Purpose:              Utilities for animations</span>
+<span class="c1">#</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
+<span class="kn">from</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">figure</span>
+<span class="kn">from</span> <span class="nn">matplotlib.figure</span> <span class="kn">import</span> <span class="n">Figure</span>
+<span class="kn">from</span> <span class="nn">matplotlib.animation</span> <span class="kn">import</span> <span class="n">FuncAnimation</span>
+<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Rectangle</span>
+<span class="kn">from</span> <span class="nn">matplotlib.backend_bases</span> <span class="kn">import</span> <span class="n">MouseButton</span>
+<span class="k">try</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.ipywidgets</span> <span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">SimpleButton</span> <span class="c1"># so this works even if ipywidgets is not available</span>
+<span class="k">except</span><span class="p">:</span> <span class="n">app</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="s1">&#39;app&#39;</span><span class="p">,(),{})</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Literal</span>
+<span class="kn">import</span> <span class="nn">logging</span><span class="p">;</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1">#==================================================================================================</span>
+<div class="viewcode-block" id="track_function">
+<a class="viewcode-back" href="../../mod_animation.html#PYTOOLS.animation.track_function">[docs]</a>
+<span class="k">def</span> <span class="nf">track_function</span><span class="p">(</span><span class="n">track</span><span class="p">:</span><span class="nb">float</span><span class="o">|</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">|</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span><span class="nb">float</span><span class="p">]],</span><span class="n">stype</span><span class="p">:</span><span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Builds a track map from a specification *track*. A track map is a callable of one scalar input returning two scalar outputs (bounds of its track interval), or :const:`None` (when input is out of domain).</span>
+
+<span class="sd">* Its domain must be an interval (not necessarily bounded) containing 0</span>
+<span class="sd">* The mapping of a scalar to the lower bound of its track interval should be non decreasing and right-continuous.</span>
+
+<span class="sd">The specification *track* can be the track map itself, returned as such after minimal checks. As a helper, *track* can also be</span>
+
+<span class="sd">* a positive scalar, in which case the track map is based on intervals of constant length equal to that scalar, starting at 0 and never ending</span>
+<span class="sd">* an increasing sequence of positive scalars, in which case the track map is based on intervals which are the consecutive pairs in that sequence (prefixed with 0)</span>
+
+<span class="sd">:param track: the track map specification</span>
+<span class="sd">:param stype: the type of scalars passed to the track map</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1"># ==================================================================================================</span>
+  <span class="k">assert</span> <span class="n">stype</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span><span class="nb">float</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">track</span><span class="p">):</span>
+    <span class="n">track_func</span> <span class="o">=</span> <span class="n">track</span>
+    <span class="n">track_</span> <span class="o">=</span> <span class="n">track</span><span class="p">(</span><span class="n">stype</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="n">track_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">track_</span><span class="p">)</span><span class="o">==</span><span class="mi">2</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">((</span><span class="n">t0</span><span class="o">:=</span><span class="n">track_</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">stype</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">((</span><span class="n">t1</span><span class="o">:=</span><span class="n">track_</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="n">stype</span><span class="p">)</span> <span class="ow">and</span> <span class="n">t0</span><span class="o">&lt;=</span><span class="mi">0</span><span class="o">&lt;</span><span class="n">t1</span> <span class="ow">and</span> <span class="n">track</span><span class="p">(</span><span class="n">t0</span><span class="p">)</span> <span class="o">==</span> <span class="n">track_</span> <span class="ow">and</span> <span class="p">((</span><span class="n">t</span><span class="o">:=</span><span class="n">track</span><span class="p">(</span><span class="n">t1</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">t</span> <span class="o">==</span> <span class="n">t1</span><span class="p">)</span>
+  <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">track</span><span class="p">,(</span><span class="nb">int</span><span class="p">,</span><span class="nb">float</span><span class="p">)):</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">stype</span><span class="p">(</span><span class="n">track</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">T</span><span class="o">&gt;</span><span class="mi">0</span>
+    <span class="k">def</span> <span class="nf">track_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="p">):</span> <span class="n">x</span> <span class="o">-=</span> <span class="n">x</span><span class="o">%</span><span class="n">T</span><span class="p">;</span> <span class="k">return</span> <span class="n">x</span><span class="p">,</span><span class="n">x</span><span class="o">+</span><span class="n">T</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">stype</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="o">*</span><span class="n">track</span><span class="p">]))</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span><span class="o">&lt;</span><span class="n">x_</span> <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">x_</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">L</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">L</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+    <span class="kn">from</span> <span class="nn">bisect</span> <span class="kn">import</span> <span class="n">bisect</span>
+    <span class="k">def</span> <span class="nf">track_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">L</span><span class="o">=</span><span class="n">L</span><span class="p">,</span><span class="n">imax</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)):</span> <span class="n">i</span> <span class="o">=</span> <span class="n">bisect</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="n">x</span><span class="p">);</span> <span class="k">return</span> <span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">if</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">imax</span> <span class="k">else</span> <span class="kc">None</span>
+  <span class="k">return</span> <span class="n">track_func</span></div>
+
+
+<span class="c1">#==================================================================================================</span>
+<div class="viewcode-block" id="animation_player_base">
+<a class="viewcode-back" href="../../mod_animation.html#PYTOOLS.animation.animation_player_base">[docs]</a>
+<span class="k">class</span> <span class="nc">animation_player_base</span><span class="p">:</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">An instance of this class is a controllable :mod:`matplotlib` animation, created by this constructor and attached to a :class:`Figure` instance stored as attribute :attr:`board`. The board creation is not performed in this class, so it must be performed in the constructor of a subclass, prior to invoking this constructor.</span>
+
+<span class="sd">The speed of the animation is controlled by two parameters whose product determines the number of real milli-seconds per simulation time unit (stu):</span>
+
+<span class="sd">* parameter *frame_per_stu*: the number of frames per stu</span>
+<span class="sd">* parameter *interval*: the number of real milli-seconds per frame</span>
+
+<span class="sd">Note that the *interval* is bounded below by the real time needed to construct and display the frames. Furthermore, below 40ms per frame, the human eye tends to loose vision persistency.</span>
+
+<span class="sd">:param display: the function which takes a simulation time and displays the corresponding (closest) frame</span>
+<span class="sd">:param track: track map decomposing the simulation domain into tracks (typically obtained by :func:`track_function`)</span>
+<span class="sd">:param frame_per_stu: frame rate, in frames per simulation time (if :const:`None` use animation real time rate)</span>
+<span class="sd">:param ka: passed to the :class:`FuncAnimation` constructor</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1">#==================================================================================================</span>
+  <span class="n">board</span><span class="p">:</span> <span class="n">Figure</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The figure on which to start the animation&quot;&quot;&quot;</span>
+  <span class="n">running</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The running state of the animation&quot;&quot;&quot;</span>
+  <span class="n">frame</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The current frame displayed by the animation&quot;&quot;&quot;</span>
+  <span class="n">anim</span><span class="p">:</span> <span class="n">FuncAnimation</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The animation&quot;&quot;&quot;</span>
+  <span class="n">frame_per_stu</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The frame rate, in frames per simulation time units&quot;&quot;&quot;</span>
+  <span class="n">track</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span><span class="nb">float</span><span class="p">]]</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The track map&quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">display</span><span class="p">:</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span><span class="kc">None</span><span class="p">],</span><span class="n">frame_per_stu</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">track</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">frames</span><span class="p">():</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">setval</span><span class="p">(</span><span class="mf">0.</span><span class="p">)</span>
+      <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setrunning</span><span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">setval</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">track</span> <span class="o">=</span> <span class="n">track_function</span><span class="p">(</span><span class="n">track</span><span class="p">,</span><span class="nb">float</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">anim</span> <span class="o">=</span> <span class="n">anim</span> <span class="o">=</span> <span class="n">FuncAnimation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="p">,(</span><span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">display</span><span class="p">(</span><span class="n">n</span><span class="o">/</span><span class="n">frame_per_stu</span><span class="p">)),</span><span class="n">frames</span><span class="p">,</span><span class="n">init_func</span><span class="o">=</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span><span class="kc">None</span><span class="p">),</span><span class="n">repeat</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">cache_frame_data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">frame_per_stu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">frame_per_stu</span> <span class="o">=</span> <span class="mf">1000.</span><span class="o">/</span><span class="n">anim</span><span class="o">.</span><span class="n">_interval</span>
+    <span class="k">else</span><span class="p">:</span> <span class="n">frame_per_stu</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">frame_per_stu</span><span class="p">);</span> <span class="k">assert</span> <span class="n">frame_per_stu</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">frame_per_stu</span> <span class="o">=</span> <span class="n">frame_per_stu</span>
+
+<div class="viewcode-block" id="animation_player_base.setrunning">
+<a class="viewcode-back" href="../../mod_animation.html#PYTOOLS.animation.animation_player_base.setrunning">[docs]</a>
+  <span class="k">def</span> <span class="nf">setrunning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">b</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Sets the running state of the animation to *b* (if :const:`None`, the inverse of current running state).&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">b</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">b</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">running</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="n">b</span>
+    <span class="k">if</span> <span class="n">b</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">anim</span><span class="o">.</span><span class="n">resume</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">anim</span><span class="o">.</span><span class="n">pause</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">show_running</span><span class="p">(</span><span class="n">b</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="animation_player_base.show_running">
+<a class="viewcode-back" href="../../mod_animation.html#PYTOOLS.animation.animation_player_base.show_running">[docs]</a>
+  <span class="k">def</span> <span class="nf">show_running</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">b</span><span class="p">:</span><span class="nb">bool</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shows the current running state as *b*. This implementation raises an error.&quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="animation_player_base.setval">
+<a class="viewcode-back" href="../../mod_animation.html#PYTOOLS.animation.animation_player_base.setval">[docs]</a>
+  <span class="k">def</span> <span class="nf">setval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">v</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Sets the current frame to be displayed by the animation so that it represents simulation time *v*. Return a non :const:`None` value if *v* is out of the frame range. This implementation raises an error.&quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+</div>
+
+
+<span class="c1">#==================================================================================================</span>
+<div class="viewcode-block" id="widget_animation_player">
+<a class="viewcode-back" href="../../mod_animation.html#PYTOOLS.animation.widget_animation_player">[docs]</a>
+<span class="k">class</span> <span class="nc">widget_animation_player</span> <span class="p">(</span><span class="n">app</span><span class="p">,</span><span class="n">animation_player_base</span><span class="p">):</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">A instance of this class is a player for :mod:`matplotlib` animations controlled from `mod:ipywidgets` widgets. The animation board is created by invoking :func:`figure` with arguments *fig_kw*. The frame display function is obtained by calling function *displayer* on the board.</span>
+
+<span class="sd">:param displayer: the frame display factory</span>
+<span class="sd">:param fig_kw: configuration of the animation figure</span>
+<span class="sd">:param ka: passed to the superclass accepting the corresponding keys</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1">#==================================================================================================</span>
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">displayer</span><span class="p">:</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Figure</span><span class="p">],</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span><span class="kc">None</span><span class="p">]],</span><span class="n">fig_kw</span><span class="o">=</span><span class="p">{},</span><span class="o">**</span><span class="n">ka</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">Text</span><span class="p">,</span> <span class="n">FloatText</span><span class="p">,</span> <span class="n">IntSlider</span>
+    <span class="n">ctrack</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span>
+    <span class="k">def</span> <span class="nf">setval</span><span class="p">(</span><span class="n">v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">submit</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+      <span class="k">nonlocal</span> <span class="n">ctrack</span>
+      <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">n</span><span class="o">-</span><span class="n">ctrack</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">n</span> <span class="o">=</span> <span class="n">ctrack</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">d</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">n</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_per_stu</span>
+      <span class="k">else</span><span class="p">:</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_per_stu</span><span class="p">);</span> <span class="n">d</span> <span class="o">=</span> <span class="n">n</span><span class="o">-</span><span class="n">ctrack</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+      <span class="n">w_clock</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s1">.02f</span><span class="si">}</span><span class="s1">&#39;</span>
+      <span class="n">w_track_manager</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="kc">False</span>
+      <span class="k">if</span> <span class="n">d</span><span class="o">&lt;</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">d</span><span class="o">&gt;=</span><span class="n">ctrack</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+        <span class="n">track_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">track</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">track_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">w_track_manager</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="kc">True</span><span class="p">;</span> <span class="k">return</span> <span class="kc">True</span>
+        <span class="n">ctrack</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v_</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_per_stu</span><span class="p">)</span> <span class="k">for</span> <span class="n">v_</span> <span class="ow">in</span> <span class="n">track_</span><span class="p">)</span>
+        <span class="n">w_track_manager</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="n">span</span> <span class="o">=</span> <span class="n">ctrack</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">ctrack</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ctrack</span> <span class="o">+=</span> <span class="p">(</span><span class="n">span</span><span class="p">,)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">n</span><span class="o">-</span><span class="n">ctrack</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+      <span class="n">w_track_manager</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">d</span>
+      <span class="n">w_track_manager</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="kc">True</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">n</span>
+      <span class="k">if</span> <span class="n">submit</span><span class="p">:</span> <span class="n">display</span><span class="p">(</span><span class="n">v</span><span class="p">);</span> <span class="n">board</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw_idle</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">show_running</span><span class="p">(</span><span class="n">b</span><span class="p">):</span> <span class="n">w_play_toggler</span><span class="o">.</span><span class="n">icon</span> <span class="o">=</span> <span class="s1">&#39;pause&#39;</span> <span class="k">if</span> <span class="n">b</span> <span class="k">else</span> <span class="s1">&#39;play&#39;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">show_running</span> <span class="o">=</span> <span class="n">show_running</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">setval</span> <span class="o">=</span> <span class="n">setval</span>
+    <span class="c1"># global design and widget definitions</span>
+    <span class="n">w_play_toggler</span> <span class="o">=</span> <span class="n">SimpleButton</span><span class="p">(</span><span class="n">icon</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">w_track_manager</span> <span class="o">=</span> <span class="n">IntSlider</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">readout</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">w_track_manager</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">w_clockb</span> <span class="o">=</span> <span class="n">SimpleButton</span><span class="p">(</span><span class="n">icon</span><span class="o">=</span><span class="s1">&#39;stopwatch&#39;</span><span class="p">,</span><span class="n">tooltip</span><span class="o">=</span><span class="s1">&#39;manually reset clock&#39;</span><span class="p">)</span>
+    <span class="n">w_clock</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">layout</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s1">&#39;1.6cm&#39;</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="s1">&#39;0cm&#39;</span><span class="p">),</span><span class="n">disabled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">w_clock2</span> <span class="o">=</span> <span class="n">FloatText</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">layout</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s1">&#39;1.6cm&#39;</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="s1">&#39;0cm&#39;</span><span class="p">,</span><span class="n">display</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">))</span>
+    <span class="n">w_clock2</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">toolbar</span> <span class="o">=</span> <span class="n">ka</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;toolbar&#39;</span><span class="p">,())</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">children</span><span class="o">=</span><span class="n">ka</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;children&#39;</span><span class="p">,()),</span><span class="n">toolbar</span><span class="o">=</span><span class="p">(</span><span class="n">w_play_toggler</span><span class="p">,</span><span class="n">w_track_manager</span><span class="p">,</span><span class="n">w_clockb</span><span class="p">,</span><span class="n">w_clock</span><span class="p">,</span><span class="n">w_clock2</span><span class="p">,</span><span class="o">*</span><span class="n">toolbar</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">board</span> <span class="o">=</span> <span class="n">board</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mpl_figure</span><span class="p">(</span><span class="o">**</span><span class="n">fig_kw</span><span class="p">)</span>
+    <span class="n">display</span> <span class="o">=</span> <span class="n">displayer</span><span class="p">(</span><span class="n">board</span><span class="p">)</span>
+    <span class="c1"># callbacks</span>
+    <span class="n">w_play_toggler</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="k">lambda</span> <span class="n">b</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">setrunning</span><span class="p">())</span>
+    <span class="k">def</span> <span class="nf">on_clockb_clicked</span><span class="p">():</span>
+      <span class="k">if</span> <span class="n">w_clock2</span><span class="o">.</span><span class="n">active</span><span class="p">:</span> <span class="n">z</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span><span class="s1">&#39;none&#39;</span><span class="p">,</span><span class="kc">False</span>
+      <span class="k">else</span><span class="p">:</span> <span class="n">w_clock2</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_per_stu</span><span class="p">;</span> <span class="n">z</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="kc">True</span>
+      <span class="n">w_clock</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">display</span><span class="p">,</span><span class="n">w_clock2</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">display</span><span class="p">,</span><span class="n">w_clock2</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="n">z</span>
+    <span class="n">w_clockb</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="k">lambda</span> <span class="n">b</span><span class="p">:</span> <span class="n">on_clockb_clicked</span><span class="p">())</span>
+    <span class="k">def</span> <span class="nf">on_clock2_changed</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+      <span class="k">if</span> <span class="n">w_clock2</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+        <span class="n">w_clock</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">display</span><span class="p">,</span><span class="n">w_clock2</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">display</span><span class="p">,</span><span class="n">w_clock2</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span><span class="s1">&#39;none&#39;</span><span class="p">,</span><span class="kc">False</span>
+        <span class="n">setval</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">submit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">w_clock2</span><span class="o">.</span><span class="n">observe</span><span class="p">((</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">on_clock2_changed</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">new</span><span class="p">)),</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+    <span class="n">w_track_manager</span><span class="o">.</span><span class="n">observe</span><span class="p">((</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">setval</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">new</span><span class="p">,</span><span class="n">submit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">w_track_manager</span><span class="o">.</span><span class="n">active</span> <span class="k">else</span> <span class="kc">None</span><span class="p">),</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">app</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">display</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">)</span></div>
+
+
+<span class="c1">#==================================================================================================</span>
+<div class="viewcode-block" id="mpl_animation_player">
+<a class="viewcode-back" href="../../mod_animation.html#PYTOOLS.animation.mpl_animation_player">[docs]</a>
+<span class="k">class</span> <span class="nc">mpl_animation_player</span> <span class="p">(</span><span class="n">animation_player_base</span><span class="p">):</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Instances of this class are players for :mod:`matplotlib` animations, controlled within matplotlib. The animation board is created by invoking :func:`figure` with arguments *fig_kw*. The frame display function is obtained by calling function *displayer* on the board.</span>
+
+<span class="sd">:param displayer: the frame display factory</span>
+<span class="sd">:param fig_kw: configuration of the animation figure (excluding the toolbar)</span>
+<span class="sd">:param tbsize: size (inches) of the toolbar as ((hsize(play-button),hsize(track-manager),hsize(clock)),vsize(toolbar))</span>
+<span class="sd">:param ka: passed to the superclass</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1"># ==================================================================================================</span>
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">displayer</span><span class="p">:</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Figure</span><span class="p">],</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span><span class="kc">None</span><span class="p">]],</span><span class="n">fig_kw</span><span class="o">=</span><span class="p">{},</span><span class="n">tbsize</span><span class="o">=</span><span class="p">((</span><span class="mf">.15</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">.8</span><span class="p">),</span><span class="mf">.15</span><span class="p">),</span><span class="o">**</span><span class="n">ka</span><span class="p">):</span>
+    <span class="n">ctrack</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">1.</span>
+    <span class="k">def</span> <span class="nf">setval</span><span class="p">(</span><span class="n">v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">d</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span><span class="n">submit</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+      <span class="k">nonlocal</span> <span class="n">ctrack</span>
+      <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">+</span><span class="n">d</span><span class="p">;</span> <span class="n">v</span> <span class="o">=</span> <span class="n">n</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_per_stu</span>
+      <span class="k">else</span><span class="p">:</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_per_stu</span><span class="p">)</span>
+      <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span><span class="o">-</span><span class="n">ctrack</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">ctrack</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+      <span class="k">if</span> <span class="n">x</span><span class="o">&lt;</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">x</span><span class="o">&gt;=</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">track_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">track</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">track_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="kc">True</span>
+        <span class="n">ctrack</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">track_</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="n">track_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">track_</span><span class="p">[</span><span class="mi">0</span><span class="p">],)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span><span class="o">-</span><span class="n">ctrack</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">ctrack</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">edit_value</span><span class="p">:</span> <span class="n">clock</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s1">.02f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+      <span class="n">track_manager</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">n</span>
+      <span class="k">if</span> <span class="n">submit</span><span class="p">:</span> <span class="n">display</span><span class="p">(</span><span class="n">v</span><span class="p">);</span> <span class="n">main</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw_idle</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">show_running</span><span class="p">(</span><span class="n">b</span><span class="p">):</span> <span class="n">play_toggler</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">&#39;II&#39;</span> <span class="k">if</span> <span class="n">b</span> <span class="k">else</span> <span class="s1">&#39;|&gt;&#39;</span><span class="p">);</span> <span class="n">toolbar</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw_idle</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">setval</span> <span class="o">=</span> <span class="n">setval</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">show_running</span> <span class="o">=</span> <span class="n">show_running</span>
+    <span class="c1"># global design</span>
+    <span class="n">tbsize_</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">tbsize</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">figsize</span> <span class="o">=</span> <span class="n">fig_kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;figsize&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">figsize</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">figsize</span> <span class="o">=</span> <span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span>
+    <span class="n">figsize_</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">figsize</span><span class="p">);</span> <span class="n">figsize_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">tbsize</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span> <span class="n">figsize_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">figsize_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">tbsize_</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">main</span> <span class="o">=</span> <span class="n">main</span> <span class="o">=</span> <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize_</span><span class="p">,</span><span class="o">**</span><span class="n">fig_kw</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">tbsize</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">figsize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">toolbar</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">board</span> <span class="o">=</span> <span class="n">main</span><span class="o">.</span><span class="n">subfigures</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">height_ratios</span><span class="o">=</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">display</span> <span class="o">=</span> <span class="n">displayer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tbsize</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">figsize_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">tbsize_</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">width_ratios</span><span class="o">=</span><span class="n">r</span><span class="p">,</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span><span class="n">bottom</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span><span class="n">top</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span><span class="n">left</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span><span class="n">right</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
+    <span class="n">axes</span> <span class="o">=</span> <span class="n">toolbar</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="p">(),</span><span class="n">yticks</span><span class="o">=</span><span class="p">(),</span><span class="n">navigate</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span><span class="n">gridspec_kw</span><span class="o">=</span><span class="n">g</span><span class="p">)</span>
+    <span class="c1"># widget definitions</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">play_toggler</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">.5</span><span class="p">,</span><span class="mf">.5</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">track_manager</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.</span><span class="p">),</span><span class="mf">0.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">clock</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">.5</span><span class="p">,</span><span class="mf">.5</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
+    <span class="c1"># callbacks</span>
+    <span class="k">def</span> <span class="nf">on_button_press</span><span class="p">(</span><span class="n">ev</span><span class="p">):</span>
+      <span class="k">if</span> <span class="n">ev</span><span class="o">.</span><span class="n">button</span> <span class="o">==</span> <span class="n">MouseButton</span><span class="o">.</span><span class="n">LEFT</span> <span class="ow">and</span> <span class="n">ev</span><span class="o">.</span><span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ev</span><span class="o">.</span><span class="n">inaxes</span> <span class="ow">is</span> <span class="n">play_toggler</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">setrunning</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">ev</span><span class="o">.</span><span class="n">inaxes</span> <span class="ow">is</span> <span class="n">track_manager</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span> <span class="n">setval</span><span class="p">(</span><span class="n">ctrack</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">ev</span><span class="o">.</span><span class="n">xdata</span><span class="o">*</span><span class="n">ctrack</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">submit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">edit_value</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">on_key_press</span><span class="p">(</span><span class="n">ev</span><span class="p">):</span>
+      <span class="k">nonlocal</span> <span class="n">edit_value</span>
+      <span class="n">key</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">key</span>
+      <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;left&#39;</span> <span class="ow">or</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;right&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ev</span><span class="o">.</span><span class="n">inaxes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="n">setval</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="p">(</span><span class="o">+</span><span class="mi">1</span> <span class="k">if</span> <span class="n">key</span><span class="o">==</span><span class="s1">&#39;right&#39;</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">submit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <span class="k">elif</span> <span class="n">ev</span><span class="o">.</span><span class="n">inaxes</span> <span class="ow">is</span> <span class="n">clock</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
+        <span class="n">v</span><span class="p">,</span><span class="n">c</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_per_stu</span><span class="si">:</span><span class="s1">.02f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;k&#39;</span>
+        <span class="k">if</span> <span class="n">key</span><span class="o">==</span><span class="s1">&#39;enter&#39;</span><span class="p">:</span>
+          <span class="k">try</span><span class="p">:</span> <span class="n">v_</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">edit_value</span><span class="p">)</span>
+          <span class="k">except</span><span class="p">:</span> <span class="k">return</span>
+          <span class="n">edit_value</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+          <span class="k">if</span> <span class="n">setval</span><span class="p">(</span><span class="n">v_</span><span class="p">,</span><span class="n">submit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="k">if</span> <span class="n">key</span><span class="o">==</span><span class="s1">&#39;escape&#39;</span><span class="p">:</span> <span class="n">edit_value</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+          <span class="k">elif</span> <span class="n">key</span><span class="o">==</span><span class="s1">&#39;backspace&#39;</span><span class="p">:</span>
+            <span class="n">edit_value</span> <span class="o">=</span> <span class="n">edit_value</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">edit_value</span><span class="p">:</span> <span class="n">v</span><span class="p">,</span><span class="n">c</span> <span class="o">=</span> <span class="n">edit_value</span><span class="p">,</span><span class="s1">&#39;b&#39;</span>
+          <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="s1">&#39;0123456789&#39;</span> <span class="ow">or</span> <span class="p">(</span><span class="n">key</span><span class="o">==</span><span class="s1">&#39;.&#39;</span> <span class="ow">and</span> <span class="s1">&#39;.&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">edit_value</span><span class="p">):</span>
+            <span class="n">edit_value</span> <span class="o">+=</span> <span class="n">key</span><span class="p">;</span> <span class="n">v</span><span class="p">,</span><span class="n">c</span> <span class="o">=</span> <span class="n">edit_value</span><span class="p">,</span><span class="s1">&#39;b&#39;</span>
+          <span class="k">else</span><span class="p">:</span> <span class="k">return</span>
+        <span class="n">clock</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">v</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+        <span class="n">toolbar</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw_idle</span><span class="p">()</span>
+    <span class="n">toolbar</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_connect</span><span class="p">(</span><span class="s1">&#39;button_press_event&#39;</span><span class="p">,</span><span class="n">on_button_press</span><span class="p">)</span>
+    <span class="n">toolbar</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_connect</span><span class="p">(</span><span class="s1">&#39;key_press_event&#39;</span><span class="p">,</span><span class="n">on_key_press</span><span class="p">)</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">display</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
