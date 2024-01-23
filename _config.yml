@@ -1,2 +1,2 @@
-include: [PYTOOLS/_images, PYTOOLS/_modules, PYTOOLS/_sources, PYTOOLS/_static]
+include: [src/PYTOOLS/_images, src/PYTOOLS/_modules, src/PYTOOLS/_sources, src/PYTOOLS/_static]
 
