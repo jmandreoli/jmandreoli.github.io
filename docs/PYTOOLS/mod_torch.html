@@ -7,6 +7,7 @@
   <title>PYTOOLS.torch — Utilities for pytorch &mdash; PYTOOLS  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
 
   
   <!--[if lt IE 9]>
@@ -18,6 +19,8 @@
         <script src="_static/documentation_options.js?v=5929fcd5"></script>
         <script src="_static/doctools.js?v=888ff710"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -141,7 +144,7 @@
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PYTOOLS.torch.GeneralisedConvolution.temperature">
-<span class="sig-name descname"><span class="pre">temperature</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PYTOOLS.torch.GeneralisedConvolution.temperature" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">temperature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tensor</span></em><a class="headerlink" href="#PYTOOLS.torch.GeneralisedConvolution.temperature" title="Link to this definition"></a></dt>
 <dd><p>Temperature of the softmax applied to scores</p>
 </dd></dl>
 
@@ -165,14 +168,17 @@ A_{bk} &amp; = \textrm{softmax}_{\textrm{col}}\frac{1}{\textrm{temp}}(\bar{A}_{b
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>score</strong> – tensor <span class="math notranslate nohighlight">\(\bar{A}{:}\langle B,K,M,N \rangle\)</span> (attention scores)</p></li>
-<li><p><strong>x</strong> – tensor <span class="math notranslate nohighlight">\(x{:}\langle B,M,P \rangle\)</span> (input)</p></li>
-<li><p><strong>mask</strong> – tensor <span class="math notranslate nohighlight">\(\langle B,M,N \rangle\)</span> or <span class="math notranslate nohighlight">\(\langle M,N \rangle\)</span> (in log domain: possible values include <span class="math notranslate nohighlight">\(-\infty\)</span>)</p></li>
-<li><p><strong>process_attn</strong> (<em>Callable</em>) – applied to the attention tensor <span class="math notranslate nohighlight">\(\langle B,K,M,N \rangle\)</span> (caution: large) to produce the auxiliary output; default returns <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>score</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(\bar{A}{:}\langle B,K,M,N \rangle\)</span> (attention scores)</p></li>
+<li><p><strong>x</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(x{:}\langle B,M,P \rangle\)</span> (input)</p></li>
+<li><p><strong>mask</strong> (<em>Tensor</em><em> | </em><em>None</em>) – tensor <span class="math notranslate nohighlight">\(\langle B,M,N \rangle\)</span> or <span class="math notranslate nohighlight">\(\langle M,N \rangle\)</span> (in log domain: possible values include <span class="math notranslate nohighlight">\(-\infty\)</span>)</p></li>
+<li><p><strong>process_attn</strong> (<em>Callable</em><em>[</em><em>[</em><em>Tensor</em><em>]</em><em>, </em><em>Any</em><em>]</em>) – applied to the attention tensor <span class="math notranslate nohighlight">\(\langle B,K,M,N \rangle\)</span> (caution: large) to produce the auxiliary output; default returns <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>pair of output tensor <span class="math notranslate nohighlight">\(y{:}\langle B,N,Q \rangle\)</span> and auxiliary output (see <em>process_attn</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[<em>Tensor</em>, <em>Any</em>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -216,14 +222,17 @@ A_{bk} &amp; = \textrm{softmax}_{\textrm{col}}\frac{1}{\textrm{temp}}(\bar{A}_{b
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>yʹ</strong> – tensor <span class="math notranslate nohighlight">\(y'{:}\langle B,N,Q' \rangle\)</span> (query-input)</p></li>
-<li><p><strong>xʹ</strong> – tensor <span class="math notranslate nohighlight">\(x'{:}\langle B,M,P' \rangle\)</span> (key-input), default <span class="math notranslate nohighlight">\(y'\)</span></p></li>
-<li><p><strong>x</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a> (value-input), default <span class="math notranslate nohighlight">\(x'\)</span></p></li>
+<li><p><strong>yʹ</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(y'{:}\langle B,N,Q' \rangle\)</span> (query-input)</p></li>
+<li><p><strong>xʹ</strong> (<em>Tensor</em><em> | </em><em>None</em>) – tensor <span class="math notranslate nohighlight">\(x'{:}\langle B,M,P' \rangle\)</span> (key-input), default <span class="math notranslate nohighlight">\(y'\)</span></p></li>
+<li><p><strong>x</strong> (<em>Tensor</em><em> | </em><em>None</em>) – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a> (value-input), default <span class="math notranslate nohighlight">\(x'\)</span></p></li>
 <li><p><strong>kargs</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>see <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[<em>Tensor</em>, <em>Any</em>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -231,13 +240,22 @@ A_{bk} &amp; = \textrm{softmax}_{\textrm{col}}\frac{1}{\textrm{temp}}(\bar{A}_{b
 <dl class="py method">
 <dt class="sig sig-object py" id="PYTOOLS.torch.MultiHeadAttention.torch_convert">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">torch_convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#MultiHeadAttention.torch_convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.MultiHeadAttention.torch_convert" title="Link to this definition"></a></dt>
-<dd><p>Converts a <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.MultiheadAttention</span></code> instance into an instance of this class with (almost) same behaviour and an additional method <code class="xref py py-meth docutils literal notranslate"><span class="pre">test_()</span></code> which, given batch size and sequence lengths, returns a comparison of the two modules on a random sample.</p>
+<dd><p>Converts a <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.MultiheadAttention</span></code> instance into an instance of this class with same behaviour (up to numerical instabilities). An additional output is a function <code class="xref py py-func docutils literal notranslate"><span class="pre">test()</span></code> which draws a random sample of the module input given batch size and two sequence lengths, and returns a comparison of the two modules on that sample. Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mod</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MultiheadAttention</span><span class="p">(</span><span class="n">embed_dim</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span><span class="n">num_heads</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="n">batch_first</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">kdim</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span><span class="n">vdim</span><span class="o">=</span><span class="mi">19</span><span class="p">)</span>
+<span class="n">mod_</span><span class="p">,</span><span class="n">test</span> <span class="o">=</span> <span class="n">MultiHeadAttention</span><span class="o">.</span><span class="n">torch_convert</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+<span class="n">cmp</span> <span class="o">=</span> <span class="n">test</span><span class="p">(</span><span class="n">B</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span><span class="n">M</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">N</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span> <span class="c1"># generates sample(batch:64,in-length:100,out-length:80) and returns aligned comparisons</span>
+<span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">atol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">cmp</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="c1"># increase atol if it fails</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>a</strong> (<em>MultiheadAttention</em>) – the instance to convert</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>an equivalent <a class="reference internal" href="#PYTOOLS.torch.MultiHeadAttention" title="PYTOOLS.torch.MultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiHeadAttention</span></code></a> instance</p>
+<dd class="field-even"><p>an equivalent <a class="reference internal" href="#PYTOOLS.torch.MultiHeadAttention" title="PYTOOLS.torch.MultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiHeadAttention</span></code></a> instance and its test function</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[<a class="reference internal" href="#PYTOOLS.torch.MultiHeadAttention" title="PYTOOLS.torch.MultiHeadAttention"><em>MultiHeadAttention</em></a>, <em>Callable</em>[[int, int, int], dict[str, tuple[<em>Tensor</em>, <em>Tensor</em>]]]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -284,15 +302,18 @@ A_{bk} &amp; = \textrm{softmax}_{\textrm{col}}\frac{1}{\textrm{temp}}(\bar{A}_{b
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>zʹ</strong> – tensor <span class="math notranslate nohighlight">\(z'{:}\langle B,M,N,R' \rangle\)</span> (matrix-input)</p></li>
-<li><p><strong>yʹ</strong> – tensor <span class="math notranslate nohighlight">\(y'{:}\langle B,N,Q' \rangle\)</span> (query-input)</p></li>
-<li><p><strong>xʹ</strong> – tensor <span class="math notranslate nohighlight">\(x'{:}\langle B,M,P' \rangle\)</span> (key-input), default <span class="math notranslate nohighlight">\(y'\)</span></p></li>
-<li><p><strong>x</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a> (value-input), default <span class="math notranslate nohighlight">\(x'\)</span></p></li>
+<li><p><strong>zʹ</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(z'{:}\langle B,M,N,R' \rangle\)</span> (matrix-input)</p></li>
+<li><p><strong>yʹ</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(y'{:}\langle B,N,Q' \rangle\)</span> (query-input)</p></li>
+<li><p><strong>xʹ</strong> (<em>Tensor</em><em> | </em><em>None</em>) – tensor <span class="math notranslate nohighlight">\(x'{:}\langle B,M,P' \rangle\)</span> (key-input), default <span class="math notranslate nohighlight">\(y'\)</span></p></li>
+<li><p><strong>x</strong> (<em>Tensor</em><em> | </em><em>None</em>) – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a> (value-input), default <span class="math notranslate nohighlight">\(x'\)</span></p></li>
 <li><p><strong>kargs</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>see <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[<em>Tensor</em>, <em>Any</em>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -318,7 +339,7 @@ A_{bk} &amp; = \textrm{softmax}_{\textrm{col}}\frac{1}{\textrm{temp}}(\bar{A}_{b
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>Rʹ</strong> (<em>int</em>) – matrix-input dimension <span class="math notranslate nohighlight">\(R'\)</span></p></li>
 <li><p><strong>Dʺ</strong> – internal multi-layer perceptron dimension <span class="math notranslate nohighlight">\(D''\)</span> (default see below)</p></li>
-<li><p><strong>mlpd</strong> (<em>float</em>) – the default value for <span class="math notranslate nohighlight">\(D''\)</span> is given by <span class="math notranslate nohighlight">\(\lfloor R''{\times}\textrm{mlpd}\rfloor\)</span></p></li>
+<li><p><strong>mlpd</strong> (<em>float</em>) – the default value for <span class="math notranslate nohighlight">\(D''\)</span> is given by <span class="math notranslate nohighlight">\(\lfloor R'{\times}\textrm{mlpd}\rfloor\)</span></p></li>
 <li><p><strong>bias</strong> (<em>bool</em>) – whether to use the biases <span class="math notranslate nohighlight">\(\Lambda^{\textrm{(o),(oo)}}\)</span> + the convolution biases</p></li>
 <li><p><strong>args</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.MultiHeadAttention" title="PYTOOLS.torch.MultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiHeadAttention</span></code></a> constructor</p></li>
 <li><p><strong>kargs</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.MultiHeadAttention" title="PYTOOLS.torch.MultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiHeadAttention</span></code></a> constructor</p></li>
@@ -340,15 +361,18 @@ A_{bk} &amp; = \textrm{softmax}_{\textrm{col}}\frac{1}{\textrm{temp}}(\bar{A}_{b
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>zʹ</strong> – tensor <span class="math notranslate nohighlight">\(z'{:}\langle B,M,N,R' \rangle\)</span> (matrix-input)</p></li>
-<li><p><strong>yʹ</strong> – tensor <span class="math notranslate nohighlight">\(y'{:}\langle B,N,Q' \rangle\)</span> (query-input)</p></li>
-<li><p><strong>xʹ</strong> – tensor <span class="math notranslate nohighlight">\(x'{:}\langle B,M,P' \rangle\)</span> (key-input), default <span class="math notranslate nohighlight">\(y'\)</span></p></li>
-<li><p><strong>x</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a> (value-input), default <span class="math notranslate nohighlight">\(x'\)</span></p></li>
+<li><p><strong>zʹ</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(z'{:}\langle B,M,N,R' \rangle\)</span> (matrix-input)</p></li>
+<li><p><strong>yʹ</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(y'{:}\langle B,N,Q' \rangle\)</span> (query-input)</p></li>
+<li><p><strong>xʹ</strong> (<em>Tensor</em><em> | </em><em>None</em>) – tensor <span class="math notranslate nohighlight">\(x'{:}\langle B,M,P' \rangle\)</span> (key-input), default <span class="math notranslate nohighlight">\(y'\)</span></p></li>
+<li><p><strong>x</strong> (<em>Tensor</em><em> | </em><em>None</em>) – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a> (value-input), default <span class="math notranslate nohighlight">\(x'\)</span></p></li>
 <li><p><strong>kargs</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>see <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[<em>Tensor</em>, <em>Any</em>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -359,19 +383,21 @@ A_{bk} &amp; = \textrm{softmax}_{\textrm{col}}\frac{1}{\textrm{temp}}(\bar{A}_{b
 <dt class="sig sig-object py" id="PYTOOLS.torch.Einsum">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.torch.</span></span><span class="sig-name descname"><span class="pre">Einsum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">dims</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#Einsum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.Einsum" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
-<p>An instance of this class is essentially a Linear module allowing more flexibility in indices using the einsum notation. For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lin</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">);</span> <span class="n">lin_</span> <span class="o">=</span> <span class="n">Einsum</span><span class="o">.</span><span class="n">torch_convert</span><span class="p">(</span><span class="n">lin</span><span class="p">)</span>
-<span class="k">assert</span> <span class="n">lin_</span><span class="o">.</span><span class="n">sig</span> <span class="o">==</span> <span class="s1">&#39;pq,bnp-&gt;bnq&#39;</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># batch:10, length:12</span>
-<span class="k">assert</span> <span class="n">torch</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">lin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">==</span><span class="n">lin_</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="c1"># if fails, try torch.allclose(lin(x),lin_(x))</span>
-</pre></div>
-</div>
+<p>An instance of this class is essentially a Linear module allowing more flexibility in indices using the einsum notation.</p>
+<p>Model parameters are</p>
+<ul class="simple">
+<li><p>a weight tensor <span class="math notranslate nohighlight">\(\Lambda\)</span> matching the weight component of <em>sig</em> and</p></li>
+<li><p>a bias tensor <span class="math notranslate nohighlight">\(\Lambda^{\textrm{(o)}}\)</span> matching the intersection of the output component and the weight component of <em>sig</em>.</p></li>
+</ul>
+<p>For example with <code class="code docutils literal notranslate"><span class="pre">Einsum('pq,bnp-&gt;bnq',P,Q)</span></code> where <code class="code docutils literal notranslate"><span class="pre">P,Q</span></code> are integers, the model parameters are:</p>
+<div class="math notranslate nohighlight">
+\[\Lambda{:}\langle P,Q\rangle\; \Lambda^{\textrm{(o)}}{:}\langle Q\rangle\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sig</strong> (<em>str</em>) – an einsum-like signature conforming to <a class="reference internal" href="#PYTOOLS.torch.Einsum.sig_pattern" title="PYTOOLS.torch.Einsum.sig_pattern"><code class="xref py py-attr docutils literal notranslate"><span class="pre">sig_pattern</span></code></a></p></li>
-<li><p><strong>dims</strong> (<em>int</em>) – list of dimensions; matched to the weight component of <em>sig</em></p></li>
-<li><p><strong>bias</strong> (<em>bool</em>) – whether to use a bias (on the intersection of the weight and output components of <em>sig</em>)</p></li>
+<li><p><strong>dims</strong> (<em>int</em>) – shape of the weight tensor</p></li>
+<li><p><strong>bias</strong> (<em>Tensor</em><em> | </em><em>None</em>) – whether to use a bias</p></li>
 </ul>
 </dd>
 </dl>
@@ -384,19 +410,42 @@ A_{bk} &amp; = \textrm{softmax}_{\textrm{col}}\frac{1}{\textrm{temp}}(\bar{A}_{b
 <dl class="py method">
 <dt class="sig sig-object py" id="PYTOOLS.torch.Einsum.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#Einsum.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.Einsum.forward" title="Link to this definition"></a></dt>
-<dd><p>Invokes <code class="xref py py-func docutils literal notranslate"><span class="pre">torch.einsum()</span></code> with signature given by attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">sig</span></code> and arguments given by attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">weight</span></code> and <em>x</em>, then adds the bias (attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">bias</span></code>) if present.</p>
+<dd><p>Computes <span class="math notranslate nohighlight">\(y\)</span> defined as follows:</p>
+<div class="math notranslate nohighlight">
+\[y = E_{\textrm{sig}}(\Lambda,x) + \textrm{reshape}(\Lambda^{\textrm{(o)}})\]</div>
+<p>where <span class="math notranslate nohighlight">\(E_{\textrm{sig}}\)</span> denotes the Einsum operator with the signature given by attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">sig</span></code>, and parameter <span class="math notranslate nohighlight">\(\Lambda^{\textrm{(o)}}\)</span> is reshaped to match the output component of the signature (in the example, it becomes <span class="math notranslate nohighlight">\(\mathbf{1}_B\otimes\mathbf{1}_N\otimes\Lambda^{\textrm{(o)}}\)</span> where dimensions <span class="math notranslate nohighlight">\(B,N\)</span> come from the input <span class="math notranslate nohighlight">\(x\)</span>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(x\)</span> matching the input component of the signature (in the example <span class="math notranslate nohighlight">\(x{:}\langle B,N,P\rangle\)</span>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>tensor <span class="math notranslate nohighlight">\(y\)</span> matching the output component of the signature (in the example <span class="math notranslate nohighlight">\(y{:}\langle B,N,Q\rangle\)</span>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PYTOOLS.torch.Einsum.torch_convert">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">torch_convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#Einsum.torch_convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.Einsum.torch_convert" title="Link to this definition"></a></dt>
-<dd><p>Converts a <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Linear</span></code> instance into an instance of this class with same behaviour. The created instance has an additional method <code class="xref py py-meth docutils literal notranslate"><span class="pre">test_()</span></code> which, given batch size and sequence length, returns a comparison of the two modules on a random sample.</p>
+<dd><p>Converts a <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Linear</span></code> instance into an instance of this class with same behaviour (up to numerical instabilities). An additional output is a function <code class="xref py py-func docutils literal notranslate"><span class="pre">test()</span></code> which draws a random sample of the module input given batch size and sequence length, and returns a comparison of the two modules on that sample. Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mod</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">42</span><span class="p">,</span><span class="mi">17</span><span class="p">);</span> <span class="n">mod_</span><span class="p">,</span><span class="n">test</span> <span class="o">=</span> <span class="n">Einsum</span><span class="o">.</span><span class="n">torch_convert</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">mod_</span><span class="o">.</span><span class="n">sig</span> <span class="o">==</span> <span class="s1">&#39;pq,bnp-&gt;bnq&#39;</span> <span class="ow">and</span> <span class="n">mod_</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">42</span><span class="p">,</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">cmp</span> <span class="o">=</span> <span class="n">test</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># generates sample(batch:64,length:100) and returns aligned fwd and bwd values</span>
+<span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">cmp</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="c1"># increase atol if it fails</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>a</strong> (<em>Linear</em>) – the instance to convert</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>an equivalent <a class="reference internal" href="#PYTOOLS.torch.Einsum" title="PYTOOLS.torch.Einsum"><code class="xref py py-class docutils literal notranslate"><span class="pre">Einsum</span></code></a> instance</p>
+<dd class="field-even"><p>an equivalent <a class="reference internal" href="#PYTOOLS.torch.Einsum" title="PYTOOLS.torch.Einsum"><code class="xref py py-class docutils literal notranslate"><span class="pre">Einsum</span></code></a> instance and its test function</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[<a class="reference internal" href="#PYTOOLS.torch.Einsum" title="PYTOOLS.torch.Einsum"><em>Einsum</em></a>, <em>Callable</em>[[int, int], dict[str, tuple[<em>Tensor</em>, <em>Tensor</em>]]]]</p>
 </dd>
 </dl>
 </dd></dl>
