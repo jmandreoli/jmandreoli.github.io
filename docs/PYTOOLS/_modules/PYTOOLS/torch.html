@@ -16,7 +16,7 @@
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
         <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -121,19 +121,19 @@
 
 <span class="sd">.. math::</span>
 
-<span class="sd">   \Theta^{\textrm{(x)}}{:}\langle K,P,D \rangle\; \Theta^{\textrm{(y)}}{:}\langle K,Q,D \rangle\; \Theta^{\textrm{(o)}}{:}\langle K,D \rangle\; \Theta^{\textrm{(oo)}}{:}\langle Q \rangle</span>
+<span class="sd">   \Theta^{\textrm{(x)}}{:}\langle K,P,D \rangle\; \Theta^{\textrm{(y)}}{:}\langle K,Q,D \rangle\; \eta{:}\langle K,D \rangle\; \eta^{\textrm{(o)}}{:}\langle Q \rangle</span>
 
 <span class="sd">:param K: number of heads</span>
 <span class="sd">:param P: input dimension :math:`P`</span>
 <span class="sd">:param Q: output dimension :math:`Q`, default :math:`P`</span>
 <span class="sd">:param D: convolution head dimension :math:`D`, default :math:`\lfloor\frac{Q}{K}\rfloor`</span>
-<span class="sd">:param bias: whether to use the biases :math:`\Theta^{\textrm{(o),(oo)}}`</span>
+<span class="sd">:param bias: whether to use the biases :math:`\eta,\eta^{\textrm{(o)}}`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <span class="c1">#--------------------------------------------------------------------------------------------------</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
     <span class="n">K</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dim</span><span class="p">(</span><span class="n">K</span><span class="p">);</span> <span class="n">P</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dim</span><span class="p">(</span><span class="n">P</span><span class="p">);</span> <span class="n">Q</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dim</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span><span class="n">P</span><span class="p">);</span> <span class="n">D</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dim</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="n">Q</span><span class="o">//</span><span class="n">K</span><span class="p">);</span> <span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="o">=</span><span class="n">K</span><span class="p">,</span><span class="n">P</span><span class="p">,</span><span class="n">Q</span><span class="p">,</span><span class="n">D</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">projx</span> <span class="o">=</span> <span class="n">Einsum</span><span class="p">(</span><span class="s1">&#39;kpd,bmp-&gt;bkmd&#39;</span><span class="p">,</span><span class="n">K</span><span class="p">,</span><span class="n">P</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="n">bias</span><span class="p">)</span> <span class="c1"># ϴx,ϴₒ</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">projy</span> <span class="o">=</span> <span class="n">Einsum</span><span class="p">(</span><span class="s1">&#39;kqd,bknd-&gt;bnq&#39;</span><span class="p">,</span><span class="n">K</span><span class="p">,</span><span class="n">Q</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="n">bias</span><span class="p">)</span> <span class="c1"># ϴy,ϴₒₒ</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">projx</span> <span class="o">=</span> <span class="n">Einsum</span><span class="p">(</span><span class="s1">&#39;kpd,bmp-&gt;bkmd&#39;</span><span class="p">,</span><span class="n">K</span><span class="p">,</span><span class="n">P</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="n">bias</span><span class="p">)</span> <span class="c1"># ϴx,η</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">projy</span> <span class="o">=</span> <span class="n">Einsum</span><span class="p">(</span><span class="s1">&#39;kqd,bknd-&gt;bnq&#39;</span><span class="p">,</span><span class="n">K</span><span class="p">,</span><span class="n">Q</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="n">bias</span><span class="p">)</span> <span class="c1"># ϴy,ηₒ</span>
 
 <span class="c1">#--------------------------------------------------------------------------------------------------</span>
 <div class="viewcode-block" id="GeneralisedConvolution.forward">
@@ -145,10 +145,10 @@
 <span class="sd">.. math::</span>
 
 <span class="sd">   \begin{align*}</span>
-<span class="sd">   y_b &amp; = \sum_k A_{bk}^\top\bar{x}_{bk}\Theta_k^{\textrm{(y)}\top}+\mathbf{1}_N\otimes\Theta^{\textrm{(oo)}}\\</span>
+<span class="sd">   y_b &amp; = \sum_k A_{bk}^\top\bar{x}_{bk}\Theta_k^{\textrm{(y)}\top}+\mathbf{1}_N\otimes\eta^{\textrm{(o)}}\\</span>
 <span class="sd">   \textrm{where } &amp; A_{bk}{:}\langle M,N \rangle\; \bar{x}_{bk}{:}\langle M,D \rangle\\</span>
 <span class="sd">   A_{bk} &amp; = \textrm{softmax}_{\textrm{col}}\frac{1}{\textrm{temp}}(\bar{A}_{bk}+\textrm{mask}_b)\\</span>
-<span class="sd">   \bar{x}_{bk} &amp;= x_b \Theta_k^{\textrm{(x)}}+\mathbf{1}_M\otimes\Theta_k^{\textrm{(o)}}</span>
+<span class="sd">   \bar{x}_{bk} &amp;= x_b \Theta_k^{\textrm{(x)}}+\mathbf{1}_M\otimes\eta_k</span>
 <span class="sd">   \end{align*}</span>
 
 <span class="sd">:param score: tensor :math:`\bar{A}{:}\langle B,K,M,N \rangle` (attention scores)</span>
@@ -181,13 +181,11 @@
 
 
 <span class="c1">#==================================================================================================</span>
-<div class="viewcode-block" id="MultiHeadAttention">
-<a class="viewcode-back" href="../../mod_torch.html#PYTOOLS.torch.MultiHeadAttention">[docs]</a>
-<span class="k">class</span> <span class="nc">MultiHeadAttention</span><span class="p">(</span><span class="n">GeneralisedConvolution</span><span class="p">):</span>
+<div class="viewcode-block" id="GeneralisedMultiHeadAttention">
+<a class="viewcode-back" href="../../mod_torch.html#PYTOOLS.torch.GeneralisedMultiHeadAttention">[docs]</a>
+<span class="k">class</span> <span class="nc">GeneralisedMultiHeadAttention</span><span class="p">(</span><span class="n">GeneralisedConvolution</span><span class="p">):</span>
 <span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">An instance of this class is a Vanilla multi-head attention module. Ref:</span>
-
-<span class="sd">  Vaswani et al. 2017. ‘`Attention Is All You Need &lt;http://arxiv.org/abs/1706.03762&gt;`_’. arXiv: 1706.03762</span>
+<span class="sd">This class regroups a number of subclasses in which the scores are computed from projections of the inputs.</span>
 <span class="sd">  &quot;&quot;&quot;</span>
 <span class="c1">#==================================================================================================</span>
 
@@ -195,57 +193,96 @@
   <span class="n">projxʹ</span><span class="p">:</span><span class="s1">&#39;Einsum&#39;</span><span class="p">;</span> <span class="n">projyʹ</span><span class="p">:</span><span class="s1">&#39;Einsum&#39;</span>
 
 <span class="c1">#--------------------------------------------------------------------------------------------------</span>
-  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="n">Pʹ</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Qʹ</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Dʹ</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">bias</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="n">Pʹ</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Qʹ</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Dʹ</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">bias</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">_bias</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Additional model parameters for Vanilla attention are:</span>
+<span class="sd">Additional model parameters for generalised multi-head attention are:</span>
 
 <span class="sd">.. math::</span>
 
-<span class="sd">   \Lambda^{\textrm{(x)}}{:}\langle K,P&#39;,D&#39; \rangle\; \Lambda^{\textrm{(y)}}{:}\langle K,Q&#39;,D&#39; \rangle\; \Lambda^{\textrm{(o)}}{:}\langle K,D&#39; \rangle</span>
+<span class="sd">   \Lambda^{\textrm{(x)}}{:}\langle K,P&#39;,D&#39; \rangle\; \Lambda^{\textrm{(y)}}{:}\langle K,Q&#39;,D&#39; \rangle\; \beta^{\textrm{(x)}},\beta^{\textrm{(y)}}{:}\langle K,D&#39; \rangle</span>
 
 <span class="sd">:param Pʹ: key-input dimension :math:`P&#39;`, default :math:`P`</span>
 <span class="sd">:param Qʹ: query-input dimension :math:`Q&#39;`, default :math:`Q`</span>
 <span class="sd">:param Dʹ: attention head dimension :math:`D&#39;`, default :math:`\lfloor\frac{Q&#39;}{K}\rfloor`</span>
-<span class="sd">:param bias: whether to use the bias :math:`\Lambda^{\textrm{(o)}}` + the convolution biases</span>
+<span class="sd">:param bias: whether to use the bias :math:`\beta^{\textrm{(x),(y)}}` + the convolution biases</span>
 <span class="sd">:param args: passed to :class:`GeneralisedConvolution` constructor</span>
 <span class="sd">:param kargs: passed to :class:`GeneralisedConvolution` constructor</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <span class="c1">#--------------------------------------------------------------------------------------------------</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="n">bias</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span>
     <span class="n">Pʹ</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dim</span><span class="p">(</span><span class="n">Pʹ</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="p">);</span> <span class="n">Qʹ</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dim</span><span class="p">(</span><span class="n">Qʹ</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">);</span> <span class="n">Dʹ</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dim</span><span class="p">(</span><span class="n">Dʹ</span><span class="p">,</span><span class="n">Qʹ</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">);</span> <span class="bp">self</span><span class="o">.</span><span class="n">Pʹ</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Qʹ</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Dʹ</span><span class="o">=</span><span class="n">Pʹ</span><span class="p">,</span><span class="n">Qʹ</span><span class="p">,</span><span class="n">Dʹ</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">projxʹ</span> <span class="o">=</span> <span class="n">Einsum</span><span class="p">(</span><span class="s1">&#39;kpd,bmp-&gt;bkmd&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="n">Pʹ</span><span class="p">,</span><span class="n">Dʹ</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="n">_bias</span><span class="p">)</span> <span class="c1"># Λx</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">projyʹ</span> <span class="o">=</span> <span class="n">Einsum</span><span class="p">(</span><span class="s1">&#39;kqd,bnq-&gt;bknd&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="n">Qʹ</span><span class="p">,</span><span class="n">Dʹ</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="n">bias</span><span class="p">)</span> <span class="c1"># Λy,Λₒ</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">projxʹ</span> <span class="o">=</span> <span class="n">Einsum</span><span class="p">(</span><span class="s1">&#39;kpd,bmp-&gt;bkmd&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="n">Pʹ</span><span class="p">,</span><span class="n">Dʹ</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="p">(</span><span class="n">bias</span> <span class="k">if</span> <span class="n">_bias</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">_bias</span><span class="p">))</span> <span class="c1"># Λx,βx</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">projyʹ</span> <span class="o">=</span> <span class="n">Einsum</span><span class="p">(</span><span class="s1">&#39;kqd,bnq-&gt;bknd&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="n">Qʹ</span><span class="p">,</span><span class="n">Dʹ</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="n">bias</span><span class="p">)</span> <span class="c1"># Λy,βy</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">Dʹ</span><span class="p">))</span>
 
 <span class="c1">#--------------------------------------------------------------------------------------------------</span>
-<div class="viewcode-block" id="MultiHeadAttention.forward">
-<a class="viewcode-back" href="../../mod_torch.html#PYTOOLS.torch.MultiHeadAttention.forward">[docs]</a>
-  <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">yʹ</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">xʹ</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">x</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">Any</span><span class="p">]:</span>
+<div class="viewcode-block" id="GeneralisedMultiHeadAttention.forward">
+<a class="viewcode-back" href="../../mod_torch.html#PYTOOLS.torch.GeneralisedMultiHeadAttention.forward">[docs]</a>
+  <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">yʹ</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">xʹ</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">x</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">ctx</span><span class="p">:</span><span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="o">...</span><span class="p">]</span><span class="o">=</span><span class="p">(),</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Computes the attention scores passed to generalised convolution; include biases, not described in the paper, to conform with :class:`torch.nn.MultiheadAttention`:</span>
+<span class="sd">Uses generalised attention scores obtained from projection of the (key and query) inputs.</span>
 
-<span class="sd">.. math::</span>
+<span class="sd">  .. math::</span>
 
 <span class="sd">   \begin{align*}</span>
-<span class="sd">   \bar{A}_{bk} &amp; = \bar{x}_{bk}\bar{y}_{bk}^\top\\</span>
-<span class="sd">   \textrm{where } &amp; \bar{x}_{bk}{:}\langle M,D&#39; \rangle,\; \bar{y}_{bk}{:}\langle N,D&#39; \rangle\\</span>
-<span class="sd">   \bar{x}_{bk} &amp; = x&#39;_b\Lambda_k^{\textrm{(x)}}\\</span>
-<span class="sd">   \bar{y}_{bk} &amp; = y&#39;_b\Lambda_k^{\textrm{(y)}}+\mathbf{1}_N\otimes\Lambda_k^{\textrm{(o)}}</span>
+<span class="sd">   &amp; \bar{x}_{bk}{:}\langle M,D&#39; \rangle,\; \bar{y}_{bk}{:}\langle N,D&#39; \rangle\\</span>
+<span class="sd">   \bar{x}_{bk} &amp; = x&#39;_b\Lambda_k^{\textrm{(x)}}+\mathbf{1}_M\otimes\beta^{\textrm{(x)}}_k\\</span>
+<span class="sd">   \bar{y}_{bk} &amp; = y&#39;_b\Lambda_k^{\textrm{(y)}}+\mathbf{1}_N\otimes\beta^{\textrm{(y)}}_k</span>
 <span class="sd">   \end{align*}</span>
 
 <span class="sd">:param yʹ: tensor :math:`y&#39;{:}\langle B,N,Q&#39; \rangle` (query-input)</span>
 <span class="sd">:param xʹ: tensor :math:`x&#39;{:}\langle B,M,P&#39; \rangle` (key-input), default :math:`y&#39;`</span>
 <span class="sd">:param x: passed to :meth:`GeneralisedConvolution.forward` (value-input), default :math:`x&#39;`</span>
+<span class="sd">:param ctx: context for scoring</span>
 <span class="sd">:param kargs: passed to :meth:`GeneralisedConvolution.forward`</span>
 <span class="sd">:return: see :meth:`GeneralisedConvolution.forward`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <span class="c1">#--------------------------------------------------------------------------------------------------</span>
     <span class="k">if</span> <span class="n">xʹ</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">xʹ</span> <span class="o">=</span> <span class="n">yʹ</span>
     <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">xʹ</span>
-    <span class="n">x_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projxʹ</span><span class="p">(</span><span class="n">xʹ</span><span class="p">)</span> <span class="c1"># x_: B,K,M,Dʹ</span>
-    <span class="n">y_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projyʹ</span><span class="p">(</span><span class="n">yʹ</span><span class="p">)</span> <span class="c1"># y_: B,K,N,Dʹ</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;bkmd,bknd-&gt;bkmn&#39;</span><span class="p">,</span><span class="n">x_</span><span class="p">,</span><span class="n">y_</span><span class="p">)</span> <span class="c1"># r: B,K,M,N</span>
-    <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span></div>
+    <span class="n">x̄</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projxʹ</span><span class="p">(</span><span class="n">xʹ</span><span class="p">)</span> <span class="c1"># x_: B,K,M,Dʹ</span>
+    <span class="n">ȳ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projyʹ</span><span class="p">(</span><span class="n">yʹ</span><span class="p">)</span> <span class="c1"># y_: B,K,N,Dʹ</span>
+    <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">x̄</span><span class="p">,</span><span class="n">ȳ</span><span class="p">,</span><span class="o">*</span><span class="n">ctx</span><span class="p">),</span><span class="n">x</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span></div>
+</div>
+
+
+<span class="c1">#==================================================================================================</span>
+<div class="viewcode-block" id="MultiHeadAttention">
+<a class="viewcode-back" href="../../mod_torch.html#PYTOOLS.torch.MultiHeadAttention">[docs]</a>
+<span class="k">class</span> <span class="nc">MultiHeadAttention</span><span class="p">(</span><span class="n">GeneralisedMultiHeadAttention</span><span class="p">):</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">An instance of this class is a Vanilla multi-head attention module. Ref:</span>
+
+<span class="sd">  Vaswani et al. 2017. ‘`Attention Is All You Need &lt;http://arxiv.org/abs/1706.03762&gt;`_’. arXiv: 1706.03762</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1">#==================================================================================================</span>
+
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Same as :class:`GeneralisedMultiHeadAttention` constructor, but disables bias :math:`\beta^{\textrm{(x)}}` which is redundant.</span>
+
+<span class="sd">:param args: passed to :class:`GeneralisedMultiHeadAttention` constructor</span>
+<span class="sd">:param kargs: passed to :class:`GeneralisedMultiHeadAttention` constructor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="n">_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span>
+
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="MultiHeadAttention.score">
+<a class="viewcode-back" href="../../mod_torch.html#PYTOOLS.torch.MultiHeadAttention.score">[docs]</a>
+  <span class="nd">@staticmethod</span>
+  <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="n">x̄</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">ȳ</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Computes the attention scores used in :meth:`forward`. Conforms to :class:`torch.nn.MultiheadAttention`</span>
+
+<span class="sd">:param x̄: tensor :math:`\bar{x}{:}\langle B,K,M,D&#39; \rangle` (key-proj)</span>
+<span class="sd">:param ȳ: tensor :math:`\bar{y}{:}\langle B,K,N,D&#39; \rangle` (query-proj)</span>
+<span class="sd">:return: tensor :math:`\langle B,K,M,N \rangle`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;bkmd,bknd-&gt;bkmn&#39;</span><span class="p">,</span><span class="n">x̄</span><span class="p">,</span><span class="n">ȳ</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">r</span></div>
 
 
 <span class="c1">#--------------------------------------------------------------------------------------------------</span>
@@ -268,21 +305,21 @@
     <span class="k">def</span> <span class="nf">set_data</span><span class="p">():</span>
       <span class="n">q_weight_d</span><span class="p">,</span><span class="n">k_weight_d</span><span class="p">,</span><span class="n">v_weight_d</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">q_proj_weight</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">a</span><span class="o">.</span><span class="n">k_proj_weight</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">a</span><span class="o">.</span><span class="n">v_proj_weight</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">in_proj_weight</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">in_proj_weight</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
       <span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">projyʹ</span><span class="p">,</span><span class="n">q_weight_d</span><span class="o">.</span><span class="n">T</span><span class="p">),(</span><span class="bp">self</span><span class="o">.</span><span class="n">projxʹ</span><span class="p">,</span><span class="n">k_weight_d</span><span class="o">.</span><span class="n">T</span><span class="p">),(</span><span class="bp">self</span><span class="o">.</span><span class="n">projx</span><span class="p">,</span><span class="n">v_weight_d</span><span class="o">.</span><span class="n">T</span><span class="p">),(</span><span class="bp">self</span><span class="o">.</span><span class="n">projy</span><span class="p">,</span><span class="n">a</span><span class="o">.</span><span class="n">out_proj</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-      <span class="k">for</span> <span class="n">proj</span><span class="p">,</span><span class="n">w</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span> <span class="n">proj</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+      <span class="k">for</span> <span class="n">proj</span><span class="p">,</span><span class="n">w</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span> <span class="n">proj</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">a</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
       <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">in_proj_bias</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">q_bias_d</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">v_bias_d</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">in_proj_bias</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># ignore useless k_bias_d</span>
         <span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">projyʹ</span><span class="p">,</span><span class="n">q_bias_d</span><span class="p">),(</span><span class="bp">self</span><span class="o">.</span><span class="n">projx</span><span class="p">,</span><span class="n">v_bias_d</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">proj</span><span class="p">,</span><span class="n">b</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span> <span class="n">proj</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">num_heads</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">proj</span><span class="p">,</span><span class="n">b</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span> <span class="n">proj</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="n">a</span><span class="o">.</span><span class="n">num_heads</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">projy</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">out_proj</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">data</span>
     <span class="k">def</span> <span class="nf">get_grad</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">Generator</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
       <span class="n">q_weight_g</span><span class="p">,</span><span class="n">k_weight_g</span><span class="p">,</span><span class="n">v_weight_g</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">q_proj_weight</span><span class="o">.</span><span class="n">grad</span><span class="p">,</span><span class="n">a</span><span class="o">.</span><span class="n">k_proj_weight</span><span class="o">.</span><span class="n">grad</span><span class="p">,</span><span class="n">a</span><span class="o">.</span><span class="n">v_proj_weight</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span> <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">in_proj_weight</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">in_proj_weight</span><span class="o">.</span><span class="n">grad</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
       <span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Λy&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">projyʹ</span><span class="p">,</span><span class="n">q_weight_g</span><span class="o">.</span><span class="n">T</span><span class="p">),(</span><span class="s1">&#39;Λx&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">projxʹ</span><span class="p">,</span><span class="n">k_weight_g</span><span class="o">.</span><span class="n">T</span><span class="p">),(</span><span class="s1">&#39;ϴx&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">projx</span><span class="p">,</span><span class="n">v_weight_g</span><span class="o">.</span><span class="n">T</span><span class="p">),(</span><span class="s1">&#39;ϴy&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">projy</span><span class="p">,</span><span class="n">a</span><span class="o">.</span><span class="n">out_proj</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>
-      <span class="k">yield from</span> <span class="p">((</span><span class="n">p</span><span class="p">,</span><span class="n">proj</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">grad</span><span class="p">,</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)))</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span><span class="n">proj</span><span class="p">,</span><span class="n">w</span> <span class="ow">in</span> <span class="n">L</span><span class="p">)</span>
+      <span class="k">yield from</span> <span class="p">((</span><span class="n">p</span><span class="p">,</span><span class="n">proj</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">grad</span><span class="p">,</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">a</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)))</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span><span class="n">proj</span><span class="p">,</span><span class="n">w</span> <span class="ow">in</span> <span class="n">L</span><span class="p">)</span>
       <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">in_proj_bias</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">q_bias_g</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">v_bias_g</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">in_proj_bias</span><span class="o">.</span><span class="n">grad</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># ignore useless k_bias_g (theoretically always null)</span>
-        <span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Λₒ&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">projyʹ</span><span class="p">,</span><span class="n">q_bias_g</span><span class="p">),(</span><span class="s1">&#39;Θₒ&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">projx</span><span class="p">,</span><span class="n">v_bias_g</span><span class="p">)</span>
-        <span class="k">yield from</span> <span class="p">((</span><span class="n">p</span><span class="p">,</span><span class="n">proj</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">grad</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">,:],</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">num_heads</span><span class="p">)))</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span><span class="n">proj</span><span class="p">,</span><span class="n">b</span> <span class="ow">in</span> <span class="n">L</span><span class="p">)</span>
-        <span class="k">yield</span> <span class="s1">&#39;Θₒₒ&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">projy</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">grad</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">a</span><span class="o">.</span><span class="n">out_proj</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">grad</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;βy&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">projyʹ</span><span class="p">,</span><span class="n">q_bias_g</span><span class="p">),(</span><span class="s1">&#39;η&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">projx</span><span class="p">,</span><span class="n">v_bias_g</span><span class="p">)</span>
+        <span class="k">yield from</span> <span class="p">((</span><span class="n">p</span><span class="p">,</span><span class="n">proj</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">grad</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">,:],</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="n">a</span><span class="o">.</span><span class="n">num_heads</span><span class="p">)))</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span><span class="n">proj</span><span class="p">,</span><span class="n">b</span> <span class="ow">in</span> <span class="n">L</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="s1">&#39;ηₒ&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">projy</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">grad</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">a</span><span class="o">.</span><span class="n">out_proj</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">grad</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MultiheadAttention</span><span class="p">),</span> <span class="s1">&#39;Argument must be a torch.nn.MultiheadAttention instance&#39;</span>
     <span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">batch_first</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;Option batch_first=False not supported (too lazy although easy)&#39;</span>
     <span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">bias_k</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">a</span><span class="o">.</span><span class="n">bias_v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;Extra biases not supported (no idea what they do)&#39;</span>
@@ -304,7 +341,80 @@
 <span class="c1">#==================================================================================================</span>
 <div class="viewcode-block" id="MultiHeadMixedAttention">
 <a class="viewcode-back" href="../../mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttention">[docs]</a>
-<span class="k">class</span> <span class="nc">MultiHeadMixedAttention</span><span class="p">(</span><span class="n">MultiHeadAttention</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MultiHeadMixedAttention</span><span class="p">(</span><span class="n">GeneralisedMultiHeadAttention</span><span class="p">):</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">An instance of this class is a multi-head Mixed attention module, inspired by various papers in the literature.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1">#==================================================================================================</span>
+
+  <span class="n">Rʹ</span><span class="p">:</span><span class="nb">int</span>
+  <span class="n">projzx</span><span class="p">:</span><span class="s1">&#39;Einsum&#39;</span><span class="p">;</span> <span class="n">projzy</span><span class="p">:</span><span class="s1">&#39;Einsum&#39;</span>
+
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Rʹ</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Additional model parameters for Mixed attention scores are:</span>
+
+<span class="sd">.. math::</span>
+
+<span class="sd">   \begin{array}{l}</span>
+<span class="sd">   \Lambda^{\textrm{(zx)}},\Lambda^{\textrm{(zy)}}{:}\langle K,R&#39;,D&#39; \rangle</span>
+<span class="sd">   \end{array}</span>
+
+<span class="sd">:param Rʹ: edge-input dimension :math:`R&#39;`</span>
+<span class="sd">:param args: passed to :class:`GeneralisedMultiHeadAttention` constructor</span>
+<span class="sd">:param kargs: passed to :class:`GeneralisedMultiHeadAttention` constructor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span> <span class="c1"># Λx,βx  Λy,βy</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">Rʹ</span><span class="o">=</span><span class="n">Rʹ</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dim</span><span class="p">(</span><span class="n">Rʹ</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">projzx</span> <span class="o">=</span> <span class="n">Einsum</span><span class="p">(</span><span class="s1">&#39;krd,bmnr-&gt;bkmnd&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="n">Rʹ</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Dʹ</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># Λzx</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">projzy</span> <span class="o">=</span> <span class="n">Einsum</span><span class="p">(</span><span class="s1">&#39;krd,bmnr-&gt;bkmnd&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="n">Rʹ</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Dʹ</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># Λzy</span>
+
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="MultiHeadMixedAttention.forward">
+<a class="viewcode-back" href="../../mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttention.forward">[docs]</a>
+  <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">zʹ</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Invokes :meth:`GeneralisedMultiHeadAttention.forward` with edge input as scoring context.</span>
+
+<span class="sd">:param zʹ: tensor :math:`z&#39;{:}\langle B,M,N,R&#39; \rangle` (edge-input)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+    <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="n">ctx</span><span class="o">=</span><span class="p">(</span><span class="n">zʹ</span><span class="p">,),</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span></div>
+
+
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="MultiHeadMixedAttention.score">
+<a class="viewcode-back" href="../../mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttention.score">[docs]</a>
+  <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x̄</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">ȳ</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">zʹ</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Computes the attention scores passed to generalised convolution:</span>
+
+<span class="sd">.. math::</span>
+
+<span class="sd">   \begin{align*}</span>
+<span class="sd">   \bar{A}_{bk} &amp; = E_{\frac{nmd,mnd}{mn}}(\;\mathbf{1}_N{\otimes}\bar{x}_{bk}{+}E_{\frac{mnr,rd}{nmd}}(z&#39;_b,\Lambda_k^{\textrm{(zx)}})\;,\;\mathbf{1}_M{\otimes}\bar{y}_{bk}{+}E_{\frac{mnr,rd}{mnd}}(z&#39;_b,\Lambda_k^{\textrm{(zy)}})\;)</span>
+<span class="sd">   \end{align*}</span>
+
+<span class="sd">:param x̄: tensor :math:`\bar{x}{:}\langle B,K,M,D&#39; \rangle` (key-proj)</span>
+<span class="sd">:param ȳ: tensor :math:`\bar{y}{:}\langle B,K,N,D&#39; \rangle` (query-proj)</span>
+<span class="sd">:param zʹ: tensor :math:`z&#39;{:}\langle B,M,N,R&#39; \rangle` (edge-input)</span>
+<span class="sd">:return: see :meth:`GeneralisedMultiHeadAttention.score`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+    <span class="n">z̄</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projzx</span><span class="p">(</span><span class="n">zʹ</span><span class="p">)</span> <span class="c1"># z̄: B,K,M,N,D&#39;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;bkmd,bkmnd-&gt;bkmn&#39;</span><span class="p">,</span><span class="n">x̄</span><span class="p">,</span><span class="n">z̄</span><span class="p">)</span>
+    <span class="n">z̄</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projzy</span><span class="p">(</span><span class="n">zʹ</span><span class="p">)</span> <span class="c1"># z̄: B,K,M,N,D&#39;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;bknd,bkmnd-&gt;bkmn&#39;</span><span class="p">,</span><span class="n">ȳ</span><span class="p">,</span><span class="n">z̄</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">r</span></div>
+</div>
+
+
+<span class="c1">#==================================================================================================</span>
+<div class="viewcode-block" id="MultiHeadMixedAttentionAlt1">
+<a class="viewcode-back" href="../../mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttentionAlt1">[docs]</a>
+<span class="k">class</span> <span class="nc">MultiHeadMixedAttentionAlt1</span><span class="p">(</span><span class="n">GeneralisedMultiHeadAttention</span><span class="p">):</span>
 <span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">An instance of this class is a multi-head Mixed attention module. Ref:</span>
 
@@ -316,71 +426,71 @@
   <span class="n">projzx</span><span class="p">:</span><span class="s1">&#39;Einsum&#39;</span><span class="p">;</span> <span class="n">projzy</span><span class="p">:</span><span class="s1">&#39;Einsum&#39;</span>
 
 <span class="c1">#--------------------------------------------------------------------------------------------------</span>
-  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Rʹ</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="n">bias</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Rʹ</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Additional model parameters for Mixed attention scores are:</span>
 
 <span class="sd">.. math::</span>
 
 <span class="sd">   \begin{array}{l}</span>
-<span class="sd">   \Lambda^{\textrm{(x)}}{:}\langle K,P&#39;,D&#39; \rangle\; \Lambda^{\textrm{(y)}}{:}\langle K,Q&#39;,D&#39; \rangle\; \Lambda^{\textrm{(zx)}},\Lambda^{\textrm{(zy)}}{:}\langle K,R&#39;,D&#39; \rangle\\</span>
-<span class="sd">   \Lambda^{\textrm{(ox)}},\Lambda^{\textrm{(oy)}},\Lambda^{\textrm{(o)}}{:}\langle K,D&#39; \rangle</span>
+<span class="sd">   \Lambda^{\textrm{(zx)}},\Lambda^{\textrm{(zy)}}{:}\langle K,R&#39;,D&#39; \rangle</span>
 <span class="sd">   \end{array}</span>
 
-<span class="sd">:param Rʹ: matrix-input dimension :math:`R&#39;`</span>
-<span class="sd">:param bias: whether to use the biases :math:`\Lambda^{\textrm{(ox),(oy),(o)}}` + the convolution biases</span>
-<span class="sd">:param args: passed to :class:`MultiHeadAttention` constructor</span>
-<span class="sd">:param kargs: passed to :class:`MultiHeadAttention` constructor</span>
+<span class="sd">:param Rʹ: edge-input dimension :math:`R&#39;`</span>
+<span class="sd">:param args: passed to :class:`GeneralisedMultiHeadAttention` constructor</span>
+<span class="sd">:param kargs: passed to :class:`GeneralisedMultiHeadAttention` constructor</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <span class="c1">#--------------------------------------------------------------------------------------------------</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="n">bias</span><span class="p">,</span><span class="n">_bias</span><span class="o">=</span><span class="n">bias</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span> <span class="c1"># Λx,Λₒx  Λy,Λₒy</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span> <span class="c1"># Λx,βx  Λy,βy</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">Rʹ</span><span class="o">=</span><span class="n">Rʹ</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dim</span><span class="p">(</span><span class="n">Rʹ</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">projzx</span> <span class="o">=</span> <span class="n">Einsum</span><span class="p">(</span><span class="s1">&#39;krd,bmnr-&gt;bkmnd&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="n">Rʹ</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Dʹ</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># Λzx</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">projzy</span> <span class="o">=</span> <span class="n">Einsum</span><span class="p">(</span><span class="s1">&#39;krd,bmnr-&gt;bkmnd&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="n">Rʹ</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Dʹ</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="n">bias</span><span class="p">)</span> <span class="c1"># Λzy,Λₒ</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">projzy</span> <span class="o">=</span> <span class="n">Einsum</span><span class="p">(</span><span class="s1">&#39;krd,bmnr-&gt;bkmnd&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="n">Rʹ</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Dʹ</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># Λzy</span>
 
 <span class="c1">#--------------------------------------------------------------------------------------------------</span>
-<div class="viewcode-block" id="MultiHeadMixedAttention.forward">
-<a class="viewcode-back" href="../../mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttention.forward">[docs]</a>
-  <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">zʹ</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">yʹ</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">xʹ</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">x</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">Any</span><span class="p">]:</span>
+<div class="viewcode-block" id="MultiHeadMixedAttentionAlt1.forward">
+<a class="viewcode-back" href="../../mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttentionAlt1.forward">[docs]</a>
+  <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">zʹ</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Invokes :meth:`GeneralisedMultiHeadAttention.forward` with edge input as scoring context.</span>
+
+<span class="sd">:param zʹ: tensor :math:`z&#39;{:}\langle B,M,N,R&#39; \rangle` (edge-input)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+    <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="n">ctx</span><span class="o">=</span><span class="p">(</span><span class="n">zʹ</span><span class="p">,),</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span></div>
+
+
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="MultiHeadMixedAttentionAlt1.score">
+<a class="viewcode-back" href="../../mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttentionAlt1.score">[docs]</a>
+  <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x̄</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">ȳ</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">zʹ</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Computes the attention scores passed to generalised convolution:</span>
 
 <span class="sd">.. math::</span>
 
 <span class="sd">   \begin{align*}</span>
-<span class="sd">   \bar{A}_{bk} &amp; = \bar{x}_{bk}\bar{y}_{bk}^\top+E_{\frac{md,mnd}{mn}}(\bar{x}_{bk},\bar{z}^{\textrm{(y)}}_{bk})+E_{\frac{nd,mnd}{mn}}(\bar{y}_{bk},\bar{z}^{\textrm{(x)}}_{bk})\\</span>
-<span class="sd">   \textrm{where } &amp; \bar{x}_{bk}{:}\langle M,D&#39; \rangle,\; \bar{y}_{bk}{:}\langle N,D&#39; \rangle,\; \bar{z}_{bk}{:}\langle M,N,D&#39; \rangle\\</span>
-<span class="sd">   \bar{x}_{bk} &amp; = x&#39;_b\Lambda_k^{\textrm{(x)}}+\mathbf{1}_M\otimes\Lambda_k^{\textrm{(ox)}}\\</span>
-<span class="sd">   \bar{y}_{bk} &amp; = y&#39;_b\Lambda_k^{\textrm{(y)}}+\mathbf{1}_N\otimes\Lambda_k^{\textrm{(oy)}}\\</span>
-<span class="sd">   \bar{z}^{\textrm{(x)}}_{bk} &amp; = z&#39;_b\Lambda_k^{\textrm{(zx)}}\\</span>
-<span class="sd">   \bar{z}^{\textrm{(y)}}_{bk} &amp; = z&#39;_b\Lambda_k^{\textrm{(zy)}}+\mathbf{1}_M\otimes\mathbf{1}_N\otimes\Lambda_k^{\textrm{(o)}}</span>
+<span class="sd">   \bar{A}_{bk} &amp; = \bar{x}_{bk}\bar{y}_{bk}^\top+E_{\frac{md,mnr,rd}{mn}}(\bar{x}_{bk},z&#39;_b,\Lambda_k^{\textrm{(zy)}})+E_{\frac{nd,mnr,rd}{mn}}(\bar{y}_{bk},z&#39;_b,\Lambda_k^{\textrm{(zx)}})</span>
 <span class="sd">   \end{align*}</span>
 
-<span class="sd">:param zʹ: tensor :math:`z&#39;{:}\langle B,M,N,R&#39; \rangle` (matrix-input)</span>
-<span class="sd">:param yʹ: tensor :math:`y&#39;{:}\langle B,N,Q&#39; \rangle` (query-input)</span>
-<span class="sd">:param xʹ: tensor :math:`x&#39;{:}\langle B,M,P&#39; \rangle` (key-input), default :math:`y&#39;`</span>
-<span class="sd">:param x: passed to :meth:`GeneralisedConvolution.forward` (value-input), default :math:`x&#39;`</span>
-<span class="sd">:param kargs: passed to :meth:`GeneralisedConvolution.forward`</span>
-<span class="sd">:return: see :meth:`GeneralisedConvolution.forward`</span>
+<span class="sd">:param x̄: tensor :math:`\bar{x}{:}\langle B,K,M,D&#39; \rangle` (key-proj)</span>
+<span class="sd">:param ȳ: tensor :math:`\bar{y}{:}\langle B,K,N,D&#39; \rangle` (query-proj)</span>
+<span class="sd">:param zʹ: tensor :math:`z&#39;{:}\langle B,M,N,R&#39; \rangle` (edge-input)</span>
+<span class="sd">:return: see :meth:`GeneralisedMultiHeadAttention.score`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <span class="c1">#--------------------------------------------------------------------------------------------------</span>
-    <span class="k">if</span> <span class="n">xʹ</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">xʹ</span> <span class="o">=</span> <span class="n">yʹ</span>
-    <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">xʹ</span>
-    <span class="n">x_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projxʹ</span><span class="p">(</span><span class="n">xʹ</span><span class="p">)</span> <span class="c1"># x_: B,K,M,D&#39;</span>
-    <span class="n">y_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projyʹ</span><span class="p">(</span><span class="n">yʹ</span><span class="p">)</span> <span class="c1"># y_: B,K,N,D&#39;</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;bkmd,bknd-&gt;bkmn&#39;</span><span class="p">,</span><span class="n">x_</span><span class="p">,</span><span class="n">y_</span><span class="p">)</span> <span class="c1"># standard attention, r: B,K,M,N</span>
-    <span class="n">z_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projzx</span><span class="p">(</span><span class="n">zʹ</span><span class="p">)</span> <span class="c1"># z_: B,K,M,N,D&#39;</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;bknd,bkmnd-&gt;bkmn&#39;</span><span class="p">,</span><span class="n">y_</span><span class="p">,</span><span class="n">z_</span><span class="p">)</span>
-    <span class="n">z_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projzy</span><span class="p">(</span><span class="n">zʹ</span><span class="p">)</span> <span class="c1"># z_: B,K,M,N,D&#39;</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;bkmd,bkmnd-&gt;bkmn&#39;</span><span class="p">,</span><span class="n">x_</span><span class="p">,</span><span class="n">z_</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">MultiHeadAttention</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span></div>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;bkmd,bknd-&gt;bkmn&#39;</span><span class="p">,</span><span class="n">x̄</span><span class="p">,</span><span class="n">ȳ</span><span class="p">)</span> <span class="c1"># standard attention, r: B,K,M,N</span>
+    <span class="n">z̄</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projzx</span><span class="p">(</span><span class="n">zʹ</span><span class="p">)</span> <span class="c1"># z̄: B,K,M,N,D&#39;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;bknd,bkmnd-&gt;bkmn&#39;</span><span class="p">,</span><span class="n">ȳ</span><span class="p">,</span><span class="n">z̄</span><span class="p">)</span>
+    <span class="n">z̄</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projzy</span><span class="p">(</span><span class="n">zʹ</span><span class="p">)</span> <span class="c1"># z̄: B,K,M,N,D&#39;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;bkmd,bkmnd-&gt;bkmn&#39;</span><span class="p">,</span><span class="n">x̄</span><span class="p">,</span><span class="n">z̄</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">r</span></div>
 </div>
 
 
 <span class="c1">#==================================================================================================</span>
-<div class="viewcode-block" id="MultiHeadMixedAttentionAlt">
-<a class="viewcode-back" href="../../mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttentionAlt">[docs]</a>
-<span class="k">class</span> <span class="nc">MultiHeadMixedAttentionAlt</span><span class="p">(</span><span class="n">MultiHeadAttention</span><span class="p">):</span>
+<div class="viewcode-block" id="MultiHeadMixedAttentionAlt2">
+<a class="viewcode-back" href="../../mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttentionAlt2">[docs]</a>
+<span class="k">class</span> <span class="nc">MultiHeadMixedAttentionAlt2</span><span class="p">(</span><span class="n">GeneralisedMultiHeadAttention</span><span class="p">):</span>
 <span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">An instance of this class is a multi-head Mixed attention module. Ref:</span>
 
@@ -399,60 +509,61 @@
 <span class="sd">.. math::</span>
 
 <span class="sd">   \begin{array}{l}</span>
-<span class="sd">   \Lambda^{\textrm{(x)}}{:}\langle K,P&#39;,D&#39; \rangle\; \Lambda^{\textrm{(y)}}{:}\langle K,Q&#39;,D&#39; \rangle\; \Lambda^{\textrm{(z)}}{:}\langle K,R&#39;,D&#39;&#39; \rangle\\</span>
-<span class="sd">   \Lambda^{\textrm{(o)}}{:}\langle K,D&#39; \rangle\; \alpha,\beta,\Lambda^{\textrm{(oo)}}{:}\langle K,D&#39;&#39; \rangle</span>
+<span class="sd">   \Lambda^{\textrm{(z)}}{:}\langle K,R&#39;,D&#39;&#39; \rangle\; \alpha,\alpha&#39;{:}\langle K,D&#39;&#39; \rangle</span>
 <span class="sd">   \end{array}</span>
 
-<span class="sd">:param Rʹ: matrix-input dimension :math:`R&#39;`</span>
+<span class="sd">:param Rʹ: edge-input dimension :math:`R&#39;`</span>
 <span class="sd">:param Dʺ: internal multi-layer perceptron dimension :math:`D&#39;&#39;` (default see below)</span>
 <span class="sd">:param mlpd: the default value for :math:`D&#39;&#39;` is given by :math:`\lfloor R&#39;{\times}\textrm{mlpd}\rfloor`</span>
-<span class="sd">:param bias: whether to use the biases :math:`\Lambda^{\textrm{(o),(oo)}}` + the convolution biases</span>
-<span class="sd">:param args: passed to :class:`MultiHeadAttention` constructor</span>
-<span class="sd">:param kargs: passed to :class:`MultiHeadAttention` constructor</span>
+<span class="sd">:param args: passed to :class:`GeneralisedMultiHeadAttention` constructor</span>
+<span class="sd">:param kargs: passed to :class:`GeneralisedMultiHeadAttention` constructor</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <span class="c1">#--------------------------------------------------------------------------------------------------</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="n">bias</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span> <span class="c1"># Λx  Λy,Λₒ</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span> <span class="c1"># Λx,βx  Λy,βy</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">Rʹ</span><span class="o">=</span><span class="n">Rʹ</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dim</span><span class="p">(</span><span class="n">Rʹ</span><span class="p">);</span> <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mlpd</span><span class="p">,</span><span class="nb">float</span><span class="p">);</span> <span class="bp">self</span><span class="o">.</span><span class="n">Dʺ</span><span class="o">=</span><span class="n">Dʺ</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dim</span><span class="p">(</span><span class="n">Dʺ</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">mlpd</span><span class="o">*</span><span class="n">Rʹ</span><span class="p">))</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">projzʹ</span> <span class="o">=</span> <span class="n">Einsum</span><span class="p">(</span><span class="s1">&#39;krd,bmnr-&gt;bkmnd&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="n">Rʹ</span><span class="p">,</span><span class="n">Dʺ</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="n">bias</span><span class="p">)</span> <span class="c1"># Λz,Λₒₒ</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">projzʹ</span> <span class="o">=</span> <span class="n">Einsum</span><span class="p">(</span><span class="s1">&#39;krd,bmnr-&gt;bkmnd&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="n">Rʹ</span><span class="p">,</span><span class="n">Dʺ</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># Λz</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">proj1</span> <span class="o">=</span> <span class="n">Einsum</span><span class="p">(</span><span class="s1">&#39;kd,bkmn-&gt;bkmnd&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="n">Dʺ</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># α</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">proj2</span> <span class="o">=</span> <span class="n">Einsum</span><span class="p">(</span><span class="s1">&#39;kd,bkmnd-&gt;bkmn&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="n">Dʺ</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># β</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">proj2</span> <span class="o">=</span> <span class="n">Einsum</span><span class="p">(</span><span class="s1">&#39;kd,bkmnd-&gt;bkmn&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="n">Dʺ</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># α&#39;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.</span><span class="p">)</span>
 
 <span class="c1">#--------------------------------------------------------------------------------------------------</span>
-<div class="viewcode-block" id="MultiHeadMixedAttentionAlt.forward">
-<a class="viewcode-back" href="../../mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttentionAlt.forward">[docs]</a>
-  <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">zʹ</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">yʹ</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">xʹ</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">x</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">Any</span><span class="p">]:</span>
+<div class="viewcode-block" id="MultiHeadMixedAttentionAlt2.forward">
+<a class="viewcode-back" href="../../mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttentionAlt2.forward">[docs]</a>
+  <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">zʹ</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Invokes :meth:`GeneralisedMultiHeadAttention.forward` with edge input as scoring context.</span>
+
+<span class="sd">:param zʹ: tensor :math:`z&#39;{:}\langle B,M,N,R&#39; \rangle` (edge-input)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+    <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="n">ctx</span><span class="o">=</span><span class="p">(</span><span class="n">zʹ</span><span class="p">,),</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span></div>
+
+
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="MultiHeadMixedAttentionAlt2.score">
+<a class="viewcode-back" href="../../mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttentionAlt2.score">[docs]</a>
+  <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x̄</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">ȳ</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span><span class="n">zʹ</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Computes the attention scores passed to generalised convolution:</span>
 
 <span class="sd">.. math::</span>
 
 <span class="sd">   \begin{align*}</span>
-<span class="sd">   \bar{A}_{bk} &amp; = \textrm{relu}(\bar{x}_{bk}\bar{y}_{bk}^\top\otimes\alpha_k+\bar{z}_{bk})\beta_k\\</span>
-<span class="sd">   \textrm{where } &amp; \bar{x}_{bk}{:}\langle M,D&#39; \rangle,\; \bar{y}_{bk}{:}\langle N,D&#39; \rangle,\; \bar{z}_{bk}{:}\langle M,N,D&#39;&#39;\rangle\\</span>
-<span class="sd">   \bar{x}_{bk} &amp; = x&#39;_b\Lambda_k^{\textrm{(x)}}\\</span>
-<span class="sd">   \bar{y}_{bk} &amp; = y&#39;_b\Lambda_k^{\textrm{(y)}}+\mathbf{1}_N\otimes\Lambda_k^{\textrm{(o)}}\\</span>
-<span class="sd">   \bar{z}_{bk} &amp; = z&#39;_b\Lambda_k^{\textrm{(z)}}+\mathbf{1}_M\otimes\mathbf{1}_N\otimes\Lambda_k^{\textrm{(oo)}}</span>
+<span class="sd">   \bar{A}_{bk} &amp; = \textrm{relu}(\bar{x}_{bk}\bar{y}_{bk}^\top\otimes\alpha_k+z&#39;_b\Lambda_k^{\textrm{(z)}})\alpha&#39;_k</span>
 <span class="sd">   \end{align*}</span>
 
-<span class="sd">:param zʹ: tensor :math:`z&#39;{:}\langle B,M,N,R&#39; \rangle` (matrix-input)</span>
-<span class="sd">:param yʹ: tensor :math:`y&#39;{:}\langle B,N,Q&#39; \rangle` (query-input)</span>
-<span class="sd">:param xʹ: tensor :math:`x&#39;{:}\langle B,M,P&#39; \rangle` (key-input), default :math:`y&#39;`</span>
-<span class="sd">:param x: passed to :meth:`GeneralisedConvolution.forward` (value-input), default :math:`x&#39;`</span>
-<span class="sd">:param kargs: passed to :meth:`GeneralisedConvolution.forward`</span>
-<span class="sd">:return: see :meth:`GeneralisedConvolution.forward`</span>
+<span class="sd">:param x̄: tensor :math:`\bar{x}{:}\langle B,K,M,D&#39; \rangle` (key-proj)</span>
+<span class="sd">:param ȳ: tensor :math:`\bar{y}{:}\langle B,K,N,D&#39; \rangle` (query-proj)</span>
+<span class="sd">:param zʹ: tensor :math:`z&#39;{:}\langle B,M,N,R&#39; \rangle` (edge-input)</span>
+<span class="sd">:return: see :meth:`GeneralisedMultiHeadAttention.score`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <span class="c1">#--------------------------------------------------------------------------------------------------</span>
-    <span class="k">if</span> <span class="n">xʹ</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">xʹ</span> <span class="o">=</span> <span class="n">yʹ</span>
-    <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">xʹ</span>
-    <span class="n">x_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projxʹ</span><span class="p">(</span><span class="n">xʹ</span><span class="p">)</span> <span class="c1"># x_: B,K,M,Dʹ</span>
-    <span class="n">y_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projyʹ</span><span class="p">(</span><span class="n">yʹ</span><span class="p">)</span> <span class="c1"># y_: B,K,N,Dʹ</span>
-    <span class="n">z_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projzʹ</span><span class="p">(</span><span class="n">zʹ</span><span class="p">)</span> <span class="c1"># z_: B,K,M,N,D&#39;&#39;</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;bkmd,bknd-&gt;bkmn&#39;</span><span class="p">,</span><span class="n">x_</span><span class="p">,</span><span class="n">y_</span><span class="p">)</span> <span class="c1"># r: B,K,M,N</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj1</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">+</span> <span class="n">z_</span> <span class="c1"># r: B,K,M,N,D&#39;&#39;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;bkmd,bknd-&gt;bkmn&#39;</span><span class="p">,</span><span class="n">x̄</span><span class="p">,</span><span class="n">ȳ</span><span class="p">)</span> <span class="c1"># r: B,K,M,N</span>
+    <span class="n">z̄</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projzʹ</span><span class="p">(</span><span class="n">zʹ</span><span class="p">)</span> <span class="c1"># z̄: B,K,M,N,D&#39;&#39;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj1</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">+</span> <span class="n">z̄</span> <span class="c1"># r: B,K,M,N,D&#39;&#39;</span>
     <span class="n">torch</span><span class="o">.</span><span class="n">relu_</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
     <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj2</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="c1"># r: B,K,M,N</span>
-    <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">MultiHeadAttention</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="o">**</span><span class="n">kargs</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">r</span></div>
 </div>
 
 
@@ -475,13 +586,13 @@
 <span class="sd">Model parameters are</span>
 
 <span class="sd">* a weight tensor :math:`\Lambda` matching the weight component of *sig* and</span>
-<span class="sd">* a bias tensor :math:`\Lambda^{\textrm{(o)}}` matching the intersection of the output component and the weight component of *sig*.</span>
+<span class="sd">* a bias tensor :math:`\beta` matching the intersection of the output component and the weight component of *sig*.</span>
 
 <span class="sd">For example with :code:`Einsum(&#39;pq,bnp-&gt;bnq&#39;,P,Q)` where :code:`P,Q` are integers, the model parameters are:</span>
 
 <span class="sd">.. math::</span>
 
-<span class="sd">   \Lambda{:}\langle P,Q\rangle\; \Lambda^{\textrm{(o)}}{:}\langle Q\rangle</span>
+<span class="sd">   \Lambda{:}\langle P,Q\rangle\; \beta{:}\langle Q\rangle</span>
 
 <span class="sd">:param sig: an einsum-like signature conforming to :attr:`sig_pattern`</span>
 <span class="sd">:param dims: shape of the weight tensor</span>
@@ -491,7 +602,7 @@
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">sig</span><span class="p">,</span><span class="n">bias_dims</span> <span class="o">=</span> <span class="n">sig</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_parse</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span><span class="n">dims</span><span class="p">,</span><span class="n">bias</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span>  <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="o">*</span><span class="n">dims</span><span class="p">))</span> <span class="c1"># Λ</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">bias_dims</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="o">*</span><span class="n">bias_dims</span><span class="p">))</span> <span class="c1"># Λₒ</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">bias_dims</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="o">*</span><span class="n">bias_dims</span><span class="p">))</span> <span class="c1"># β</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_reset_params</span><span class="p">()</span>
 
 <span class="c1">#--------------------------------------------------------------------------------------------------</span>
@@ -509,9 +620,9 @@
 
 <span class="sd">.. math::</span>
 
-<span class="sd">   y = E_{\textrm{sig}}(\Lambda,x) + \textrm{reshape}(\Lambda^{\textrm{(o)}})</span>
+<span class="sd">   y = E_{\textrm{sig}}(\Lambda,x) + \textrm{reshape}(\beta)</span>
 
-<span class="sd">where :math:`E_{\textrm{sig}}` denotes the Einsum operator with the signature given by attribute :attr:`sig`, and parameter :math:`\Lambda^{\textrm{(o)}}` is reshaped to match the output component of the signature (in the example, it becomes :math:`\mathbf{1}_B\otimes\mathbf{1}_N\otimes\Lambda^{\textrm{(o)}}` where dimensions :math:`B,N` come from the input :math:`x`).</span>
+<span class="sd">where :math:`E_{\textrm{sig}}` denotes the Einsum operator with the signature given by attribute :attr:`sig`, and parameter :math:`\beta` is reshaped to match the output component of the signature (in the example, it becomes :math:`\mathbf{1}_B\otimes\mathbf{1}_N\otimes\beta` where dimensions :math:`B,N` come from the input :math:`x`).</span>
 
 <span class="sd">:param x: tensor :math:`x` matching the input component of the signature (in the example :math:`x{:}\langle B,N,P\rangle`)</span>
 <span class="sd">:return: tensor :math:`y` matching the output component of the signature (in the example :math:`y{:}\langle B,N,Q\rangle`)</span>

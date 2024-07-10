@@ -16,7 +16,7 @@
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="_static/clipboard.min.js?v=a7894cd8"></script>
         <script src="_static/copybutton.js?v=f281be69"></script>
@@ -319,11 +319,13 @@
 </li>
         <li><a href="mod_torch.html#PYTOOLS.torch.GeneralisedConvolution.forward">(PYTOOLS.torch.GeneralisedConvolution method)</a>
 </li>
-        <li><a href="mod_torch.html#PYTOOLS.torch.MultiHeadAttention.forward">(PYTOOLS.torch.MultiHeadAttention method)</a>
+        <li><a href="mod_torch.html#PYTOOLS.torch.GeneralisedMultiHeadAttention.forward">(PYTOOLS.torch.GeneralisedMultiHeadAttention method)</a>
 </li>
         <li><a href="mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttention.forward">(PYTOOLS.torch.MultiHeadMixedAttention method)</a>
 </li>
-        <li><a href="mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttentionAlt.forward">(PYTOOLS.torch.MultiHeadMixedAttentionAlt method)</a>
+        <li><a href="mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttentionAlt1.forward">(PYTOOLS.torch.MultiHeadMixedAttentionAlt1 method)</a>
+</li>
+        <li><a href="mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttentionAlt2.forward">(PYTOOLS.torch.MultiHeadMixedAttentionAlt2 method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -352,16 +354,18 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="mod_torch.html#PYTOOLS.torch.GeneralisedConvolution">GeneralisedConvolution (class in PYTOOLS.torch)</a>
 </li>
+      <li><a href="mod_torch.html#PYTOOLS.torch.GeneralisedMultiHeadAttention">GeneralisedMultiHeadAttention (class in PYTOOLS.torch)</a>
+</li>
       <li><a href="mod_cache.html#PYTOOLS.cache.AbstractFunctor.getkey">getkey() (PYTOOLS.cache.AbstractFunctor method)</a>
 
       <ul>
         <li><a href="mod_cache.html#PYTOOLS.cache.Functor.getkey">(PYTOOLS.cache.Functor method)</a>
 </li>
       </ul></li>
-      <li><a href="mod_cache.html#PYTOOLS.cache.FileStorage.getpath">getpath() (PYTOOLS.cache.FileStorage method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mod_cache.html#PYTOOLS.cache.FileStorage.getpath">getpath() (PYTOOLS.cache.FileStorage method)</a>
+</li>
       <li><a href="mod_cache.html#PYTOOLS.cache.AbstractFunctor.getval">getval() (PYTOOLS.cache.AbstractFunctor method)</a>
 
       <ul>
@@ -545,7 +549,9 @@
 </li>
       <li><a href="mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttention">MultiHeadMixedAttention (class in PYTOOLS.torch)</a>
 </li>
-      <li><a href="mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttentionAlt">MultiHeadMixedAttentionAlt (class in PYTOOLS.torch)</a>
+      <li><a href="mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttentionAlt1">MultiHeadMixedAttentionAlt1 (class in PYTOOLS.torch)</a>
+</li>
+      <li><a href="mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttentionAlt2">MultiHeadMixedAttentionAlt2 (class in PYTOOLS.torch)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -752,6 +758,16 @@
 </li>
       <li><a href="mod_experiment.html#PYTOOLS.experiment.SupervisedNet.score">score (PYTOOLS.experiment.SupervisedNet attribute)</a>
 </li>
+      <li><a href="mod_torch.html#PYTOOLS.torch.MultiHeadAttention.score">score() (PYTOOLS.torch.MultiHeadAttention static method)</a>
+
+      <ul>
+        <li><a href="mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttention.score">(PYTOOLS.torch.MultiHeadMixedAttention method)</a>
+</li>
+        <li><a href="mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttentionAlt1.score">(PYTOOLS.torch.MultiHeadMixedAttentionAlt1 method)</a>
+</li>
+        <li><a href="mod_torch.html#PYTOOLS.torch.MultiHeadMixedAttentionAlt2.score">(PYTOOLS.torch.MultiHeadMixedAttentionAlt2 method)</a>
+</li>
+      </ul></li>
       <li><a href="mod_ipywidgets.html#PYTOOLS.ipywidgets.SelectMultipleOrdered">SelectMultipleOrdered (class in PYTOOLS.ipywidgets)</a>
 </li>
       <li><a href="mod_ipywidgets.html#PYTOOLS.ipywidgets.seq_browser">seq_browser (class in PYTOOLS.ipywidgets)</a>
@@ -774,12 +790,12 @@
 </li>
       <li><a href="mod_cache.html#PYTOOLS.cache.Functor.sig">sig (PYTOOLS.cache.Functor attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="mod_torch.html#PYTOOLS.torch.Einsum.sig_pattern">sig_pattern (PYTOOLS.torch.Einsum attribute)</a>
 </li>
       <li><a href="mod_tensorboard_manager.html#PYTOOLS.tensorboard_manager.simple_serve">simple_serve() (in module PYTOOLS.tensorboard_manager)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="mod_ipywidgets.html#PYTOOLS.ipywidgets.SimpleButton">SimpleButton (class in PYTOOLS.ipywidgets)</a>
 </li>
       <li><a href="mod_simpy.html#PYTOOLS.simpy.SimpySimulation">SimpySimulation (class in PYTOOLS.simpy)</a>

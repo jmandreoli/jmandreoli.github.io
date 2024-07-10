@@ -17,7 +17,7 @@
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="_static/clipboard.min.js?v=a7894cd8"></script>
         <script src="_static/copybutton.js?v=f281be69"></script>
@@ -59,17 +59,28 @@
 <li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward"><code class="docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention"><code class="docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention.forward"><code class="docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention.forward()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.torch.MultiHeadAttention"><code class="docutils literal notranslate"><span class="pre">MultiHeadAttention</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.torch.MultiHeadAttention.forward"><code class="docutils literal notranslate"><span class="pre">MultiHeadAttention.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.torch.MultiHeadAttention.score"><code class="docutils literal notranslate"><span class="pre">MultiHeadAttention.score()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.torch.MultiHeadAttention.torch_convert"><code class="docutils literal notranslate"><span class="pre">MultiHeadAttention.torch_convert()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.torch.MultiHeadMixedAttention"><code class="docutils literal notranslate"><span class="pre">MultiHeadMixedAttention</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.torch.MultiHeadMixedAttention.forward"><code class="docutils literal notranslate"><span class="pre">MultiHeadMixedAttention.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.torch.MultiHeadMixedAttention.score"><code class="docutils literal notranslate"><span class="pre">MultiHeadMixedAttention.score()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.torch.MultiHeadMixedAttentionAlt"><code class="docutils literal notranslate"><span class="pre">MultiHeadMixedAttentionAlt</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.torch.MultiHeadMixedAttentionAlt.forward"><code class="docutils literal notranslate"><span class="pre">MultiHeadMixedAttentionAlt.forward()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.torch.MultiHeadMixedAttentionAlt1"><code class="docutils literal notranslate"><span class="pre">MultiHeadMixedAttentionAlt1</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.torch.MultiHeadMixedAttentionAlt1.forward"><code class="docutils literal notranslate"><span class="pre">MultiHeadMixedAttentionAlt1.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.torch.MultiHeadMixedAttentionAlt1.score"><code class="docutils literal notranslate"><span class="pre">MultiHeadMixedAttentionAlt1.score()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.torch.MultiHeadMixedAttentionAlt2"><code class="docutils literal notranslate"><span class="pre">MultiHeadMixedAttentionAlt2</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.torch.MultiHeadMixedAttentionAlt2.forward"><code class="docutils literal notranslate"><span class="pre">MultiHeadMixedAttentionAlt2.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PYTOOLS.torch.MultiHeadMixedAttentionAlt2.score"><code class="docutils literal notranslate"><span class="pre">MultiHeadMixedAttentionAlt2.score()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#PYTOOLS.torch.Einsum"><code class="docutils literal notranslate"><span class="pre">Einsum</span></code></a><ul>
@@ -130,7 +141,7 @@
 </div></blockquote>
 <p>Model parameters are</p>
 <div class="math notranslate nohighlight">
-\[\Theta^{\textrm{(x)}}{:}\langle K,P,D \rangle\; \Theta^{\textrm{(y)}}{:}\langle K,Q,D \rangle\; \Theta^{\textrm{(o)}}{:}\langle K,D \rangle\; \Theta^{\textrm{(oo)}}{:}\langle Q \rangle\]</div>
+\[\Theta^{\textrm{(x)}}{:}\langle K,P,D \rangle\; \Theta^{\textrm{(y)}}{:}\langle K,Q,D \rangle\; \eta{:}\langle K,D \rangle\; \eta^{\textrm{(o)}}{:}\langle Q \rangle\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -138,7 +149,7 @@
 <li><p><strong>P</strong> (<em>int</em>) – input dimension <span class="math notranslate nohighlight">\(P\)</span></p></li>
 <li><p><strong>Q</strong> (<em>int</em>) – output dimension <span class="math notranslate nohighlight">\(Q\)</span>, default <span class="math notranslate nohighlight">\(P\)</span></p></li>
 <li><p><strong>D</strong> (<em>int</em>) – convolution head dimension <span class="math notranslate nohighlight">\(D\)</span>, default <span class="math notranslate nohighlight">\(\lfloor\frac{Q}{K}\rfloor\)</span></p></li>
-<li><p><strong>bias</strong> (<em>bool</em>) – whether to use the biases <span class="math notranslate nohighlight">\(\Theta^{\textrm{(o),(oo)}}\)</span></p></li>
+<li><p><strong>bias</strong> (<em>bool</em>) – whether to use the biases <span class="math notranslate nohighlight">\(\eta,\eta^{\textrm{(o)}}\)</span></p></li>
 </ul>
 </dd>
 </dl>
@@ -160,10 +171,10 @@
 <dd><p>Generalised Convolution formula (with biases):</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align*}
-y_b &amp; = \sum_k A_{bk}^\top\bar{x}_{bk}\Theta_k^{\textrm{(y)}\top}+\mathbf{1}_N\otimes\Theta^{\textrm{(oo)}}\\
+y_b &amp; = \sum_k A_{bk}^\top\bar{x}_{bk}\Theta_k^{\textrm{(y)}\top}+\mathbf{1}_N\otimes\eta^{\textrm{(o)}}\\
 \textrm{where } &amp; A_{bk}{:}\langle M,N \rangle\; \bar{x}_{bk}{:}\langle M,D \rangle\\
 A_{bk} &amp; = \textrm{softmax}_{\textrm{col}}\frac{1}{\textrm{temp}}(\bar{A}_{bk}+\textrm{mask}_b)\\
-\bar{x}_{bk} &amp;= x_b \Theta_k^{\textrm{(x)}}+\mathbf{1}_M\otimes\Theta_k^{\textrm{(o)}}
+\bar{x}_{bk} &amp;= x_b \Theta_k^{\textrm{(x)}}+\mathbf{1}_M\otimes\eta_k
 \end{align*}\end{split}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -186,45 +197,44 @@ A_{bk} &amp; = \textrm{softmax}_{\textrm{col}}\frac{1}{\textrm{temp}}(\bar{A}_{b
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="PYTOOLS.torch.MultiHeadAttention">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.torch.</span></span><span class="sig-name descname"><span class="pre">MultiHeadAttention</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Pʹ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Qʹ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dʹ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#MultiHeadAttention"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.MultiHeadAttention" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="PYTOOLS.torch.GeneralisedMultiHeadAttention">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.torch.</span></span><span class="sig-name descname"><span class="pre">GeneralisedMultiHeadAttention</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Pʹ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Qʹ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dʹ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#GeneralisedMultiHeadAttention"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution" title="PYTOOLS.torch.GeneralisedConvolution"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeneralisedConvolution</span></code></a></p>
-<p>An instance of this class is a Vanilla multi-head attention module. Ref:</p>
-<blockquote>
-<div><p>Vaswani et al. 2017. ‘<a class="reference external" href="http://arxiv.org/abs/1706.03762">Attention Is All You Need</a>’. arXiv: 1706.03762</p>
-</div></blockquote>
-<p>Additional model parameters for Vanilla attention are:</p>
+<p>This class regroups a number of subclasses in which the scores are computed from projections of the inputs.</p>
+<p>Additional model parameters for generalised multi-head attention are:</p>
 <div class="math notranslate nohighlight">
-\[\Lambda^{\textrm{(x)}}{:}\langle K,P',D' \rangle\; \Lambda^{\textrm{(y)}}{:}\langle K,Q',D' \rangle\; \Lambda^{\textrm{(o)}}{:}\langle K,D' \rangle\]</div>
+\[\Lambda^{\textrm{(x)}}{:}\langle K,P',D' \rangle\; \Lambda^{\textrm{(y)}}{:}\langle K,Q',D' \rangle\; \beta^{\textrm{(x)}},\beta^{\textrm{(y)}}{:}\langle K,D' \rangle\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>Pʹ</strong> (<em>int</em><em> | </em><em>None</em>) – key-input dimension <span class="math notranslate nohighlight">\(P'\)</span>, default <span class="math notranslate nohighlight">\(P\)</span></p></li>
 <li><p><strong>Qʹ</strong> (<em>int</em><em> | </em><em>None</em>) – query-input dimension <span class="math notranslate nohighlight">\(Q'\)</span>, default <span class="math notranslate nohighlight">\(Q\)</span></p></li>
 <li><p><strong>Dʹ</strong> (<em>int</em><em> | </em><em>None</em>) – attention head dimension <span class="math notranslate nohighlight">\(D'\)</span>, default <span class="math notranslate nohighlight">\(\lfloor\frac{Q'}{K}\rfloor\)</span></p></li>
-<li><p><strong>bias</strong> (<em>bool</em>) – whether to use the bias <span class="math notranslate nohighlight">\(\Lambda^{\textrm{(o)}}\)</span> + the convolution biases</p></li>
+<li><p><strong>bias</strong> (<em>bool</em>) – whether to use the bias <span class="math notranslate nohighlight">\(\beta^{\textrm{(x),(y)}}\)</span> + the convolution biases</p></li>
 <li><p><strong>args</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution" title="PYTOOLS.torch.GeneralisedConvolution"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeneralisedConvolution</span></code></a> constructor</p></li>
 <li><p><strong>kargs</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution" title="PYTOOLS.torch.GeneralisedConvolution"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeneralisedConvolution</span></code></a> constructor</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="PYTOOLS.torch.MultiHeadAttention.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yʹ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xʹ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#MultiHeadAttention.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.MultiHeadAttention.forward" title="Link to this definition"></a></dt>
-<dd><p>Computes the attention scores passed to generalised convolution; include biases, not described in the paper, to conform with <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.MultiheadAttention</span></code>:</p>
-<div class="math notranslate nohighlight">
+<dt class="sig sig-object py" id="PYTOOLS.torch.GeneralisedMultiHeadAttention.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yʹ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xʹ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#GeneralisedMultiHeadAttention.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention.forward" title="Link to this definition"></a></dt>
+<dd><p>Uses generalised attention scores obtained from projection of the (key and query) inputs.</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
 \[\begin{split}\begin{align*}
-\bar{A}_{bk} &amp; = \bar{x}_{bk}\bar{y}_{bk}^\top\\
-\textrm{where } &amp; \bar{x}_{bk}{:}\langle M,D' \rangle,\; \bar{y}_{bk}{:}\langle N,D' \rangle\\
-\bar{x}_{bk} &amp; = x'_b\Lambda_k^{\textrm{(x)}}\\
-\bar{y}_{bk} &amp; = y'_b\Lambda_k^{\textrm{(y)}}+\mathbf{1}_N\otimes\Lambda_k^{\textrm{(o)}}
+&amp; \bar{x}_{bk}{:}\langle M,D' \rangle,\; \bar{y}_{bk}{:}\langle N,D' \rangle\\
+\bar{x}_{bk} &amp; = x'_b\Lambda_k^{\textrm{(x)}}+\mathbf{1}_M\otimes\beta^{\textrm{(x)}}_k\\
+\bar{y}_{bk} &amp; = y'_b\Lambda_k^{\textrm{(y)}}+\mathbf{1}_N\otimes\beta^{\textrm{(y)}}_k
 \end{align*}\end{split}\]</div>
+</div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>yʹ</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(y'{:}\langle B,N,Q' \rangle\)</span> (query-input)</p></li>
 <li><p><strong>xʹ</strong> (<em>Tensor</em><em> | </em><em>None</em>) – tensor <span class="math notranslate nohighlight">\(x'{:}\langle B,M,P' \rangle\)</span> (key-input), default <span class="math notranslate nohighlight">\(y'\)</span></p></li>
 <li><p><strong>x</strong> (<em>Tensor</em><em> | </em><em>None</em>) – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a> (value-input), default <span class="math notranslate nohighlight">\(x'\)</span></p></li>
+<li><p><strong>ctx</strong> (<em>tuple</em><em>[</em><em>Tensor</em><em>, </em><em>...</em><em>]</em>) – context for scoring</p></li>
 <li><p><strong>kargs</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a></p></li>
 </ul>
 </dd>
@@ -233,6 +243,45 @@ A_{bk} &amp; = \textrm{softmax}_{\textrm{col}}\frac{1}{\textrm{temp}}(\bar{A}_{b
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple[<em>Tensor</em>, <em>Any</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.torch.MultiHeadAttention">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.torch.</span></span><span class="sig-name descname"><span class="pre">MultiHeadAttention</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#MultiHeadAttention"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.MultiHeadAttention" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention" title="PYTOOLS.torch.GeneralisedMultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention</span></code></a></p>
+<p>An instance of this class is a Vanilla multi-head attention module. Ref:</p>
+<blockquote>
+<div><p>Vaswani et al. 2017. ‘<a class="reference external" href="http://arxiv.org/abs/1706.03762">Attention Is All You Need</a>’. arXiv: 1706.03762</p>
+</div></blockquote>
+<p>Same as <a class="reference internal" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention" title="PYTOOLS.torch.GeneralisedMultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention</span></code></a> constructor, but disables bias <span class="math notranslate nohighlight">\(\beta^{\textrm{(x)}}\)</span> which is redundant.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention" title="PYTOOLS.torch.GeneralisedMultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention</span></code></a> constructor</p></li>
+<li><p><strong>kargs</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention" title="PYTOOLS.torch.GeneralisedMultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention</span></code></a> constructor</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.torch.MultiHeadAttention.score">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x̄</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ȳ</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#MultiHeadAttention.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.MultiHeadAttention.score" title="Link to this definition"></a></dt>
+<dd><p>Computes the attention scores used in <code class="xref py py-meth docutils literal notranslate"><span class="pre">forward()</span></code>. Conforms to <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.MultiheadAttention</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x̄</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(\bar{x}{:}\langle B,K,M,D' \rangle\)</span> (key-proj)</p></li>
+<li><p><strong>ȳ</strong> – tensor <span class="math notranslate nohighlight">\(\bar{y}{:}\langle B,K,N,D' \rangle\)</span> (query-proj)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>tensor <span class="math notranslate nohighlight">\(\langle B,K,M,N \rangle\)</span></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
 </dd>
 </dl>
 </dd></dl>
@@ -264,56 +313,55 @@ A_{bk} &amp; = \textrm{softmax}_{\textrm{col}}\frac{1}{\textrm{temp}}(\bar{A}_{b
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PYTOOLS.torch.MultiHeadMixedAttention">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.torch.</span></span><span class="sig-name descname"><span class="pre">MultiHeadMixedAttention</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Rʹ</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#MultiHeadMixedAttention"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.MultiHeadMixedAttention" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.torch.MultiHeadAttention" title="PYTOOLS.torch.MultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiHeadAttention</span></code></a></p>
-<p>An instance of this class is a multi-head Mixed attention module. Ref:</p>
-<blockquote>
-<div><p>Henderson et al. 2023. ‘<a class="reference external" href="https://doi.org/10.18653/v1/2023.bigpicture-1.8">Transformers as Graph-to-Graph Models</a>’. In Proc. of the Big Picture Workshop, 93–107. Singapore: Association for Computational Linguistics.</p>
-</div></blockquote>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.torch.</span></span><span class="sig-name descname"><span class="pre">MultiHeadMixedAttention</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Rʹ</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#MultiHeadMixedAttention"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.MultiHeadMixedAttention" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention" title="PYTOOLS.torch.GeneralisedMultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention</span></code></a></p>
+<p>An instance of this class is a multi-head Mixed attention module, inspired by various papers in the literature.</p>
 <p>Additional model parameters for Mixed attention scores are:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{l}
-\Lambda^{\textrm{(x)}}{:}\langle K,P',D' \rangle\; \Lambda^{\textrm{(y)}}{:}\langle K,Q',D' \rangle\; \Lambda^{\textrm{(zx)}},\Lambda^{\textrm{(zy)}}{:}\langle K,R',D' \rangle\\
-\Lambda^{\textrm{(ox)}},\Lambda^{\textrm{(oy)}},\Lambda^{\textrm{(o)}}{:}\langle K,D' \rangle
-\end{array}\end{split}\]</div>
+\[\begin{array}{l}
+\Lambda^{\textrm{(zx)}},\Lambda^{\textrm{(zy)}}{:}\langle K,R',D' \rangle
+\end{array}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Rʹ</strong> (<em>int</em>) – matrix-input dimension <span class="math notranslate nohighlight">\(R'\)</span></p></li>
-<li><p><strong>bias</strong> (<em>bool</em>) – whether to use the biases <span class="math notranslate nohighlight">\(\Lambda^{\textrm{(ox),(oy),(o)}}\)</span> + the convolution biases</p></li>
-<li><p><strong>args</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.MultiHeadAttention" title="PYTOOLS.torch.MultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiHeadAttention</span></code></a> constructor</p></li>
-<li><p><strong>kargs</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.MultiHeadAttention" title="PYTOOLS.torch.MultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiHeadAttention</span></code></a> constructor</p></li>
+<li><p><strong>Rʹ</strong> (<em>int</em>) – edge-input dimension <span class="math notranslate nohighlight">\(R'\)</span></p></li>
+<li><p><strong>args</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention" title="PYTOOLS.torch.GeneralisedMultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention</span></code></a> constructor</p></li>
+<li><p><strong>kargs</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention" title="PYTOOLS.torch.GeneralisedMultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention</span></code></a> constructor</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="PYTOOLS.torch.MultiHeadMixedAttention.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zʹ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yʹ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xʹ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#MultiHeadMixedAttention.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.MultiHeadMixedAttention.forward" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zʹ</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#MultiHeadMixedAttention.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.MultiHeadMixedAttention.forward" title="Link to this definition"></a></dt>
+<dd><p>Invokes <a class="reference internal" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention.forward" title="PYTOOLS.torch.GeneralisedMultiHeadAttention.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention.forward()</span></code></a> with edge input as scoring context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>zʹ</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(z'{:}\langle B,M,N,R' \rangle\)</span> (edge-input)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.torch.MultiHeadMixedAttention.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x̄</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ȳ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zʹ</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#MultiHeadMixedAttention.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.MultiHeadMixedAttention.score" title="Link to this definition"></a></dt>
 <dd><p>Computes the attention scores passed to generalised convolution:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\begin{align*}
-\bar{A}_{bk} &amp; = \bar{x}_{bk}\bar{y}_{bk}^\top+E_{\frac{md,mnd}{mn}}(\bar{x}_{bk},\bar{z}^{\textrm{(y)}}_{bk})+E_{\frac{nd,mnd}{mn}}(\bar{y}_{bk},\bar{z}^{\textrm{(x)}}_{bk})\\
-\textrm{where } &amp; \bar{x}_{bk}{:}\langle M,D' \rangle,\; \bar{y}_{bk}{:}\langle N,D' \rangle,\; \bar{z}_{bk}{:}\langle M,N,D' \rangle\\
-\bar{x}_{bk} &amp; = x'_b\Lambda_k^{\textrm{(x)}}+\mathbf{1}_M\otimes\Lambda_k^{\textrm{(ox)}}\\
-\bar{y}_{bk} &amp; = y'_b\Lambda_k^{\textrm{(y)}}+\mathbf{1}_N\otimes\Lambda_k^{\textrm{(oy)}}\\
-\bar{z}^{\textrm{(x)}}_{bk} &amp; = z'_b\Lambda_k^{\textrm{(zx)}}\\
-\bar{z}^{\textrm{(y)}}_{bk} &amp; = z'_b\Lambda_k^{\textrm{(zy)}}+\mathbf{1}_M\otimes\mathbf{1}_N\otimes\Lambda_k^{\textrm{(o)}}
-\end{align*}\end{split}\]</div>
+\[\begin{align*}
+\bar{A}_{bk} &amp; = E_{\frac{nmd,mnd}{mn}}(\;\mathbf{1}_N{\otimes}\bar{x}_{bk}{+}E_{\frac{mnr,rd}{nmd}}(z'_b,\Lambda_k^{\textrm{(zx)}})\;,\;\mathbf{1}_M{\otimes}\bar{y}_{bk}{+}E_{\frac{mnr,rd}{mnd}}(z'_b,\Lambda_k^{\textrm{(zy)}})\;)
+\end{align*}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>zʹ</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(z'{:}\langle B,M,N,R' \rangle\)</span> (matrix-input)</p></li>
-<li><p><strong>yʹ</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(y'{:}\langle B,N,Q' \rangle\)</span> (query-input)</p></li>
-<li><p><strong>xʹ</strong> (<em>Tensor</em><em> | </em><em>None</em>) – tensor <span class="math notranslate nohighlight">\(x'{:}\langle B,M,P' \rangle\)</span> (key-input), default <span class="math notranslate nohighlight">\(y'\)</span></p></li>
-<li><p><strong>x</strong> (<em>Tensor</em><em> | </em><em>None</em>) – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a> (value-input), default <span class="math notranslate nohighlight">\(x'\)</span></p></li>
-<li><p><strong>kargs</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a></p></li>
+<li><p><strong>x̄</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(\bar{x}{:}\langle B,K,M,D' \rangle\)</span> (key-proj)</p></li>
+<li><p><strong>ȳ</strong> – tensor <span class="math notranslate nohighlight">\(\bar{y}{:}\langle B,K,N,D' \rangle\)</span> (query-proj)</p></li>
+<li><p><strong>zʹ</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(z'{:}\langle B,M,N,R' \rangle\)</span> (edge-input)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>see <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a></p>
+<dd class="field-even"><p>see <code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention.score()</span></code></p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple[<em>Tensor</em>, <em>Any</em>]</p>
+<dd class="field-odd"><p><em>Tensor</em></p>
 </dd>
 </dl>
 </dd></dl>
@@ -321,58 +369,121 @@ A_{bk} &amp; = \textrm{softmax}_{\textrm{col}}\frac{1}{\textrm{temp}}(\bar{A}_{b
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="PYTOOLS.torch.MultiHeadMixedAttentionAlt">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.torch.</span></span><span class="sig-name descname"><span class="pre">MultiHeadMixedAttentionAlt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Rʹ</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dʺ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlpd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#MultiHeadMixedAttentionAlt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.MultiHeadMixedAttentionAlt" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.torch.MultiHeadAttention" title="PYTOOLS.torch.MultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiHeadAttention</span></code></a></p>
+<dt class="sig sig-object py" id="PYTOOLS.torch.MultiHeadMixedAttentionAlt1">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.torch.</span></span><span class="sig-name descname"><span class="pre">MultiHeadMixedAttentionAlt1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Rʹ</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#MultiHeadMixedAttentionAlt1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.MultiHeadMixedAttentionAlt1" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention" title="PYTOOLS.torch.GeneralisedMultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention</span></code></a></p>
+<p>An instance of this class is a multi-head Mixed attention module. Ref:</p>
+<blockquote>
+<div><p>Henderson et al. 2023. ‘<a class="reference external" href="https://doi.org/10.18653/v1/2023.bigpicture-1.8">Transformers as Graph-to-Graph Models</a>’. In Proc. of the Big Picture Workshop, 93–107. Singapore: Association for Computational Linguistics.</p>
+</div></blockquote>
+<p>Additional model parameters for Mixed attention scores are:</p>
+<div class="math notranslate nohighlight">
+\[\begin{array}{l}
+\Lambda^{\textrm{(zx)}},\Lambda^{\textrm{(zy)}}{:}\langle K,R',D' \rangle
+\end{array}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Rʹ</strong> (<em>int</em>) – edge-input dimension <span class="math notranslate nohighlight">\(R'\)</span></p></li>
+<li><p><strong>args</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention" title="PYTOOLS.torch.GeneralisedMultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention</span></code></a> constructor</p></li>
+<li><p><strong>kargs</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention" title="PYTOOLS.torch.GeneralisedMultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention</span></code></a> constructor</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.torch.MultiHeadMixedAttentionAlt1.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zʹ</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#MultiHeadMixedAttentionAlt1.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.MultiHeadMixedAttentionAlt1.forward" title="Link to this definition"></a></dt>
+<dd><p>Invokes <a class="reference internal" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention.forward" title="PYTOOLS.torch.GeneralisedMultiHeadAttention.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention.forward()</span></code></a> with edge input as scoring context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>zʹ</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(z'{:}\langle B,M,N,R' \rangle\)</span> (edge-input)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.torch.MultiHeadMixedAttentionAlt1.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x̄</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ȳ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zʹ</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#MultiHeadMixedAttentionAlt1.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.MultiHeadMixedAttentionAlt1.score" title="Link to this definition"></a></dt>
+<dd><p>Computes the attention scores passed to generalised convolution:</p>
+<div class="math notranslate nohighlight">
+\[\begin{align*}
+\bar{A}_{bk} &amp; = \bar{x}_{bk}\bar{y}_{bk}^\top+E_{\frac{md,mnr,rd}{mn}}(\bar{x}_{bk},z'_b,\Lambda_k^{\textrm{(zy)}})+E_{\frac{nd,mnr,rd}{mn}}(\bar{y}_{bk},z'_b,\Lambda_k^{\textrm{(zx)}})
+\end{align*}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x̄</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(\bar{x}{:}\langle B,K,M,D' \rangle\)</span> (key-proj)</p></li>
+<li><p><strong>ȳ</strong> – tensor <span class="math notranslate nohighlight">\(\bar{y}{:}\langle B,K,N,D' \rangle\)</span> (query-proj)</p></li>
+<li><p><strong>zʹ</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(z'{:}\langle B,M,N,R' \rangle\)</span> (edge-input)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>see <code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention.score()</span></code></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PYTOOLS.torch.MultiHeadMixedAttentionAlt2">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.torch.</span></span><span class="sig-name descname"><span class="pre">MultiHeadMixedAttentionAlt2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Rʹ</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dʺ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlpd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#MultiHeadMixedAttentionAlt2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.MultiHeadMixedAttentionAlt2" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention" title="PYTOOLS.torch.GeneralisedMultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention</span></code></a></p>
 <p>An instance of this class is a multi-head Mixed attention module. Ref:</p>
 <blockquote>
 <div><p>Kwon et al. 2023. ‘<a class="reference external" href="https://arxiv.org/abs/2106.11113">Matrix Encoding Networks for Neural Combinatorial Optimization</a>’. In Proc. of 37-th Annual Conference on Neural Information Processing Systems (NeurIPS), New Orleans, LA, U.S.A.</p>
 </div></blockquote>
 <p>Additional model parameters for Mixed attention scores are:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{l}
-\Lambda^{\textrm{(x)}}{:}\langle K,P',D' \rangle\; \Lambda^{\textrm{(y)}}{:}\langle K,Q',D' \rangle\; \Lambda^{\textrm{(z)}}{:}\langle K,R',D'' \rangle\\
-\Lambda^{\textrm{(o)}}{:}\langle K,D' \rangle\; \alpha,\beta,\Lambda^{\textrm{(oo)}}{:}\langle K,D'' \rangle
-\end{array}\end{split}\]</div>
+\[\begin{array}{l}
+\Lambda^{\textrm{(z)}}{:}\langle K,R',D'' \rangle\; \alpha,\alpha'{:}\langle K,D'' \rangle
+\end{array}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Rʹ</strong> (<em>int</em>) – matrix-input dimension <span class="math notranslate nohighlight">\(R'\)</span></p></li>
+<li><p><strong>Rʹ</strong> (<em>int</em>) – edge-input dimension <span class="math notranslate nohighlight">\(R'\)</span></p></li>
 <li><p><strong>Dʺ</strong> – internal multi-layer perceptron dimension <span class="math notranslate nohighlight">\(D''\)</span> (default see below)</p></li>
 <li><p><strong>mlpd</strong> (<em>float</em>) – the default value for <span class="math notranslate nohighlight">\(D''\)</span> is given by <span class="math notranslate nohighlight">\(\lfloor R'{\times}\textrm{mlpd}\rfloor\)</span></p></li>
-<li><p><strong>bias</strong> (<em>bool</em>) – whether to use the biases <span class="math notranslate nohighlight">\(\Lambda^{\textrm{(o),(oo)}}\)</span> + the convolution biases</p></li>
-<li><p><strong>args</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.MultiHeadAttention" title="PYTOOLS.torch.MultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiHeadAttention</span></code></a> constructor</p></li>
-<li><p><strong>kargs</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.MultiHeadAttention" title="PYTOOLS.torch.MultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiHeadAttention</span></code></a> constructor</p></li>
+<li><p><strong>args</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention" title="PYTOOLS.torch.GeneralisedMultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention</span></code></a> constructor</p></li>
+<li><p><strong>kargs</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention" title="PYTOOLS.torch.GeneralisedMultiHeadAttention"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention</span></code></a> constructor</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="PYTOOLS.torch.MultiHeadMixedAttentionAlt.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zʹ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yʹ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xʹ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#MultiHeadMixedAttentionAlt.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.MultiHeadMixedAttentionAlt.forward" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="PYTOOLS.torch.MultiHeadMixedAttentionAlt2.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zʹ</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#MultiHeadMixedAttentionAlt2.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.MultiHeadMixedAttentionAlt2.forward" title="Link to this definition"></a></dt>
+<dd><p>Invokes <a class="reference internal" href="#PYTOOLS.torch.GeneralisedMultiHeadAttention.forward" title="PYTOOLS.torch.GeneralisedMultiHeadAttention.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention.forward()</span></code></a> with edge input as scoring context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>zʹ</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(z'{:}\langle B,M,N,R' \rangle\)</span> (edge-input)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PYTOOLS.torch.MultiHeadMixedAttentionAlt2.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x̄</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ȳ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zʹ</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#MultiHeadMixedAttentionAlt2.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.MultiHeadMixedAttentionAlt2.score" title="Link to this definition"></a></dt>
 <dd><p>Computes the attention scores passed to generalised convolution:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\begin{align*}
-\bar{A}_{bk} &amp; = \textrm{relu}(\bar{x}_{bk}\bar{y}_{bk}^\top\otimes\alpha_k+\bar{z}_{bk})\beta_k\\
-\textrm{where } &amp; \bar{x}_{bk}{:}\langle M,D' \rangle,\; \bar{y}_{bk}{:}\langle N,D' \rangle,\; \bar{z}_{bk}{:}\langle M,N,D''\rangle\\
-\bar{x}_{bk} &amp; = x'_b\Lambda_k^{\textrm{(x)}}\\
-\bar{y}_{bk} &amp; = y'_b\Lambda_k^{\textrm{(y)}}+\mathbf{1}_N\otimes\Lambda_k^{\textrm{(o)}}\\
-\bar{z}_{bk} &amp; = z'_b\Lambda_k^{\textrm{(z)}}+\mathbf{1}_M\otimes\mathbf{1}_N\otimes\Lambda_k^{\textrm{(oo)}}
-\end{align*}\end{split}\]</div>
+\[\begin{align*}
+\bar{A}_{bk} &amp; = \textrm{relu}(\bar{x}_{bk}\bar{y}_{bk}^\top\otimes\alpha_k+z'_b\Lambda_k^{\textrm{(z)}})\alpha'_k
+\end{align*}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>zʹ</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(z'{:}\langle B,M,N,R' \rangle\)</span> (matrix-input)</p></li>
-<li><p><strong>yʹ</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(y'{:}\langle B,N,Q' \rangle\)</span> (query-input)</p></li>
-<li><p><strong>xʹ</strong> (<em>Tensor</em><em> | </em><em>None</em>) – tensor <span class="math notranslate nohighlight">\(x'{:}\langle B,M,P' \rangle\)</span> (key-input), default <span class="math notranslate nohighlight">\(y'\)</span></p></li>
-<li><p><strong>x</strong> (<em>Tensor</em><em> | </em><em>None</em>) – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a> (value-input), default <span class="math notranslate nohighlight">\(x'\)</span></p></li>
-<li><p><strong>kargs</strong> – passed to <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a></p></li>
+<li><p><strong>x̄</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(\bar{x}{:}\langle B,K,M,D' \rangle\)</span> (key-proj)</p></li>
+<li><p><strong>ȳ</strong> – tensor <span class="math notranslate nohighlight">\(\bar{y}{:}\langle B,K,N,D' \rangle\)</span> (query-proj)</p></li>
+<li><p><strong>zʹ</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(z'{:}\langle B,M,N,R' \rangle\)</span> (edge-input)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>see <a class="reference internal" href="#PYTOOLS.torch.GeneralisedConvolution.forward" title="PYTOOLS.torch.GeneralisedConvolution.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedConvolution.forward()</span></code></a></p>
+<dd class="field-even"><p>see <code class="xref py py-meth docutils literal notranslate"><span class="pre">GeneralisedMultiHeadAttention.score()</span></code></p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple[<em>Tensor</em>, <em>Any</em>]</p>
+<dd class="field-odd"><p><em>Tensor</em></p>
 </dd>
 </dl>
 </dd></dl>
@@ -387,11 +498,11 @@ A_{bk} &amp; = \textrm{softmax}_{\textrm{col}}\frac{1}{\textrm{temp}}(\bar{A}_{b
 <p>Model parameters are</p>
 <ul class="simple">
 <li><p>a weight tensor <span class="math notranslate nohighlight">\(\Lambda\)</span> matching the weight component of <em>sig</em> and</p></li>
-<li><p>a bias tensor <span class="math notranslate nohighlight">\(\Lambda^{\textrm{(o)}}\)</span> matching the intersection of the output component and the weight component of <em>sig</em>.</p></li>
+<li><p>a bias tensor <span class="math notranslate nohighlight">\(\beta\)</span> matching the intersection of the output component and the weight component of <em>sig</em>.</p></li>
 </ul>
 <p>For example with <code class="code docutils literal notranslate"><span class="pre">Einsum('pq,bnp-&gt;bnq',P,Q)</span></code> where <code class="code docutils literal notranslate"><span class="pre">P,Q</span></code> are integers, the model parameters are:</p>
 <div class="math notranslate nohighlight">
-\[\Lambda{:}\langle P,Q\rangle\; \Lambda^{\textrm{(o)}}{:}\langle Q\rangle\]</div>
+\[\Lambda{:}\langle P,Q\rangle\; \beta{:}\langle Q\rangle\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -412,8 +523,8 @@ A_{bk} &amp; = \textrm{softmax}_{\textrm{col}}\frac{1}{\textrm{temp}}(\bar{A}_{b
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/torch.html#Einsum.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.torch.Einsum.forward" title="Link to this definition"></a></dt>
 <dd><p>Computes <span class="math notranslate nohighlight">\(y\)</span> defined as follows:</p>
 <div class="math notranslate nohighlight">
-\[y = E_{\textrm{sig}}(\Lambda,x) + \textrm{reshape}(\Lambda^{\textrm{(o)}})\]</div>
-<p>where <span class="math notranslate nohighlight">\(E_{\textrm{sig}}\)</span> denotes the Einsum operator with the signature given by attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">sig</span></code>, and parameter <span class="math notranslate nohighlight">\(\Lambda^{\textrm{(o)}}\)</span> is reshaped to match the output component of the signature (in the example, it becomes <span class="math notranslate nohighlight">\(\mathbf{1}_B\otimes\mathbf{1}_N\otimes\Lambda^{\textrm{(o)}}\)</span> where dimensions <span class="math notranslate nohighlight">\(B,N\)</span> come from the input <span class="math notranslate nohighlight">\(x\)</span>).</p>
+\[y = E_{\textrm{sig}}(\Lambda,x) + \textrm{reshape}(\beta)\]</div>
+<p>where <span class="math notranslate nohighlight">\(E_{\textrm{sig}}\)</span> denotes the Einsum operator with the signature given by attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">sig</span></code>, and parameter <span class="math notranslate nohighlight">\(\beta\)</span> is reshaped to match the output component of the signature (in the example, it becomes <span class="math notranslate nohighlight">\(\mathbf{1}_B\otimes\mathbf{1}_N\otimes\beta\)</span> where dimensions <span class="math notranslate nohighlight">\(B,N\)</span> come from the input <span class="math notranslate nohighlight">\(x\)</span>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>x</strong> (<em>Tensor</em>) – tensor <span class="math notranslate nohighlight">\(x\)</span> matching the input component of the signature (in the example <span class="math notranslate nohighlight">\(x{:}\langle B,N,P\rangle\)</span>)</p>
