@@ -1,0 +1,282 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IPYDEMO.fractals.core &mdash; IPYDEMO  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            IPYDEMO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../mod_odesimu.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.odesimu</span></code> — Dynamical system simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mod_fractals.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.fractals</span></code> — Fractals exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mod_polyhedra.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.polyhedra</span></code> — Polyhedra exploration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">IPYDEMO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">IPYDEMO.fractals.core</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for IPYDEMO.fractals.core</h1><div class="highlight"><pre>
+<span></span><span class="c1"># File:                 fractals/core.py</span>
+<span class="c1"># Creation date:        2015-03-19</span>
+<span class="c1"># Contributors:         Jean-Marc Andreoli</span>
+<span class="c1"># Language:             python</span>
+<span class="c1"># Purpose:              Fractal definition and visual exploration</span>
+<span class="c1">#</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span><span class="p">;</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">count</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">ndarray</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">zeros</span><span class="p">,</span> <span class="nb">abs</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">isnan</span><span class="p">,</span> <span class="n">linspace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">Selection</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="s1">&#39;Fractal&#39;</span><span class="p">,</span> <span class="s1">&#39;MultiZoomFractal&#39;</span><span class="p">,</span> <span class="s1">&#39;FractalBrowser&#39;</span><span class="p">,</span>
+
+<span class="c1">#==================================================================================================</span>
+<div class="viewcode-block" id="Fractal">
+<a class="viewcode-back" href="../../../mod_fractals.html#IPYDEMO.fractals.core.Fractal">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Fractal</span><span class="p">:</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">:param main: a function (see below)</span>
+<span class="sd">:param eoracle: escape oracle of the sequence defining this fractal object</span>
+
+<span class="sd">An instance of this class represents an abstract fractal, defined by a function :math:`u:\mathbb{C}\times\mathbb{C}\mapsto\mathbb{C}` as the set of complex numbers :math:`c` such that the sequence</span>
+
+<span class="sd">.. math::</span>
+
+<span class="sd">   \begin{equation*}</span>
+<span class="sd">   z_0(c)=c \hspace{1cm} z_{n+1}(c)=u(z_n(c),c)</span>
+<span class="sd">   \end{equation*}</span>
+
+<span class="sd">remains bounded.</span>
+
+<span class="sd">An escape oracle for the fractal is a boolean function :math:`R` such that if :math:`R(z_n(c))` is true for some :math:`n`, then the whole sequence :math:`(z_n(c))_{n\in\mathbb{N}}` is unbounded and :math:`c` does not belong to the fractal.</span>
+
+<span class="sd">:param main: function :math:`u` implemented as a ufunc</span>
+<span class="sd">:param eoracle: escape oracle of the fractal (if given as a number `r`, then it is taken to be the function `(lambda z: abs(z)&gt;r)`)</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1">#==================================================================================================</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">main</span><span class="p">:</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">complex</span><span class="p">],</span><span class="nb">complex</span><span class="p">],</span><span class="n">eoracle</span><span class="p">:</span><span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span><span class="nb">bool</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">main</span> <span class="o">=</span> <span class="n">main</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">eoracle</span> <span class="o">=</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">z</span><span class="p">,</span><span class="n">r</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">eoracle</span><span class="p">):</span> <span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">&gt;</span><span class="n">r</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">eoracle</span><span class="p">,(</span><span class="nb">int</span><span class="p">,</span><span class="nb">float</span><span class="p">))</span> <span class="k">else</span> <span class="n">eoracle</span>
+
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="Fractal.generate">
+<a class="viewcode-back" href="../../../mod_fractals.html#IPYDEMO.fractals.core.Fractal.generate">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">grid</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Successively yields the &quot;temperature&quot; grid :math:`\theta_n(c)` taken on all the points :math:`c` in the grid for :math:`n=1\ldots\infty`, where</span>
+
+<span class="sd">.. math::</span>
+
+<span class="sd">   \begin{equation*}</span>
+<span class="sd">   \theta_n(c) = \frac{\min\{m&lt;n\;|\; R(z_m(c))\}\cup\{n\}}{n}</span>
+<span class="sd">   \end{equation*}</span>
+
+<span class="sd">In other words, the temperature :math:`\theta_n(c)` of a point :math:`c` is the proportion of times in the sequence :math:`(z_m(c))_{m=0:n-1}` when the value was outside the escape zone.</span>
+
+<span class="sd">* A temperature of :math:`1` characterises a point whose membership of this fractal is not decided yet (it has never been seen in the escape zone until now, but could escape later).</span>
+<span class="sd">* A temperature below :math:`1` characterises a point which is provably out of this fractal, and the value of the temperature reflects the effort (number of iterations) that was required to reach that decision.</span>
+
+<span class="sd">Note that when :math:`n\rightarrow\infty`, the temperature :math:`\theta_n(c)` tends to :math:`1` if :math:`c` belongs to this fractal, and :math:`0` otherwise.</span>
+
+<span class="sd">:param grid: an array of complex numbers</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+    <span class="n">eoracle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eoracle</span>
+    <span class="n">effort</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+      <span class="n">z</span><span class="p">[</span><span class="n">eoracle</span><span class="p">(</span><span class="n">z</span><span class="p">)]</span> <span class="o">=</span> <span class="n">nan</span>
+      <span class="n">effort</span><span class="p">[</span><span class="o">~</span><span class="n">isnan</span><span class="p">(</span><span class="n">z</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span>
+      <span class="k">yield</span> <span class="n">effort</span><span class="o">/</span><span class="n">n</span>
+      <span class="n">z</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">grid</span><span class="p">)</span></div>
+</div>
+
+
+<span class="c1">#==================================================================================================</span>
+<div class="viewcode-block" id="MultiZoomFractal">
+<a class="viewcode-back" href="../../../mod_fractals.html#IPYDEMO.fractals.core.MultiZoomFractal">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MultiZoomFractal</span> <span class="p">(</span><span class="n">Fractal</span><span class="p">):</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">An instance of this class is a fractal together with a stack of rectangles of the complex plane, where each rectangle in the stack entirely contains its successor. For each rectangle in the stack, a grid with a certain resolution is created and the iterable of corresponding temperature grids is computed.</span>
+
+<span class="sd">:param ibounds: a recommended rectangle of interest, in the form as a pair of pairs (x-min,x-max),(y-min,y-max)</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1">#==================================================================================================</span>
+
+  <span class="n">Entry</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;StackEntry&#39;</span><span class="p">,</span><span class="s1">&#39;status seq bounds resolution&#39;</span><span class="p">)</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="n">ibounds</span><span class="p">:</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span><span class="nb">float</span><span class="p">],</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span><span class="nb">float</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">ibounds</span> <span class="o">=</span> <span class="n">ibounds</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">trace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">seq</span><span class="p">):</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">status</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span> <span class="n">status</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">status</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span> <span class="k">yield</span> <span class="n">x</span>
+
+<div class="viewcode-block" id="MultiZoomFractal.push">
+<a class="viewcode-back" href="../../../mod_fractals.html#IPYDEMO.fractals.core.MultiZoomFractal.push">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">resolution</span><span class="p">,</span><span class="n">bounds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Adds the rectangle defined by *bounds* (by default the initial recommended rectangle) with resolution *resolution* at level *i* in the stack (default at the bottom of the stack). All the entries after *i* are deleted.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">bounds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">bounds</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ibounds</span>
+    <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">status</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">i</span><span class="o">&gt;</span><span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
+    <span class="n">seq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span><span class="n">resolution</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span><span class="p">):</span> <span class="n">x</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Entry</span><span class="p">([</span><span class="n">p</span><span class="p">,</span><span class="n">x</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">seq</span><span class="p">),</span><span class="n">bounds</span><span class="p">,</span><span class="n">resolution</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">e</span></div>
+
+
+<div class="viewcode-block" id="MultiZoomFractal.grid">
+<a class="viewcode-back" href="../../../mod_fractals.html#IPYDEMO.fractals.core.MultiZoomFractal.grid">[docs]</a>
+  <span class="nd">@staticmethod</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">grid</span><span class="p">(</span><span class="n">bounds</span><span class="p">:</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span><span class="nb">float</span><span class="p">],</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span><span class="nb">float</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">resolution</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;May be refined in subclasses or at the instance level&quot;&quot;&quot;</span>
+    <span class="p">(</span><span class="n">xmin</span><span class="p">,</span><span class="n">xmax</span><span class="p">),(</span><span class="n">ymin</span><span class="p">,</span><span class="n">ymax</span><span class="p">)</span> <span class="o">=</span> <span class="n">bounds</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">ymax</span><span class="o">-</span><span class="n">ymin</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">xmax</span><span class="o">-</span><span class="n">xmin</span><span class="p">)</span>
+    <span class="n">Ny</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">resolution</span><span class="o">*</span><span class="n">r</span><span class="p">));</span> <span class="n">Nx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">resolution</span><span class="o">/</span><span class="n">Ny</span><span class="p">)</span> <span class="c1"># Ny/Nx~r and Nx.Ny~resolution</span>
+    <span class="k">return</span> <span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span><span class="n">xmax</span><span class="p">,</span><span class="n">Nx</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)[</span><span class="kc">None</span><span class="p">,:]</span><span class="o">+</span><span class="mf">1.</span><span class="n">j</span><span class="o">*</span><span class="n">linspace</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span><span class="n">ymax</span><span class="p">,</span><span class="n">Ny</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span></div>
+</div>
+
+
+<span class="c1">#==================================================================================================</span>
+<div class="viewcode-block" id="FractalBrowser">
+<a class="viewcode-back" href="../../../mod_fractals.html#IPYDEMO.fractals.core.FractalBrowser">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FractalBrowser</span><span class="p">:</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">:param content: the fractal to browse</span>
+
+<span class="sd">An instance of this class is a fractal browser, which allows zooming at controlled resolution.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1">#==================================================================================================</span>
+
+  <span class="n">player</span><span class="p">:</span><span class="n">Any</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;An object managing the user control (selected automatically based on the :mod:`matplotlib` backend, but can be changed)&quot;&quot;&quot;</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">content</span><span class="p">:</span><span class="n">MultiZoomFractal</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">displayer</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span><span class="n">select</span><span class="p">):</span>
+      <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rectangle</span>
+      <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">xticks</span><span class="o">=</span><span class="p">(),</span><span class="n">yticks</span><span class="o">=</span><span class="p">(),</span><span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span><span class="n">navigate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+      <span class="n">bounds</span><span class="p">,</span><span class="n">stack</span><span class="p">,</span><span class="n">push</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">ibounds</span><span class="p">,</span><span class="n">content</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span><span class="n">content</span><span class="o">.</span><span class="n">push</span>
+      <span class="n">img</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="nb">float</span><span class="p">),</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span><span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="o">*</span><span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="o">*</span><span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+      <span class="n">rect</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">height</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">.2</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span><span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">selection</span> <span class="o">=</span> <span class="n">Selection</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">select</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">.4</span><span class="p">,</span><span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+      <span class="n">level</span> <span class="o">=</span> <span class="n">entry</span> <span class="o">=</span> <span class="kc">None</span>
+      <span class="k">def</span><span class="w"> </span><span class="nf">disp</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">new</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">nonlocal</span> <span class="n">level</span><span class="p">,</span><span class="n">entry</span>
+        <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="n">level</span><span class="p">:</span> <span class="n">a</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="n">level</span><span class="p">,</span><span class="n">entry</span> <span class="o">=</span> <span class="n">i</span><span class="p">,(</span><span class="n">stack</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">if</span> <span class="n">new</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">push</span><span class="p">(</span><span class="o">*</span><span class="n">new</span><span class="p">,</span><span class="n">i</span><span class="p">))</span>
+          <span class="n">img</span><span class="o">.</span><span class="n">set_extent</span><span class="p">((</span><span class="o">*</span><span class="n">entry</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="o">*</span><span class="n">entry</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+          <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="n">rect</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+          <span class="k">else</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">xmin</span><span class="p">,</span><span class="n">xmax</span><span class="p">),(</span><span class="n">ymin</span><span class="p">,</span><span class="n">ymax</span><span class="p">)</span> <span class="o">=</span> <span class="n">stack</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bounds</span>
+            <span class="n">rect</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span><span class="n">ymin</span><span class="p">,</span><span class="n">xmax</span><span class="o">-</span><span class="n">xmin</span><span class="p">,</span><span class="n">ymax</span><span class="o">-</span><span class="n">ymin</span><span class="p">),</span><span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+          <span class="n">a</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">status</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">set_array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">entry</span><span class="o">.</span><span class="n">status</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+      <span class="k">return</span> <span class="n">disp</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_factory</span><span class="p">(</span><span class="n">displayer</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repr_mimebundle_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">_repr_mimebundle_</span>
+    <span class="k">except</span><span class="p">:</span> <span class="k">pass</span>
+
+  <span class="nd">@cached_property</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">player_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_backend</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">widget_player</span><span class="p">,</span><span class="n">mpl_player</span>
+    <span class="k">return</span> <span class="n">widget_player</span> <span class="k">if</span> <span class="s1">&#39;ipympl&#39;</span> <span class="ow">in</span> <span class="n">get_backend</span><span class="p">()</span> <span class="k">else</span> <span class="n">mpl_player</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

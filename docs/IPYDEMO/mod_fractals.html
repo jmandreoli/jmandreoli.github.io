@@ -1,0 +1,373 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IPYDEMO.fractals — Fractals exploration &mdash; IPYDEMO  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="IPYDEMO.polyhedra — Polyhedra exploration" href="mod_polyhedra.html" />
+    <link rel="prev" title="IPYDEMO.odesimu — Dynamical system simulation" href="mod_odesimu.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            IPYDEMO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="mod_odesimu.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.odesimu</span></code> — Dynamical system simulation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.fractals</span></code> — Fractals exploration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#an-example">An example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-IPYDEMO.fractals.core">Available types and functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#IPYDEMO.fractals.core.Fractal"><code class="docutils literal notranslate"><span class="pre">Fractal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.fractals.core.Fractal.generate"><code class="docutils literal notranslate"><span class="pre">Fractal.generate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#IPYDEMO.fractals.core.MultiZoomFractal"><code class="docutils literal notranslate"><span class="pre">MultiZoomFractal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.fractals.core.MultiZoomFractal.Entry"><code class="docutils literal notranslate"><span class="pre">MultiZoomFractal.Entry</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.fractals.core.MultiZoomFractal.push"><code class="docutils literal notranslate"><span class="pre">MultiZoomFractal.push()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.fractals.core.MultiZoomFractal.grid"><code class="docutils literal notranslate"><span class="pre">MultiZoomFractal.grid()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#IPYDEMO.fractals.core.FractalBrowser"><code class="docutils literal notranslate"><span class="pre">FractalBrowser</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.fractals.core.FractalBrowser.player"><code class="docutils literal notranslate"><span class="pre">FractalBrowser.player</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#IPYDEMO.fractals.util.player_base"><code class="docutils literal notranslate"><span class="pre">player_base</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.fractals.util.player_base.setrunning"><code class="docutils literal notranslate"><span class="pre">player_base.setrunning()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.fractals.util.player_base.show_running"><code class="docutils literal notranslate"><span class="pre">player_base.show_running()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.fractals.util.player_base.show_precision"><code class="docutils literal notranslate"><span class="pre">player_base.show_precision()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.fractals.util.player_base.select"><code class="docutils literal notranslate"><span class="pre">player_base.select()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#IPYDEMO.fractals.util.widget_player"><code class="docutils literal notranslate"><span class="pre">widget_player</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#IPYDEMO.fractals.util.mpl_player"><code class="docutils literal notranslate"><span class="pre">mpl_player</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mod_polyhedra.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.polyhedra</span></code> — Polyhedra exploration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">IPYDEMO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.fractals</span></code> — Fractals exploration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/mod_fractals.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ipydemo-fractals-fractals-exploration">
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.fractals</span></code> — Fractals exploration<a class="headerlink" href="#ipydemo-fractals-fractals-exploration" title="Link to this heading"></a></h1>
+<p>This module provides tools to display and explore fractals.</p>
+<section id="an-example">
+<h2>An example<a class="headerlink" href="#an-example" title="Link to this heading"></a></h2>
+<p>We want to explore the (most famous) fractal: Mandelbrot’s set. It is the set of complex numbers <span class="math notranslate nohighlight">\(c\)</span> for which the following sequence remains bounded:</p>
+<div class="math notranslate nohighlight">
+\[z_0 = c \hspace{2cm} z_{n+1} = z_n^2+c\]</div>
+<p>This is achieved by the following program.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># File:                 demo/fractals.py</span>
+<span class="c1"># Contributors:         Jean-Marc Andreoli</span>
+<span class="c1"># Language:             python</span>
+<span class="c1"># Purpose:              Illustration of the fractals subpackage</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">make</span><span class="w"> </span><span class="kn">import</span> <span class="n">RUN</span><span class="p">;</span> <span class="n">RUN</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span><span class="vm">__file__</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">square</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..fractals</span><span class="w"> </span><span class="kn">import</span> <span class="n">MultiZoomFractal</span><span class="p">,</span> <span class="n">FractalBrowser</span>
+
+<span class="n">mandelbrot</span> <span class="o">=</span> <span class="n">MultiZoomFractal</span><span class="p">((</span><span class="k">lambda</span> <span class="n">z</span><span class="p">,</span><span class="n">c</span><span class="p">:</span> <span class="n">square</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">+</span><span class="n">c</span><span class="p">),</span><span class="n">ibounds</span><span class="o">=</span><span class="p">((</span><span class="o">-</span><span class="mf">.779</span><span class="p">,</span><span class="o">-</span><span class="mf">.774</span><span class="p">),(</span><span class="mf">.133</span><span class="p">,</span><span class="mf">.138</span><span class="p">)),</span><span class="n">eoracle</span><span class="o">=</span><span class="mf">2.</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">demo</span><span class="p">():</span>
+  <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="kn">import</span> <span class="n">show</span><span class="p">,</span><span class="n">close</span>
+  <span class="n">R</span> <span class="o">=</span> <span class="n">FractalBrowser</span><span class="p">(</span><span class="n">mandelbrot</span><span class="p">,</span><span class="n">fig_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">7</span><span class="p">)),</span><span class="n">resolution</span><span class="o">=</span><span class="mi">160000</span><span class="p">,</span><span class="n">interval</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span><span class="n">save_count</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">action</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="s1">&#39;get_size_inches&#39;</span><span class="p">,</span><span class="s1">&#39;set_size_inches&#39;</span><span class="p">,</span><span class="s1">&#39;savefig&#39;</span><span class="p">:</span> <span class="nb">setattr</span><span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">board</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="nb">getattr</span><span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">main</span><span class="p">,</span><span class="n">a</span><span class="p">))</span> <span class="c1"># very ugly trick because board is a subfigure</span>
+    <span class="n">R</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">anim</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">RUN</span><span class="o">.</span><span class="n">dir</span><span class="o">/</span><span class="s1">&#39;fractals.mp4&#39;</span><span class="p">))</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;ffmpeg&#39;</span><span class="p">,</span><span class="s1">&#39;-loglevel&#39;</span><span class="p">,</span><span class="s1">&#39;panic&#39;</span><span class="p">,</span><span class="s1">&#39;-y&#39;</span><span class="p">,</span><span class="s1">&#39;-i&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">RUN</span><span class="o">.</span><span class="n">dir</span><span class="o">/</span><span class="s1">&#39;fractals.mp4&#39;</span><span class="p">),</span><span class="nb">str</span><span class="p">(</span><span class="n">RUN</span><span class="o">.</span><span class="n">dir</span><span class="o">/</span><span class="s1">&#39;fractals.gif&#39;</span><span class="p">)])</span>
+    <span class="n">close</span><span class="p">()</span>
+  <span class="n">RUN</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+  <span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Typical output:</p>
+<img alt="_images/fractals.gif" src="_images/fractals.gif" />
+</section>
+<section id="module-IPYDEMO.fractals.core">
+<span id="available-types-and-functions"></span><h2>Available types and functions<a class="headerlink" href="#module-IPYDEMO.fractals.core" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="IPYDEMO.fractals.core.Fractal">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">IPYDEMO.fractals.core.</span></span><span class="sig-name descname"><span class="pre">Fractal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">main</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eoracle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/fractals/core.html#Fractal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.fractals.core.Fractal" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>main</strong> (<em>Callable</em><em>[</em><em>[</em><em>complex</em><em>]</em><em>, </em><em>complex</em><em>]</em>) – a function (see below)</p></li>
+<li><p><strong>eoracle</strong> (<em>Union</em><em>[</em><em>float</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>float</em><em>]</em><em>, </em><em>bool</em><em>]</em><em>]</em>) – escape oracle of the sequence defining this fractal object</p></li>
+</ul>
+</dd>
+</dl>
+<p>An instance of this class represents an abstract fractal, defined by a function <span class="math notranslate nohighlight">\(u:\mathbb{C}\times\mathbb{C}\mapsto\mathbb{C}\)</span> as the set of complex numbers <span class="math notranslate nohighlight">\(c\)</span> such that the sequence</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation*}
+z_0(c)=c \hspace{1cm} z_{n+1}(c)=u(z_n(c),c)
+\end{equation*}\]</div>
+<p>remains bounded.</p>
+<p>An escape oracle for the fractal is a boolean function <span class="math notranslate nohighlight">\(R\)</span> such that if <span class="math notranslate nohighlight">\(R(z_n(c))\)</span> is true for some <span class="math notranslate nohighlight">\(n\)</span>, then the whole sequence <span class="math notranslate nohighlight">\((z_n(c))_{n\in\mathbb{N}}\)</span> is unbounded and <span class="math notranslate nohighlight">\(c\)</span> does not belong to the fractal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>main</strong> (<em>Callable</em><em>[</em><em>[</em><em>complex</em><em>]</em><em>, </em><em>complex</em><em>]</em>) – function <span class="math notranslate nohighlight">\(u\)</span> implemented as a ufunc</p></li>
+<li><p><strong>eoracle</strong> (<em>Union</em><em>[</em><em>float</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>float</em><em>]</em><em>, </em><em>bool</em><em>]</em><em>]</em>) – escape oracle of the fractal (if given as a number <cite>r</cite>, then it is taken to be the function <cite>(lambda z: abs(z)&gt;r)</cite>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="IPYDEMO.fractals.core.Fractal.generate">
+<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/fractals/core.html#Fractal.generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.fractals.core.Fractal.generate" title="Link to this definition"></a></dt>
+<dd><p>Successively yields the “temperature” grid <span class="math notranslate nohighlight">\(\theta_n(c)\)</span> taken on all the points <span class="math notranslate nohighlight">\(c\)</span> in the grid for <span class="math notranslate nohighlight">\(n=1\ldots\infty\)</span>, where</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation*}
+\theta_n(c) = \frac{\min\{m&lt;n\;|\; R(z_m(c))\}\cup\{n\}}{n}
+\end{equation*}\]</div>
+<p>In other words, the temperature <span class="math notranslate nohighlight">\(\theta_n(c)\)</span> of a point <span class="math notranslate nohighlight">\(c\)</span> is the proportion of times in the sequence <span class="math notranslate nohighlight">\((z_m(c))_{m=0:n-1}\)</span> when the value was outside the escape zone.</p>
+<ul class="simple">
+<li><p>A temperature of <span class="math notranslate nohighlight">\(1\)</span> characterises a point whose membership of this fractal is not decided yet (it has never been seen in the escape zone until now, but could escape later).</p></li>
+<li><p>A temperature below <span class="math notranslate nohighlight">\(1\)</span> characterises a point which is provably out of this fractal, and the value of the temperature reflects the effort (number of iterations) that was required to reach that decision.</p></li>
+</ul>
+<p>Note that when <span class="math notranslate nohighlight">\(n\rightarrow\infty\)</span>, the temperature <span class="math notranslate nohighlight">\(\theta_n(c)\)</span> tends to <span class="math notranslate nohighlight">\(1\)</span> if <span class="math notranslate nohighlight">\(c\)</span> belongs to this fractal, and <span class="math notranslate nohighlight">\(0\)</span> otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>grid</strong> – an array of complex numbers</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="IPYDEMO.fractals.core.MultiZoomFractal">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">IPYDEMO.fractals.core.</span></span><span class="sig-name descname"><span class="pre">MultiZoomFractal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ibounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/fractals/core.html#MultiZoomFractal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.fractals.core.MultiZoomFractal" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#IPYDEMO.fractals.core.Fractal" title="IPYDEMO.fractals.core.Fractal"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fractal</span></code></a></p>
+<p>An instance of this class is a fractal together with a stack of rectangles of the complex plane, where each rectangle in the stack entirely contains its successor. For each rectangle in the stack, a grid with a certain resolution is created and the iterable of corresponding temperature grids is computed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ibounds</strong> (<em>Tuple</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>, </em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>]</em>) – a recommended rectangle of interest, in the form as a pair of pairs (x-min,x-max),(y-min,y-max)</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IPYDEMO.fractals.core.MultiZoomFractal.Entry">
+<span class="sig-name descname"><span class="pre">Entry</span></span><a class="headerlink" href="#IPYDEMO.fractals.core.MultiZoomFractal.Entry" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">StackEntry</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="IPYDEMO.fractals.core.MultiZoomFractal.push">
+<span class="sig-name descname"><span class="pre">push</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resolution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/fractals/core.html#MultiZoomFractal.push"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.fractals.core.MultiZoomFractal.push" title="Link to this definition"></a></dt>
+<dd><p>Adds the rectangle defined by <em>bounds</em> (by default the initial recommended rectangle) with resolution <em>resolution</em> at level <em>i</em> in the stack (default at the bottom of the stack). All the entries after <em>i</em> are deleted.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="IPYDEMO.fractals.core.MultiZoomFractal.grid">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/fractals/core.html#MultiZoomFractal.grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.fractals.core.MultiZoomFractal.grid" title="Link to this definition"></a></dt>
+<dd><p>May be refined in subclasses or at the instance level</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bounds</strong> (<em>Tuple</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>, </em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>]</em>)</p></li>
+<li><p><strong>resolution</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="IPYDEMO.fractals.core.FractalBrowser">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">IPYDEMO.fractals.core.</span></span><span class="sig-name descname"><span class="pre">FractalBrowser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/fractals/core.html#FractalBrowser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.fractals.core.FractalBrowser" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>content</strong> (<a class="reference internal" href="#IPYDEMO.fractals.core.MultiZoomFractal" title="IPYDEMO.fractals.core.MultiZoomFractal"><em>MultiZoomFractal</em></a>) – the fractal to browse</p>
+</dd>
+</dl>
+<p>An instance of this class is a fractal browser, which allows zooming at controlled resolution.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IPYDEMO.fractals.core.FractalBrowser.player">
+<span class="sig-name descname"><span class="pre">player</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#IPYDEMO.fractals.core.FractalBrowser.player" title="Link to this definition"></a></dt>
+<dd><p>An object managing the user control (selected automatically based on the <code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code> backend, but can be changed)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-IPYDEMO.fractals.util">
+<dt class="sig sig-object py" id="IPYDEMO.fractals.util.player_base">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">IPYDEMO.fractals.util.</span></span><span class="sig-name descname"><span class="pre">player_base</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">display</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/fractals/util.html#player_base"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.fractals.util.player_base" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An instance of this class controls the exploration of a fractal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>display</strong> (<em>Callable</em><em>[</em><em>[</em><em>int</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>None</em><em>]</em>) – a function which, given a zoom level and possibly its new specification, displays it on the board</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="IPYDEMO.fractals.util.player_base.setrunning">
+<span class="sig-name descname"><span class="pre">setrunning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/fractals/util.html#player_base.setrunning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.fractals.util.player_base.setrunning" title="Link to this definition"></a></dt>
+<dd><p>Sets the running state of the animation to <em>b</em> (if <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>, the inverse of current running state).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>b</strong> (<em>bool</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="IPYDEMO.fractals.util.player_base.show_running">
+<span class="sig-name descname"><span class="pre">show_running</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/fractals/util.html#player_base.show_running"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.fractals.util.player_base.show_running" title="Link to this definition"></a></dt>
+<dd><p>Shows the current running state as <em>b</em>. This implementation raises an error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>b</strong> (<em>bool</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="IPYDEMO.fractals.util.player_base.show_precision">
+<span class="sig-name descname"><span class="pre">show_precision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/fractals/util.html#player_base.show_precision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.fractals.util.player_base.show_precision" title="Link to this definition"></a></dt>
+<dd><p>Shows the current precision as <em>p</em>. This implementation raises an error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p</strong> (<em>int</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="IPYDEMO.fractals.util.player_base.select">
+<span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/fractals/util.html#player_base.select"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.fractals.util.player_base.select" title="Link to this definition"></a></dt>
+<dd><p>Pushes a new level in the animation at the current level plus one. This implementation raises an error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bounds</strong> (<em>Tuple</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>, </em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>] </em><em>| </em><em>None</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="IPYDEMO.fractals.util.widget_player">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">IPYDEMO.fractals.util.</span></span><span class="sig-name descname"><span class="pre">widget_player</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/fractals/util.html#widget_player"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.fractals.util.widget_player" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">app</span></code>, <a class="reference internal" href="#IPYDEMO.fractals.util.player_base" title="IPYDEMO.fractals.util.player_base"><code class="xref py py-class docutils literal notranslate"><span class="pre">player_base</span></code></a></p>
+<p>This class refines <a class="reference internal" href="#IPYDEMO.fractals.util.player_base" title="IPYDEMO.fractals.util.player_base"><code class="xref py py-class docutils literal notranslate"><span class="pre">player_base</span></code></a> for backends which support <code class="xref py py-mod docutils literal notranslate"><span class="pre">ipywidgets</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>displayer</strong> (<em>Callable</em><em>[</em><em>[</em><em>Figure</em><em>, </em><em>Selection</em><em>]</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>int</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>None</em><em>]</em><em>]</em>) – passed the board figure as well as the selector on that board, returns the <em>display</em> argument of the superclass</p></li>
+<li><p><strong>resolution</strong> (<em>int</em>) – the (constant) resolution for all the zoom level (total number of pixels to display)</p></li>
+<li><p><strong>toolbar</strong> (<em>HBox</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="IPYDEMO.fractals.util.mpl_player">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">IPYDEMO.fractals.util.</span></span><span class="sig-name descname"><span class="pre">mpl_player</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">displayer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_kw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tbsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">((0.15,</span> <span class="pre">0.8,</span> <span class="pre">0.15,</span> <span class="pre">1.4),</span> <span class="pre">0.15)</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/fractals/util.html#mpl_player"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.fractals.util.mpl_player" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#IPYDEMO.fractals.util.player_base" title="IPYDEMO.fractals.util.player_base"><code class="xref py py-class docutils literal notranslate"><span class="pre">player_base</span></code></a></p>
+<p>This class refines <a class="reference internal" href="#IPYDEMO.fractals.util.player_base" title="IPYDEMO.fractals.util.player_base"><code class="xref py py-class docutils literal notranslate"><span class="pre">player_base</span></code></a> for backends which do not support <code class="xref py py-mod docutils literal notranslate"><span class="pre">ipywidgets</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>displayer</strong> (<em>Callable</em><em>[</em><em>[</em><em>Figure</em><em>, </em><em>Selection</em><em>]</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>int</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>None</em><em>]</em><em>]</em>) – passed the board figure as well as the selector on that board, returns the <em>display</em> argument of the superclass</p></li>
+<li><p><strong>resolution</strong> (<em>int</em>) – the (constant) resolution for all the zoom level (total number of pixels to display)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mod_odesimu.html" class="btn btn-neutral float-left" title="IPYDEMO.odesimu — Dynamical system simulation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mod_polyhedra.html" class="btn btn-neutral float-right" title="IPYDEMO.polyhedra — Polyhedra exploration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

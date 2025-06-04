@@ -1,0 +1,247 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XPOSE.server — instance management &mdash; XPOSE  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="XPOSE.attach — attachment operations" href="mod_attach.html" />
+    <link rel="prev" title="XPOSE.main — dashboard CGI resources" href="mod_main.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            XPOSE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="mod_init.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE</span></code> (toplevel) — base definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_client.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.client</span></code> — client CGI resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_main.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.main</span></code> — dashboard CGI resources</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.server</span></code> — instance management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-XPOSE.server">Available types and functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#XPOSE.server.XposeServer"><code class="docutils literal notranslate"><span class="pre">XposeServer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#XPOSE.server.XposeServer.dump"><code class="docutils literal notranslate"><span class="pre">XposeServer.dump()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#XPOSE.server.XposeServer.load"><code class="docutils literal notranslate"><span class="pre">XposeServer.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#XPOSE.server.XposeServer.precompute_trigger"><code class="docutils literal notranslate"><span class="pre">XposeServer.precompute_trigger()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#XPOSE.server.XposeServer.do_get"><code class="docutils literal notranslate"><span class="pre">XposeServer.do_get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#XPOSE.server.XposeServer.do_post"><code class="docutils literal notranslate"><span class="pre">XposeServer.do_post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#XPOSE.server.XposeServer.do_put"><code class="docutils literal notranslate"><span class="pre">XposeServer.do_put()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#XPOSE.server.initial"><code class="docutils literal notranslate"><span class="pre">initial()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mod_attach.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.attach</span></code> — attachment operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_access.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.access</span></code> — access control operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_initial.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.initial</span></code> — initialisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.utils</span></code> — miscellaneous utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">XPOSE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.server</span></code> — instance management</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/mod_server.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="xpose-server-instance-management">
+<h1><a class="reference internal" href="#module-XPOSE.server" title="XPOSE.server"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.server</span></code></a> — instance management<a class="headerlink" href="#xpose-server-instance-management" title="Link to this heading"></a></h1>
+<section id="module-XPOSE.server">
+<span id="available-types-and-functions"></span><h2>Available types and functions<a class="headerlink" href="#module-XPOSE.server" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="XPOSE.server.XposeServer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">XPOSE.server.</span></span><span class="sig-name descname"><span class="pre">XposeServer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">authoriser=&lt;function</span> <span class="pre">XposeServer.&lt;lambda&gt;&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attach_namer=&lt;function</span> <span class="pre">default_attach_namer&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/XPOSE/server.html#XposeServer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#XPOSE.server.XposeServer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="mod_init.html#XPOSE.XposeBase" title="XPOSE.XposeBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">XposeBase</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">WithCatsMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">WithAttachMixin</span></code>, <a class="reference internal" href="mod_utils.html#XPOSE.utils.CGIMixin" title="XPOSE.utils.CGIMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">CGIMixin</span></code></a></p>
+<p>An instance of this class is a CGI resource managing a whole Xpose instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>authoriser</strong> (<em>Callable</em><em>[</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em><em>, </em><em>None</em><em>]</em>) – callable taking as input an access level and a path, and restricting access to that path to that level</p></li>
+<li><p><strong>attach_namer</strong> (<em>Callable</em><em>[</em><em>[</em><em>int</em><em>]</em><em>, </em><em>str</em><em>]</em>) – callable taking as input a whole number and returning a string suitable as a path name (no conflict)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="XPOSE.server.XposeServer.dump">
+<span class="sig-name descname"><span class="pre">dump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">queries</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/XPOSE/server.html#XposeServer.dump"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#XPOSE.server.XposeServer.dump" title="Link to this definition"></a></dt>
+<dd><p>Executes a batch of SQL queries (SELECT only) specified by <em>queries</em> (key-value pairs are label-query pairs). Returns a dictionary with the same keys and values set to the results of the queries. The dictionary <em>meta</em> holds a description of the batch. It is augmented with details about the execution, and added to the result under key <code class="docutils literal notranslate"><span class="pre">meta</span></code>.</p>
+<p>Table (view) <code class="docutils literal notranslate"><span class="pre">EntryFull</span></code> can be used in queries instead of <code class="docutils literal notranslate"><span class="pre">Entry</span></code> to produce listings suitable for method <a class="reference internal" href="#XPOSE.server.XposeServer.load" title="XPOSE.server.XposeServer.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load()</span></code></a> (field <code class="docutils literal notranslate"><span class="pre">attach</span></code> is converted appropriately). In particular, when <em>queries</em> is empty, it is replaced by:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;listing&#39;</span><span class="p">:</span><span class="s1">&#39;SELECT * FROM EntryFull&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>meta</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em> | </em><em>None</em><em>] </em><em>| </em><em>None</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, <em>Any</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="XPOSE.server.XposeServer.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listing</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/XPOSE/server.html#XposeServer.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#XPOSE.server.XposeServer.load" title="Link to this definition"></a></dt>
+<dd><p>Loads some entries in the index database. Entries are validated, and behaviour is transactional. The <code class="docutils literal notranslate"><span class="pre">attach</span></code> field in each <em>listing</em> entry must be either <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code> or a dictionary where each key is a relative path within the entry attachment directory and the value is an absolute path to be hard-linked to that local path. Note that sub-directories (which cannot be hard-linked) never need to be explicitly created as attachments, as they are created as need be to store file attachments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>listing</strong> (<em>list</em>) – the list of entries to load into the index database</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="XPOSE.server.XposeServer.precompute_trigger">
+<span class="sig-name descname"><span class="pre">precompute_trigger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">when</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/XPOSE/server.html#XposeServer.precompute_trigger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#XPOSE.server.XposeServer.precompute_trigger" title="Link to this definition"></a></dt>
+<dd><p>Declares a trigger after <code class="docutils literal notranslate"><span class="pre">INSERT</span></code> and <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> operations on the <code class="docutils literal notranslate"><span class="pre">Entry</span></code> table, when the <code class="docutils literal notranslate"><span class="pre">cat</span></code> field is <em>cat</em>. The triggered action must be an insertion into <em>table</em>. Suppose for example that a category <code class="docutils literal notranslate"><span class="pre">meeting</span></code> specifies, in its json schema, an attribute <code class="docutils literal notranslate"><span class="pre">title</span></code> and <code class="docutils literal notranslate"><span class="pre">setting</span></code>, itself with attributes <code class="docutils literal notranslate"><span class="pre">date</span></code> and <code class="docutils literal notranslate"><span class="pre">time</span></code>. We could have:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;json_extract(NEW.value,&quot;$.title&quot;)&#39;</span>
+<span class="n">date</span> <span class="o">=</span> <span class="s1">&#39;json_extract(NEW.value,&quot;$.setting.date&quot;)&#39;</span>
+<span class="n">time</span> <span class="o">=</span> <span class="s1">&#39;json_extract(NEW.value,&quot;$.setting.time&quot;)&#39;</span>
+<span class="n">defn</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;VALUES NEW.oid,format(&quot;%s [%s at %s]&quot;,</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">time</span><span class="si">}</span><span class="s1">)&#39;</span>
+<span class="n">precompute_trigger</span><span class="p">(</span><span class="s1">&#39;Short&#39;</span><span class="p">,</span><span class="s1">&#39;meeting&#39;</span><span class="p">,</span><span class="n">defn</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The resulting triggers are:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">ShortTriggerInsertMeeting</span><span class="w"> </span><span class="k">AFTER</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">Entry</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="k">NEW</span><span class="p">.</span><span class="n">cat</span><span class="o">=</span><span class="ss">&quot;meeting&quot;</span>
+<span class="k">BEGIN</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">Short</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="k">NEW</span><span class="p">.</span><span class="n">oid</span><span class="p">,</span><span class="n">format</span><span class="p">(</span><span class="ss">&quot;%s [%s at %s]&quot;</span><span class="p">,</span><span class="n">json_extract</span><span class="p">(</span><span class="k">NEW</span><span class="p">.</span><span class="n">value</span><span class="p">,</span><span class="ss">&quot;$.title&quot;</span><span class="p">),</span><span class="n">json_extract</span><span class="p">(</span><span class="k">NEW</span><span class="p">.</span><span class="n">value</span><span class="p">,</span><span class="ss">&quot;$.setting.date&quot;</span><span class="p">),</span><span class="n">json_extract</span><span class="p">(</span><span class="k">NEW</span><span class="p">.</span><span class="n">value</span><span class="p">,</span><span class="ss">&quot;$.setting.time&quot;</span><span class="p">));</span><span class="w"> </span><span class="k">END</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">ShortTriggerUpdateMeeting</span><span class="w"> </span><span class="k">AFTER</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">Entry</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="k">NEW</span><span class="p">.</span><span class="n">cat</span><span class="o">=</span><span class="ss">&quot;meeting&quot;</span>
+<span class="k">BEGIN</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">Short</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="k">NEW</span><span class="p">.</span><span class="n">oid</span><span class="p">,</span><span class="n">format</span><span class="p">(</span><span class="ss">&quot;%s [%s at %s]&quot;</span><span class="p">,</span><span class="n">json_extract</span><span class="p">(</span><span class="k">NEW</span><span class="p">.</span><span class="n">value</span><span class="p">,</span><span class="ss">&quot;$.title&quot;</span><span class="p">),</span><span class="n">json_extract</span><span class="p">(</span><span class="k">NEW</span><span class="p">.</span><span class="n">value</span><span class="p">,</span><span class="ss">&quot;$.setting.date&quot;</span><span class="p">),</span><span class="n">json_extract</span><span class="p">(</span><span class="k">NEW</span><span class="p">.</span><span class="n">value</span><span class="p">,</span><span class="ss">&quot;$.setting.time&quot;</span><span class="p">));</span><span class="w"> </span><span class="k">END</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> (<em>str</em>) – the target table populated by the trigger</p></li>
+<li><p><strong>cat</strong> (<em>str</em>) – the category (field <code class="docutils literal notranslate"><span class="pre">cat</span></code>) for which the trigger executes</p></li>
+<li><p><strong>when</strong> (<em>str</em><em> | </em><em>None</em>) – (optional) additional condition for the trigger to execute</p></li>
+<li><p><strong>defn</strong> (<em>str</em>) – what to insert into the target table, as an SQL <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> statement or <code class="docutils literal notranslate"><span class="pre">VALUES</span></code> clause</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="XPOSE.server.XposeServer.do_get">
+<span class="sig-name descname"><span class="pre">do_get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/XPOSE/server.html#XposeServer.do_get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#XPOSE.server.XposeServer.do_get" title="Link to this definition"></a></dt>
+<dd><p>Input: url-encoded form where each field specifies a label-query pair, passed to method <a class="reference internal" href="#XPOSE.server.XposeServer.dump" title="XPOSE.server.XposeServer.dump"><code class="xref py py-meth docutils literal notranslate"><span class="pre">dump()</span></code></a>.</p>
+<p>Output (text/json): output of method <a class="reference internal" href="#XPOSE.server.XposeServer.dump" title="XPOSE.server.XposeServer.dump"><code class="xref py py-meth docutils literal notranslate"><span class="pre">dump()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="XPOSE.server.XposeServer.do_post">
+<span class="sig-name descname"><span class="pre">do_post</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/XPOSE/server.html#XposeServer.do_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#XPOSE.server.XposeServer.do_post" title="Link to this definition"></a></dt>
+<dd><p>No input expected. Two phases:</p>
+<ul class="simple">
+<li><p>Phase 1: when the root contains a <code class="docutils literal notranslate"><span class="pre">config.py</span></code> file, transfer [real-&gt;shadow] <em>self</em> is the real instance, <em>target</em> is <code class="docutils literal notranslate"><span class="pre">./shadow</span></code> from root.</p></li>
+<li><p>Phase 2: when the root does not contain a <code class="docutils literal notranslate"><span class="pre">config.py</span></code> file, transfer [shadow-&gt;real] <em>self</em> is the shadow instance (must be named <code class="docutils literal notranslate"><span class="pre">shadow</span></code>), <em>target</em> is <code class="docutils literal notranslate"><span class="pre">..</span></code> from root.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="XPOSE.server.XposeServer.do_put">
+<span class="sig-name descname"><span class="pre">do_put</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/XPOSE/server.html#XposeServer.do_put"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#XPOSE.server.XposeServer.do_put" title="Link to this definition"></a></dt>
+<dd><p>Input: JSON formatted dump from another Xpose instance (or <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="XPOSE.server.initial">
+<span class="sig-prename descclassname"><span class="pre">XPOSE.server.</span></span><span class="sig-name descname"><span class="pre">initial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_is_shadow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dump</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/XPOSE/server.html#initial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#XPOSE.server.initial" title="Link to this definition"></a></dt>
+<dd><p>Initialises an Xpose instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<em>Path</em>) – path to config file</p></li>
+<li><p><strong>target</strong> (<em>Path</em>) – path to directory to initialise</p></li>
+<li><p><strong>target_is_shadow</strong> (<em>bool</em>) – whether <em>target</em> is a shadow directory</p></li>
+<li><p><strong>dump</strong> (<em>dict</em><em> | </em><em>None</em>) – dump of an existing instance (as obtained by method <code class="xref py py-meth docutils literal notranslate"><span class="pre">dump()</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mod_main.html" class="btn btn-neutral float-left" title="XPOSE.main — dashboard CGI resources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mod_attach.html" class="btn btn-neutral float-right" title="XPOSE.attach — attachment operations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

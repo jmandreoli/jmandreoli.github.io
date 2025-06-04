@@ -1,0 +1,271 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XPOSE.utils — miscellaneous utilities &mdash; XPOSE  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="XPOSE.initial — initialisation" href="mod_initial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            XPOSE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="mod_init.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE</span></code> (toplevel) — base definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_client.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.client</span></code> — client CGI resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_main.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.main</span></code> — dashboard CGI resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_server.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.server</span></code> — instance management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_attach.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.attach</span></code> — attachment operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_access.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.access</span></code> — access control operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_initial.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.initial</span></code> — initialisation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.utils</span></code> — miscellaneous utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-XPOSE.utils">Available types and functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#XPOSE.utils.CGIMixin"><code class="docutils literal notranslate"><span class="pre">CGIMixin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#XPOSE.utils.CGIMixin.process_cgi"><code class="docutils literal notranslate"><span class="pre">CGIMixin.process_cgi()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#XPOSE.utils.CGIMixin.parse_input"><code class="docutils literal notranslate"><span class="pre">CGIMixin.parse_input()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#XPOSE.utils.IntStrConverter"><code class="docutils literal notranslate"><span class="pre">IntStrConverter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#XPOSE.utils.IntStrConverter.int2str"><code class="docutils literal notranslate"><span class="pre">IntStrConverter.int2str()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#XPOSE.utils.IntStrConverter.str2int"><code class="docutils literal notranslate"><span class="pre">IntStrConverter.str2int()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#XPOSE.utils.Backup"><code class="docutils literal notranslate"><span class="pre">Backup</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#XPOSE.utils.http_request"><code class="docutils literal notranslate"><span class="pre">http_request()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#XPOSE.utils.HTTPException"><code class="docutils literal notranslate"><span class="pre">HTTPException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#XPOSE.utils.str_md"><code class="docutils literal notranslate"><span class="pre">str_md</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">XPOSE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.utils</span></code> — miscellaneous utilities</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/mod_utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="xpose-utils-miscellaneous-utilities">
+<h1><a class="reference internal" href="#module-XPOSE.utils" title="XPOSE.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.utils</span></code></a> — miscellaneous utilities<a class="headerlink" href="#xpose-utils-miscellaneous-utilities" title="Link to this heading"></a></h1>
+<section id="module-XPOSE.utils">
+<span id="available-types-and-functions"></span><h2>Available types and functions<a class="headerlink" href="#module-XPOSE.utils" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="XPOSE.utils.CGIMixin">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">XPOSE.utils.</span></span><span class="sig-name descname"><span class="pre">CGIMixin</span></span><a class="reference internal" href="_modules/XPOSE/utils.html#CGIMixin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#XPOSE.utils.CGIMixin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A simple helper mixin that simplifies writing CGI resource classes. A resource class needs only define methods <code class="xref py py-meth docutils literal notranslate"><span class="pre">do_get()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">do_put()</span></code> etc. with no input argument and output as a pair of a content string and a header dictionary.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="XPOSE.utils.CGIMixin.process_cgi">
+<span class="sig-name descname"><span class="pre">process_cgi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/XPOSE/utils.html#CGIMixin.process_cgi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#XPOSE.utils.CGIMixin.process_cgi" title="Link to this definition"></a></dt>
+<dd><p>Selects and executes the <code class="docutils literal notranslate"><span class="pre">do_*</span></code> method of this resource. Catches all exceptions and return them as plain text with the appropriate HTTP status code (500 by default) and traceback as body.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="XPOSE.utils.CGIMixin.parse_input">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'application/json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/XPOSE/utils.html#CGIMixin.parse_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#XPOSE.utils.CGIMixin.parse_input" title="Link to this definition"></a></dt>
+<dd><p>Parses input stream according to <em>mime</em>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">application/json</span></code>: applies json parser</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">application/x-www-form-urlencoded</span></code>: returns a dictionary (unsophisticated: no multiple values per key)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">application/octet-stream</span></code>: returns an iterator of byte strings</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mime</strong> (<em>str</em>) – the mimetype to interpret the input</p></li>
+<li><p><strong>chunk</strong> (<em>int</em>) – never reads more than this amount of bytes (if not <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="XPOSE.utils.IntStrConverter">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">XPOSE.utils.</span></span><span class="sig-name descname"><span class="pre">IntStrConverter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/XPOSE/utils.html#IntStrConverter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#XPOSE.utils.IntStrConverter" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An instance of this class is a bijection between the interval of whole numbers <span class="math notranslate nohighlight">\(\{0\cdots2^D{-}1\}\)</span> and the set of strings of length <span class="math notranslate nohighlight">\(K=\frac{D}{P}\)</span> of characters in <em>symbols</em>, which must be a string of length <span class="math notranslate nohighlight">\(2^P\)</span> with no repetition. Example with all default parameters (where <span class="math notranslate nohighlight">\(D=20,P=5,K=4\)</span>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">IntStrConverter</span><span class="p">()</span> <span class="c1"># all default parameters</span>
+<span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">str2int</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">int2str</span><span class="p">(</span><span class="n">n</span><span class="p">))</span><span class="o">==</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">bound</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>symbols</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – a string with no repetition, clipped to have a size of the form <span class="math notranslate nohighlight">\(2^P\)</span> (default: random string of size <span class="math notranslate nohighlight">\(32\)</span>)</p></li>
+<li><p><strong>perm</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>...</em><em>]</em>) – a permutation of (<span class="math notranslate nohighlight">\(0,\cdots,D-1\)</span>) or the integer <span class="math notranslate nohighlight">\(K\)</span> (permutation randomly generated with <span class="math notranslate nohighlight">\(D=KP\)</span>)</p></li>
+<li><p><strong>shift</strong> (<em>int</em>) – a non negative integer (default: random)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="XPOSE.utils.IntStrConverter.int2str">
+<span class="sig-name descname"><span class="pre">int2str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/XPOSE/utils.html#IntStrConverter.int2str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#XPOSE.utils.IntStrConverter.int2str" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – a whole number between <span class="math notranslate nohighlight">\(0\)</span> and <span class="math notranslate nohighlight">\(2^D-1\)</span> (not checked)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="XPOSE.utils.IntStrConverter.str2int">
+<span class="sig-name descname"><span class="pre">str2int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/XPOSE/utils.html#IntStrConverter.str2int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#XPOSE.utils.IntStrConverter.str2int" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>str</em>) – a string of symbols of length <span class="math notranslate nohighlight">\(K\)</span> (not checked)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="XPOSE.utils.Backup">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">XPOSE.utils.</span></span><span class="sig-name descname"><span class="pre">Backup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.backup'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/XPOSE/utils.html#Backup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#XPOSE.utils.Backup" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An instance of this class creates a context allowing transactional operations on the first level of a directory (called the root). A subdirectory of the root must be named, and will be used for backup. It should only be used for that purpose. The only allowed transactional operations take a single name (with no path separator) as input and move the file (or sub-directory) corresponding to that name from the root directory (if it exists) into the backup directory. If the context exits with an exception, all the files and directories affected by the transactional operations are restored, erasing new ones if needed. Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Backup</span><span class="p">(</span><span class="s1">&#39;mydir&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">backup</span><span class="p">:</span>
+  <span class="n">p1</span> <span class="o">=</span> <span class="n">backup</span><span class="p">(</span><span class="s1">&#39;file1&#39;</span><span class="p">)</span> <span class="c1"># file1 is moved (if it exists) to the backup directory; p1 is the Path object for the new file1</span>
+  <span class="n">p2</span> <span class="o">=</span> <span class="n">backup</span><span class="p">(</span><span class="s1">&#39;dir2&#39;</span><span class="p">)</span>
+  <span class="n">p1</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s1">&#39;Hello world&#39;</span><span class="p">)</span>
+  <span class="o">...</span>
+  <span class="k">raise</span> <span class="ne">Exception</span><span class="p">()</span> <span class="c1"># file1 and dir2 are restored, possibly erasing the new content in p1,p2</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p</strong> (<em>str</em><em> | </em><em>Path</em>)</p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="XPOSE.utils.http_request">
+<span class="sig-prename descclassname"><span class="pre">XPOSE.utils.</span></span><span class="sig-name descname"><span class="pre">http_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/XPOSE/utils.html#http_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#XPOSE.utils.http_request" title="Link to this definition"></a></dt>
+<dd><p>A thin layer around <code class="xref py py-meth docutils literal notranslate"><span class="pre">http.client.HTTPConnection.request()</span></code>. Supports <em>url</em> in <code class="docutils literal notranslate"><span class="pre">http</span></code>, <code class="docutils literal notranslate"><span class="pre">https</span></code> schemes and works as a python context yielding a <code class="xref py py-class docutils literal notranslate"><span class="pre">http.client.HTTPResponse</span></code> object. The host specification in <em>url</em> can contain <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> to provide basic authentication (eventually removed from <em>url</em>) in the form of a login-password pair separated by <code class="docutils literal notranslate"><span class="pre">:</span></code>  (if the password is omitted, it is read from the terminal), e.g. <code class="docutils literal notranslate"><span class="pre">https://joe&#64;example.com/some/path?some=query</span></code>.</p>
+<p>With method GET, <em>url</em> can be a simple path to an existing file (<em>ka</em> must then be empty). The returned object supports only attributes <code class="xref py py-attr docutils literal notranslate"><span class="pre">status</span></code>, <code class="xref py py-attr docutils literal notranslate"><span class="pre">reason</span></code>, as well as method <code class="xref py py-meth docutils literal notranslate"><span class="pre">read()</span></code>, as in <code class="xref py py-class docutils literal notranslate"><span class="pre">http.client.HTTPResponse</span></code> class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> (<em>str</em>) – HTTP method name (case ignored)</p></li>
+<li><p><strong>url</strong> (<em>str</em>) – url to open</p></li>
+<li><p><strong>ka</strong> – same as in method <code class="xref py py-meth docutils literal notranslate"><span class="pre">http.client.HTTPConnection.request()</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="XPOSE.utils.HTTPException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">XPOSE.utils.</span></span><span class="sig-name descname"><span class="pre">HTTPException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/XPOSE/utils.html#HTTPException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#XPOSE.utils.HTTPException" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>status</strong> (<em>HTTPStatus</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="XPOSE.utils.str_md">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">XPOSE.utils.</span></span><span class="sig-name descname"><span class="pre">str_md</span></span><a class="reference internal" href="_modules/XPOSE/utils.html#str_md"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#XPOSE.utils.str_md" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mod_initial.html" class="btn btn-neutral float-left" title="XPOSE.initial — initialisation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,250 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XPOSE package documentation &mdash; XPOSE  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="XPOSE (toplevel) — base definitions" href="mod_init.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            XPOSE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mod_init.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE</span></code> (toplevel) — base definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_client.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.client</span></code> — client CGI resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_main.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.main</span></code> — dashboard CGI resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_server.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.server</span></code> — instance management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_attach.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.attach</span></code> — attachment operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_access.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.access</span></code> — access control operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_initial.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.initial</span></code> — initialisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.utils</span></code> — miscellaneous utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">XPOSE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">XPOSE package documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="xpose-package-documentation">
+<h1>XPOSE package documentation<a class="headerlink" href="#xpose-package-documentation" title="Link to this heading"></a></h1>
+<p>XPOSE is a lightweight entity management system. An <strong>entity</strong> is a small (few kBs), <strong>semi-structured</strong> piece of meta-information represented in JSON, together with a set of arbitrarily large, unstructured <strong>attachments</strong>. The meta-information is stored in a database called the <strong>index</strong> of the Xpose instance, but the structure of the meta-information is captured outside the database, as a set of JSON schemas (the <strong>categories</strong>). The attachments reside on a storage space, typically the file system. Each entity is characterised by its category.</p>
+<p>The entities of an XPOSE instance can be manipulated through a REST interface.</p>
+<ul class="simple">
+<li><p>The back-end can easily be integrated into any HTTP server supporting CGI scripts, typically Apache httpd. Xpose access control is currently available only for the Apache server infrastructure.</p></li>
+<li><p>A front-end dashboard using the REST interface facilitates the management of the contents of the instance and its evolution.</p></li>
+</ul>
+<section id="overall-structure">
+<h2>Overall structure<a class="headerlink" href="#overall-structure" title="Link to this heading"></a></h2>
+<p>An Xpose instance is stored in a directory (called the <strong>root</strong>) containing the following members:</p>
+<ul class="simple">
+<li><p>an sqlite3 database (see schema below) storing the index of the instance</p></li>
+<li><p>the attachment directory <code class="docutils literal notranslate"><span class="pre">attach</span></code>, with potentially one sub-directory for each entry in the index</p></li>
+<li><p>the category directory <code class="docutils literal notranslate"><span class="pre">cats</span></code>, with one sub-directory for each category</p></li>
+<li><p>the configuration file <code class="docutils literal notranslate"><span class="pre">config.py</span></code>, used only for instance evolution</p></li>
+</ul>
+<section id="the-index-database">
+<h3>The index database<a class="headerlink" href="#the-index-database" title="Link to this heading"></a></h3>
+<p>The index database has a table <code class="docutils literal notranslate"><span class="pre">Entry</span></code> which stores all the raw meta-information, with the following columns:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">oid</span></code>: entry key as an <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> (primary key, auto-incremented)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">version</span></code>: version of this entry as an <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> (always incremented on update)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cat</span></code>: category of this entry as a relative path in the category directory (see below)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: JSON encoded data for this entry, conforming to the JSON schema specified by its category</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">attach</span></code>: relative path in the attachment directory holding the attachments of this entry</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">created</span></code>: creation timestamp of this entry (ISO format YYYY-MM-DD[T]HH:MM:SS.ffffff)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">modified</span></code>: last modification timestamp of this entry (ISO format as above)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">access</span></code>: an access control level for this entry</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">memo</span></code>: JSON encoded data, with no specific JSON schema (untouched by the dashboard)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uid</span></code>: a permanent identifier for the entry (unlike <code class="docutils literal notranslate"><span class="pre">oid</span></code> which may change when the Xpose instance evolves)</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Table <code class="docutils literal notranslate"><span class="pre">Entry</span></code> holds all the meta-information of the XPOSE instance. All the other tables, triggers, views, indexes etc. contain information derived from table <code class="docutils literal notranslate"><span class="pre">Entry</span></code> and are created and populated by the categories. This redundancy is only meant for efficiency.</p>
+</div>
+<p>One such dependent table, needed by the Xpose dashboard and other applications, is table <code class="docutils literal notranslate"><span class="pre">Short</span></code> with the following columns:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">entry</span></code>: reference to an <code class="docutils literal notranslate"><span class="pre">Entry</span></code> row (primary key, foreign reference)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: short name for the entry (plain text)</p></li>
+</ul>
+<p>Creation and Update triggers must be defined on table <code class="docutils literal notranslate"><span class="pre">Entry</span></code> by each category to populate table <code class="docutils literal notranslate"><span class="pre">Short</span></code>, so that each entry has exactly one corresponding row in table <code class="docutils literal notranslate"><span class="pre">Short</span></code>. A helper method <code class="xref py py-meth docutils literal notranslate"><span class="pre">server.XposeServer.precompute_trigger()</span></code> facilitates writing such triggers.</p>
+</section>
+<section id="categories">
+<h3>Categories<a class="headerlink" href="#categories" title="Link to this heading"></a></h3>
+<p>A category name is a sequence of identifiers separated by <code class="docutils literal notranslate"><span class="pre">/</span></code>, thus matching the structure of (posix) path names. For each category <code class="docutils literal notranslate"><span class="pre">{cat}</span></code>, there must be a file <code class="docutils literal notranslate"><span class="pre">cats/{cat}/schema.json</span></code> holding a <a class="reference external" href="https://json-schema.org/">json schema</a> describing the entries of that category, and used for editing. There may also be other utility files in directory <code class="docutils literal notranslate"><span class="pre">cats/{cat}</span></code>, e.g. <a class="reference external" href="https://genshi.edgewall.org/">genshi templates</a> producing various presentations of the entries of that category.</p>
+<p>Furthermore, all files named <code class="docutils literal notranslate"><span class="pre">init.py</span></code> at any level under directory <code class="docutils literal notranslate"><span class="pre">cats</span></code> are executed in depth first order at the initialisation or re-initialisation of an Xpose instance. Such files may add new tables, views, triggers, indexes etc. to the index database. These in turn may populate the index database with redundant information derived from the <code class="docutils literal notranslate"><span class="pre">Entry</span></code> table, e.g. populating table <code class="docutils literal notranslate"><span class="pre">Short</span></code>, required by many applications. A helper method <a class="reference internal" href="mod_server.html#XPOSE.server.XposeServer.precompute_trigger" title="XPOSE.server.XposeServer.precompute_trigger"><code class="xref py py-meth docutils literal notranslate"><span class="pre">server.XposeServer.precompute_trigger()</span></code></a> is available to facilitate the definition of triggers.</p>
+</section>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>The config file must define the following variables:</p>
+<ul class="simple">
+<li><p><em>cats</em> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>): a file path to a directory containing all category specific information for the xpose instance, copied or linked (see below) as <code class="docutils literal notranslate"><span class="pre">cats</span></code> in the instance root</p></li>
+<li><p><em>routes</em> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict[str,XposeBase]</span></code>): a simple mapping between routes (from PATH_INFO) and corresponding resource (see below)</p></li>
+<li><p><em>release</em> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>): the latest data release</p></li>
+<li><p><em>upgrade_{0,1,,…}</em> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Callable[[list[Entry]],None]</span></code>): invoked to upgrade the list of entries for each release strictly below the latest one</p></li>
+</ul>
+<p>The dashboard makes use of the following routes (for which defaults exist):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">main</span></code>: for entry edition and display</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">attach</span></code>: for attachments edition (upload, renaming, deletion)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">manage</span></code>: for instance-wide manipulation (evolution)</p></li>
+</ul>
+<section id="evolution-data-releases-and-shadowing">
+<h3>Evolution, data releases and shadowing<a class="headerlink" href="#evolution-data-releases-and-shadowing" title="Link to this heading"></a></h3>
+<p>The (data) release of an Xpose instance refers to a version of its category structure, which may evolve over time. An Xpose instance always has a shadow instance in directory <code class="docutils literal notranslate"><span class="pre">shadow</span></code> (from the root). The main role of the shadow is to provide a fully functioning instance with data, categories, routes at the latest release, while the real instance still works at a possibly previous release. Once tests on the shadow are complete, its content can be synced back into the real instance. Note that attachment files are never copied between real and shadow instances (they are hard links to the same file objects). The main components of each instance are:</p>
+<ol class="arabic simple">
+<li><p>in both real and shadow instances:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">index.db</span></code>: index database file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">attach</span></code> and <code class="docutils literal notranslate"><span class="pre">attach/.uploaded</span></code>: attachment directory and sub-directory for file uploads</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.routes</span></code>: routing directory containing the available (pickled) cgi resources</p></li>
+</ul>
+</li>
+<li><p>in real instance:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">config.py</span></code>: symlink to readable python file containing configuration code</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">route.py</span></code>: generated python file which can be used as CGI script, or as target of a symbolic link CGI script</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cats</span></code>: fixed snapshot copy of cats directory from config</p></li>
+</ul>
+</li>
+<li><p>in shadow instance:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cats</span></code>: symlink to cats directory from config, so that shadow always sees the latest definition of categories</p></li>
+</ul>
+</li>
+</ol>
+<p>Which of the real or shadow instance is served by <code class="docutils literal notranslate"><span class="pre">route.py</span></code> depends on a cookie <code class="docutils literal notranslate"><span class="pre">xpose-variant</span></code>.</p>
+<ul class="simple">
+<li><p>When moving from real to shadow instance, the data and route directory in the shadow is replaced by that in the real instance and upgraded to its latest release. The shadow instance can be then tested. If the resulting behaviour of the shadow is not satisfactory, the problem must be fixed and the operation reiterated. The data and route directory in the real instance is untouched during this process.</p></li>
+<li><p>Upgrade of the real instance actually takes place when transferring from shadow to real instance, after which the two instances have the same content, and the shadow instance is ready for the next upgrade cycle.</p></li>
+</ul>
+<p>Note that this two-phase upgrade can be performed whenever the categories change, even if the evolution does not have an impact on the categories’ json schemas (ie. the release is unchanged).</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mod_init.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE</span></code> (toplevel) — base definitions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mod_init.html#module-XPOSE">Available types and functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mod_client.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.client</span></code> — client CGI resource</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mod_client.html#module-XPOSE.client">Available types and functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mod_main.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.main</span></code> — dashboard CGI resources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mod_main.html#module-XPOSE.main">Available types and functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mod_server.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.server</span></code> — instance management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mod_server.html#module-XPOSE.server">Available types and functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mod_attach.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.attach</span></code> — attachment operations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mod_attach.html#module-XPOSE.attach">Available types and functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mod_access.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.access</span></code> — access control operations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mod_access.html#module-XPOSE.access">Available types and functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mod_initial.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.initial</span></code> — initialisation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mod_initial.html#module-XPOSE.initial">Available types and functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mod_utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.utils</span></code> — miscellaneous utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mod_utils.html#module-XPOSE.utils">Available types and functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mod_init.html" class="btn btn-neutral float-right" title="XPOSE (toplevel) — base definitions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

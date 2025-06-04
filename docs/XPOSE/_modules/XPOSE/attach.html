@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XPOSE.attach &mdash; XPOSE  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            XPOSE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_init.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE</span></code> (toplevel) — base definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_client.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.client</span></code> — client CGI resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_main.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.main</span></code> — dashboard CGI resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_server.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.server</span></code> — instance management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_attach.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.attach</span></code> — attachment operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_access.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.access</span></code> — access control operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_initial.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.initial</span></code> — initialisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.utils</span></code> — miscellaneous utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">XPOSE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../XPOSE.html">XPOSE</a></li>
+      <li class="breadcrumb-item active">XPOSE.attach</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for XPOSE.attach</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Creation date:        2022-01-15</span>
+<span class="c1"># Contributors:         Jean-Marc Andreoli</span>
+<span class="c1"># Language:             python</span>
+<span class="c1"># Purpose:              Xpose: attachment operations</span>
+<span class="c1">#</span>
+
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cached_property</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="c1">#======================================================================================================================</span>
+<div class="viewcode-block" id="Attach"><a class="viewcode-back" href="../../mod_attach.html#XPOSE.attach.Attach">[docs]</a><span class="k">class</span> <span class="nc">Attach</span><span class="p">:</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">An instance of this class manages an xpose instance&#39;s attachments (field ``attach`` in the index).</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1">#======================================================================================================================</span>
+
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">root</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="Attach.getpath"><a class="viewcode-back" href="../../mod_attach.html#XPOSE.attach.Attach.getpath">[docs]</a>  <span class="k">def</span> <span class="nf">getpath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">path</span><span class="p">:</span><span class="nb">str</span><span class="o">|</span><span class="n">Path</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the absolute path of *path*, and its depth level.&quot;&quot;&quot;</span>
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+    <span class="n">path_</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">/</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="n">level</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">path_</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">)</span><span class="o">.</span><span class="n">parts</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span>
+    <span class="k">assert</span> <span class="n">level</span><span class="o">&gt;=</span><span class="mi">0</span>
+    <span class="k">return</span> <span class="n">path_</span><span class="p">,</span><span class="n">level</span></div>
+
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="Attach.ls"><a class="viewcode-back" href="../../mod_attach.html#XPOSE.attach.Attach.ls">[docs]</a>  <span class="k">def</span> <span class="nf">ls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">path</span><span class="p">:</span><span class="n">Path</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the list of contents of *path*.&quot;&quot;&quot;</span>
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">E</span><span class="p">(</span><span class="n">p</span><span class="p">:</span><span class="n">Path</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="nb">int</span><span class="p">]:</span>
+      <span class="n">s</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">stat</span><span class="p">();</span> <span class="k">return</span> <span class="n">p</span><span class="o">.</span><span class="n">is_dir</span><span class="p">(),</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">st_mtime</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(</span><span class="n">timespec</span><span class="o">=</span><span class="s1">&#39;seconds&#39;</span><span class="p">),(</span><span class="n">s</span><span class="o">.</span><span class="n">st_size</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">iterdir</span><span class="p">())))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span> <span class="k">return</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">content</span><span class="o">:=</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">E</span><span class="p">,</span><span class="n">path</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()))):</span> <span class="k">return</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">content</span><span class="p">]</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span> <span class="c1"># recursively remove all empty ancestors (up to root)</span>
+      <span class="k">try</span><span class="p">:</span> <span class="n">path</span><span class="o">.</span><span class="n">rmdir</span><span class="p">()</span>
+      <span class="k">except</span><span class="p">:</span> <span class="k">break</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">parent</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">==</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">:</span> <span class="k">break</span>
+    <span class="k">return</span> <span class="p">[]</span></div>
+
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="Attach.perform"><a class="viewcode-back" href="../../mod_attach.html#XPOSE.attach.Attach.perform">[docs]</a>  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">path</span><span class="p">:</span><span class="n">Path</span><span class="p">,</span><span class="n">src</span><span class="p">,</span><span class="n">trg</span><span class="p">,</span><span class="n">is_new</span><span class="p">:</span><span class="nb">bool</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Executes an operation on *path*. Essentially renames *src* to *trg* (or removes the former if the latter is empty).</span>
+
+<span class="sd">:param src: source path of the op</span>
+<span class="sd">:param trg: target path of the op (possibly empty)</span>
+<span class="sd">:param is_new: whether the source should be found in ``.uploaded`` directory</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">relative_to</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">):</span>
+      <span class="k">try</span><span class="p">:</span> <span class="k">return</span> <span class="n">p</span> <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">:=</span><span class="n">p1</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">p2</span><span class="p">))</span><span class="o">.</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39;.&#39;</span> <span class="k">else</span> <span class="kc">None</span>
+      <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span> <span class="k">return</span> <span class="kc">None</span>
+    <span class="c1"># checks that path,src,trg always point within self.root even when they may be absolute or contain ..</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">/</span><span class="s1">&#39;.uploaded&#39;</span> <span class="k">if</span> <span class="n">is_new</span> <span class="k">else</span> <span class="n">path</span>
+    <span class="n">src</span> <span class="o">=</span> <span class="p">(</span><span class="n">base</span><span class="o">/</span><span class="n">src</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">src_r</span><span class="o">:=</span><span class="n">relative_to</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">base</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">src_r</span><span class="o">.</span><span class="n">parts</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">src</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span> <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;NotFound(src):</span><span class="si">{</span><span class="n">src</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="k">if</span> <span class="n">trg</span><span class="o">==</span><span class="s1">&#39;&#39;</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span> <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span> <span class="n">src</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">trg</span> <span class="o">=</span> <span class="p">(</span><span class="n">path</span><span class="o">/</span><span class="n">trg</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">trg_r</span><span class="o">:=</span><span class="n">relative_to</span><span class="p">(</span><span class="n">trg</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">trg_r</span><span class="o">.</span><span class="n">parts</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="n">path</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">)</span><span class="o">.</span><span class="n">parts</span><span class="p">[:</span><span class="mi">2</span><span class="p">]:</span> <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Invalid(trg):</span><span class="si">{</span><span class="n">trg</span><span class="si">}</span><span class="s1">&#39;</span>
+      <span class="k">if</span> <span class="n">trg</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span> <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;AlreadyExists(trg):</span><span class="si">{</span><span class="n">trg</span><span class="si">}</span><span class="s1">&#39;</span>
+      <span class="n">trg</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <span class="n">src</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">trg</span><span class="p">)</span></div>
+
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="Attach.rmdir"><a class="viewcode-back" href="../../mod_attach.html#XPOSE.attach.Attach.rmdir">[docs]</a>  <span class="k">def</span> <span class="nf">rmdir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">path</span><span class="p">:</span><span class="n">Path</span><span class="p">,</span><span class="n">check_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Removes a directory *path*, after checking it exists if *check_exists* is true.&quot;&quot;&quot;</span>
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+    <span class="k">if</span> <span class="n">check_exists</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">/</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span> <span class="k">return</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">/</span><span class="n">path</span><span class="p">)</span></div>
+
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="Attach.upload"><a class="viewcode-back" href="../../mod_attach.html#XPOSE.attach.Attach.upload">[docs]</a>  <span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">it</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Uploads a stream of byte strings *it* to directory ``.uploaded``. Returns a triple of the name of the uploaded file, its last modification time, and its current size (in bytes)&quot;&quot;&quot;</span>
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+    <span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">NamedTemporaryFile</span>
+    <span class="k">with</span> <span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="s1">&#39;wb&#39;</span><span class="p">,</span><span class="nb">dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">/</span><span class="s1">&#39;.uploaded&#39;</span><span class="p">,</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">v</span><span class="p">:</span>
+      <span class="n">f</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+      <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">it</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+      <span class="k">except</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">unlink</span><span class="p">();</span> <span class="k">raise</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">st_mtime</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(</span><span class="n">timespec</span><span class="o">=</span><span class="s1">&#39;seconds&#39;</span><span class="p">),</span><span class="n">s</span><span class="o">.</span><span class="n">st_size</span></div></div>
+
+<span class="c1">#======================================================================================================================</span>
+<span class="k">class</span> <span class="nc">WithAttachMixin</span><span class="p">:</span>
+<span class="c1">#======================================================================================================================</span>
+  <span class="n">root</span><span class="p">:</span><span class="n">Path</span>
+  <span class="nd">@cached_property</span>
+  <span class="k">def</span> <span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Attach</span><span class="p">:</span> <span class="k">return</span> <span class="n">Attach</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">/</span><span class="s1">&#39;attach&#39;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

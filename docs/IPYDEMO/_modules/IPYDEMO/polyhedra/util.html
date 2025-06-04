@@ -1,0 +1,245 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IPYDEMO.polyhedra.util &mdash; IPYDEMO  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            IPYDEMO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../mod_odesimu.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.odesimu</span></code> — Dynamical system simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mod_fractals.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.fractals</span></code> — Fractals exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mod_polyhedra.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.polyhedra</span></code> — Polyhedra exploration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">IPYDEMO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">IPYDEMO.polyhedra.util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for IPYDEMO.polyhedra.util</h1><div class="highlight"><pre>
+<span></span><span class="c1"># File:                 polyhedra/util.py</span>
+<span class="c1"># Creation date:        2022-10-01</span>
+<span class="c1"># Contributors:         Jean-Marc Andreoli</span>
+<span class="c1"># Language:             python</span>
+<span class="c1"># Purpose:              some utilities on graph</span>
+<span class="c1">#</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">random</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">arange</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">zeros</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="s1">&#39;Polyhedron&#39;</span><span class="p">,</span> <span class="s1">&#39;Multipath&#39;</span>
+
+<div class="viewcode-block" id="Multipath">
+<a class="viewcode-back" href="../../../mod_polyhedra.html#IPYDEMO.polyhedra.util.Multipath">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Multipath</span><span class="p">:</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">An instance of this class is a directed multi-path, i.e. a set of edge-disjoint, non contiguous paths with an index of the nodes they visit.</span>
+
+<span class="sd">:param edges: the list of directed edges from which to build the nulti-path</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="n">paths</span><span class="p">:</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">int</span><span class="p">],</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">int</span><span class="p">]]]]</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The list of paths (begin-end nodes and list of edges connecting them)&quot;&quot;&quot;</span>
+  <span class="n">inpath</span><span class="p">:</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The index, mapping each node to the set of paths (indexed in :attr:`paths`) to which it belongs&quot;&quot;&quot;</span>
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">edges</span><span class="p">:</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">int</span><span class="p">]]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shuffled</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="k">return</span> <span class="n">x</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">paths</span> <span class="o">=</span> <span class="n">paths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">inpath</span> <span class="o">=</span> <span class="n">inpath</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># store starts and links</span>
+    <span class="n">starts</span> <span class="o">=</span> <span class="p">[];</span> <span class="n">links</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">adj</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">([],[]))</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span> <span class="n">adj</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">);</span> <span class="n">adj</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">adj</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+      <span class="n">incoming</span><span class="p">,</span><span class="n">outgoing</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">shuffled</span><span class="p">,</span><span class="n">a</span><span class="p">)</span>
+      <span class="n">links</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">incoming</span><span class="p">,</span><span class="n">outgoing</span><span class="p">))</span>
+      <span class="n">starts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">outgoing</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">incoming</span><span class="p">):])</span>
+    <span class="c1"># creating non-loop paths</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">starts</span><span class="p">:</span>
+      <span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="p">]</span>
+      <span class="k">while</span> <span class="p">(</span><span class="n">e</span><span class="o">:=</span><span class="n">links</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="kc">None</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+      <span class="n">ends</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span> <span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">paths</span><span class="p">);</span> <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ends</span><span class="p">,</span><span class="n">s</span><span class="p">))</span>
+      <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ends</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="o">*</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">s</span><span class="p">)):</span> <span class="n">inpath</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="c1"># computing standalone loops</span>
+    <span class="n">loop_e</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">links</span><span class="p">);</span> <span class="n">loop_s</span> <span class="o">=</span> <span class="p">[];</span> <span class="n">loops</span> <span class="o">=</span> <span class="p">[];</span> <span class="n">inloop</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">loop_e</span><span class="p">:</span>
+      <span class="n">e</span> <span class="o">=</span> <span class="n">e0</span> <span class="o">=</span> <span class="n">loop_e</span><span class="o">.</span><span class="n">pop</span><span class="p">();</span> <span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">loops</span><span class="p">);</span> <span class="n">loops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">);</span> <span class="n">loop_s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">);</span> <span class="n">inloop</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
+      <span class="k">while</span> <span class="p">(</span><span class="n">e</span><span class="o">:=</span><span class="n">links</span><span class="p">[</span><span class="n">e</span><span class="p">])</span><span class="o">!=</span><span class="n">e0</span><span class="p">:</span> <span class="n">loop_e</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">e</span><span class="p">);</span> <span class="n">inloop</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
+    <span class="c1"># merging standalone loops</span>
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span><span class="n">d</span> <span class="ow">in</span> <span class="n">inloop</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+      <span class="n">d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">loops</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">e</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+      <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span> <span class="k">continue</span>
+      <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="o">*</span><span class="n">lk</span><span class="p">),</span><span class="n">l</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">());</span> <span class="n">e1</span> <span class="o">=</span> <span class="n">links</span><span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+      <span class="k">for</span> <span class="n">e</span><span class="p">,</span><span class="n">e_</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">l</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span> <span class="n">links</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="n">links</span><span class="p">[</span><span class="n">e_</span><span class="p">]</span>
+      <span class="n">links</span><span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">e1</span><span class="p">;</span> <span class="n">t</span> <span class="o">=</span> <span class="p">{</span><span class="n">h</span><span class="p">:</span><span class="n">k</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">lk</span><span class="p">};</span> <span class="n">loops</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="n">h</span><span class="p">)</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">loops</span><span class="p">]</span>
+    <span class="c1"># integrating standalone loops</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">:</span> <span class="c1"># each loop must be incorporated into a path</span>
+      <span class="k">for</span> <span class="n">e0</span> <span class="ow">in</span> <span class="p">(</span><span class="n">loop_s</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">loops</span><span class="p">)):</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">e0</span><span class="p">;</span> <span class="n">s</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">l</span><span class="o">:=</span><span class="bp">self</span><span class="o">.</span><span class="n">inpath</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">],())):</span> <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">);</span> <span class="n">e</span> <span class="o">=</span> <span class="n">links</span><span class="p">[</span><span class="n">e</span><span class="p">]</span>
+        <span class="n">k</span><span class="p">,</span><span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">l</span><span class="p">;</span> <span class="n">ends</span><span class="p">,</span><span class="n">s_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">k</span><span class="p">];</span> <span class="n">i_</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">ends</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="n">s_</span><span class="p">);</span> <span class="n">s_</span><span class="p">[</span><span class="n">i_</span><span class="p">:</span><span class="n">i_</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span>
+        <span class="k">for</span> <span class="n">e_</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inpath</span><span class="p">[</span><span class="n">e_</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="p">]</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">e</span><span class="o">:=</span><span class="n">links</span><span class="p">[</span><span class="n">e</span><span class="p">])</span><span class="o">!=</span><span class="n">e0</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">);</span> <span class="bp">self</span><span class="o">.</span><span class="n">inpath</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">s_</span><span class="p">[</span><span class="n">i_</span><span class="p">:</span><span class="n">i_</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span>
+    <span class="k">else</span><span class="p">:</span> <span class="c1"># there should be a single loop and it is returned</span>
+      <span class="n">k</span><span class="p">,</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">loops</span><span class="p">);</span> <span class="n">e</span> <span class="o">=</span> <span class="n">e0</span> <span class="o">=</span> <span class="n">loop_s</span><span class="p">[</span><span class="n">k</span><span class="p">];</span> <span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="n">e0</span><span class="p">]</span>
+      <span class="k">while</span> <span class="p">(</span><span class="n">e</span><span class="o">:=</span><span class="n">links</span><span class="p">[</span><span class="n">e</span><span class="p">])</span> <span class="o">!=</span> <span class="n">e0</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="n">s</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">:[&#39;</span><span class="p">,</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="o">*</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">s</span><span class="p">),</span><span class="s1">&#39;]&#39;</span><span class="p">)))</span> <span class="k">for</span> <span class="n">k</span><span class="p">,(</span><span class="n">_</span><span class="p">,</span><span class="n">s</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">{{</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="se">}}</span><span class="s1">&#39;</span></div>
+
+
+<div class="viewcode-block" id="Polyhedron">
+<a class="viewcode-back" href="../../../mod_polyhedra.html#IPYDEMO.polyhedra.util.Polyhedron">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Polyhedron</span> <span class="p">(</span><span class="n">networkx</span><span class="o">.</span><span class="n">Graph</span><span class="p">):</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Instances of this class are polyhedron graphs built from a specification which applies for each :math:`k{\in}0{:}K{-}1` as follows:</span>
+
+<span class="sd">* A label :math:`a` with coefficient :math:`z` creates a node :math:`(a,k)` at :math:`z\exp{i\frac{2\pi k}{K}}`</span>
+<span class="sd">* An instruction :math:`(a,b,n)` creates an edge from node :math:`(a,k)` to node :math:`(b,(k{+}n)\textrm{ mod }K)`</span>
+
+<span class="sd">:param name: name of the polyhedron</span>
+<span class="sd">:param K: rotational invariance of angle :math:`\frac{2\pi}{K}`</span>
+<span class="sd">:param labels: dictionary of labels with their coefficients</span>
+<span class="sd">:param edges: instructions to create edges</span>
+<span class="sd">:param connect_centre_to: instruction to create edge to centre</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span><span class="n">K</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span><span class="n">labels</span><span class="p">:</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">float</span><span class="o">|</span><span class="nb">complex</span><span class="p">],</span><span class="n">edges</span><span class="p">:</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="nb">int</span><span class="p">]],</span><span class="n">connect_centre_to</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">ka</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">|=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="n">name</span><span class="p">,</span><span class="s1">&#39;K&#39;</span><span class="p">:</span><span class="n">K</span><span class="p">,</span><span class="s1">&#39;labels&#39;</span><span class="p">:</span><span class="n">labels</span><span class="p">,</span><span class="s1">&#39;edges&#39;</span><span class="p">:</span><span class="n">edges</span><span class="p">,</span><span class="s1">&#39;connect_centre_to&#39;</span><span class="p">:</span><span class="n">connect_centre_to</span><span class="p">}</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">exp</span><span class="p">((</span><span class="mf">2.</span><span class="n">j</span><span class="o">*</span><span class="n">pi</span><span class="o">/</span><span class="n">K</span><span class="p">)</span><span class="o">*</span><span class="n">arange</span><span class="p">(</span><span class="n">K</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(((</span><span class="n">u</span><span class="p">,</span><span class="n">k</span><span class="p">),{</span><span class="s1">&#39;position&#39;</span><span class="p">:</span><span class="n">array</span><span class="p">((</span><span class="n">z</span><span class="o">.</span><span class="n">real</span><span class="p">,</span><span class="n">z</span><span class="o">.</span><span class="n">imag</span><span class="p">))})</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span><span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">values</span><span class="p">()))[:,</span><span class="kc">None</span><span class="p">]</span><span class="o">*</span><span class="n">Z</span><span class="p">[</span><span class="kc">None</span><span class="p">,:])</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">z</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(((</span><span class="n">u</span><span class="p">,</span><span class="n">k</span><span class="p">),(</span><span class="n">v</span><span class="p">,(</span><span class="n">k</span><span class="o">+</span><span class="n">h</span><span class="p">)</span><span class="o">%</span><span class="n">K</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">h</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">connect_centre_to</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;O&#39;</span><span class="p">,</span><span class="n">position</span><span class="o">=</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">((</span><span class="s1">&#39;O&#39;</span><span class="p">,(</span><span class="n">connect_centre_to</span><span class="p">,</span><span class="n">k</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">))</span>
+    <span class="n">networkx</span><span class="o">.</span><span class="n">freeze</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+  <span class="nd">@staticmethod</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">P4</span><span class="p">():</span> <span class="k">return</span> <span class="n">Polyhedron</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;tetrahedron&#39;</span><span class="p">,</span>
+    <span class="n">K</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="mf">1.</span><span class="p">},</span>
+    <span class="n">edges</span><span class="o">=</span><span class="p">((</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">),),</span>
+    <span class="n">connect_centre_to</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">,</span>
+  <span class="p">)</span>
+  <span class="nd">@staticmethod</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">P6</span><span class="p">():</span> <span class="k">return</span> <span class="n">Polyhedron</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;hexahedron&#39;</span><span class="p">,</span>
+    <span class="n">K</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="mf">1.</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">:</span><span class="mf">2.</span><span class="p">},</span>
+    <span class="n">edges</span><span class="o">=</span><span class="p">((</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span>
+  <span class="p">)</span>
+  <span class="nd">@staticmethod</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">P8</span><span class="p">():</span> <span class="k">return</span> <span class="n">Polyhedron</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;octahedron&#39;</span><span class="p">,</span>
+    <span class="n">K</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="mf">1.</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">.25</span><span class="p">},</span>
+    <span class="n">edges</span><span class="o">=</span><span class="p">((</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)),</span>
+  <span class="p">)</span>
+  <span class="nd">@staticmethod</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">P12</span><span class="p">():</span> <span class="k">return</span> <span class="n">Polyhedron</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dodecahedron&#39;</span><span class="p">,</span>
+    <span class="n">K</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="mf">1.</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">:</span><span class="mf">2.</span><span class="p">,</span><span class="s1">&#39;b_&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">3.5</span><span class="p">,</span><span class="s1">&#39;a_&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">5.</span><span class="p">},</span>
+    <span class="n">edges</span><span class="o">=</span><span class="p">((</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="s1">&#39;a_&#39;</span><span class="p">,</span><span class="s1">&#39;b_&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="s1">&#39;a_&#39;</span><span class="p">,</span><span class="s1">&#39;a_&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;b_&#39;</span><span class="p">,</span><span class="mi">3</span><span class="p">),(</span><span class="s1">&#39;b_&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="mi">3</span><span class="p">)),</span>
+  <span class="p">)</span>
+  <span class="nd">@staticmethod</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">P20</span><span class="p">():</span> <span class="k">return</span> <span class="n">Polyhedron</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;icosahedron&#39;</span><span class="p">,</span>
+    <span class="n">K</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="mf">1.</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">:</span><span class="mf">4.</span><span class="p">,</span><span class="s1">&#39;b_&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">.25</span><span class="p">,</span><span class="s1">&#39;a_&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">1.</span><span class="p">},</span>
+    <span class="n">edges</span><span class="o">=</span><span class="p">((</span><span class="s1">&#39;b_&#39;</span><span class="p">,</span><span class="s1">&#39;a_&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="s1">&#39;b_&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="s1">&#39;b_&#39;</span><span class="p">,</span><span class="s1">&#39;b_&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="s1">&#39;a_&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="s1">&#39;a_&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;a_&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;b_&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;a_&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span>
+  <span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

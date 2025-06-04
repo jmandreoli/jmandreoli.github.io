@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XPOSE.client &mdash; XPOSE  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> XPOSE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_init.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE</span></code> (toplevel) — base definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_client.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.client</span></code> — client CGI resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_main.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.main</span></code> — dashboard CGI resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_server.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.server</span></code> — instance management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_attach.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.attach</span></code> — attachment operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_access.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.access</span></code> — access control operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_initial.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.initial</span></code> — initialisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.utils</span></code> — miscellaneous utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">XPOSE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+          <li><a href="../XPOSE.html">XPOSE</a> &raquo;</li>
+      <li>XPOSE.client</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for XPOSE.client</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Creation date:        2022-01-15</span>
+<span class="c1"># Contributors:         Jean-Marc Andreoli</span>
+<span class="c1"># Language:             python</span>
+<span class="c1"># Purpose:              Xpose: client CGI resource</span>
+<span class="c1">#</span>
+
+<span class="kn">import</span> <span class="nn">sqlite3</span><span class="o">,</span><span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cached_property</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">XposeBase</span><span class="p">,</span> <span class="n">WithCatsMixin</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">CGIMixin</span><span class="p">,</span> <span class="n">rebase</span><span class="p">,</span> <span class="n">http_ts</span>
+
+<span class="c1">#======================================================================================================================</span>
+<div class="viewcode-block" id="XposeClient"><a class="viewcode-back" href="../../mod_client.html#XPOSE.client.XposeClient">[docs]</a><span class="k">class</span> <span class="nc">XposeClient</span> <span class="p">(</span><span class="n">XposeBase</span><span class="p">,</span><span class="n">WithCatsMixin</span><span class="p">,</span><span class="n">CGIMixin</span><span class="p">):</span>
+  <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">An instance of this class is a CGI resource managing (restricted, read-only) client access to the Xpose index database through prepared SQL queries.</span>
+
+<span class="sd">:param authorise: callable taking as input an access level and returning whether access is authorised</span>
+<span class="sd">:param prepared: dictionary mapping each sql query name to an actual query with (possibly) named parameters</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1">#======================================================================================================================</span>
+
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">authorise</span><span class="p">:</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="k">lambda</span> <span class="n">level</span><span class="p">:</span> <span class="kc">False</span><span class="p">),</span><span class="n">prepared</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="p">{}):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">authorise</span> <span class="o">=</span> <span class="n">authorise</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">prepared</span> <span class="o">=</span> <span class="n">prepared</span>
+
+<div class="viewcode-block" id="XposeClient.connect"><a class="viewcode-back" href="../../mod_client.html#XPOSE.client.XposeClient.connect">[docs]</a>  <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Same as base, but adds sqlite functions ``authorise`` and ``xpose_template``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="o">**</span><span class="n">ka</span><span class="p">)</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">create_function</span><span class="p">(</span><span class="s1">&#39;authorise&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">authorise</span><span class="p">,</span><span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">create_function</span><span class="p">(</span><span class="s1">&#39;xpose_template&#39;</span><span class="p">,</span><span class="mi">4</span><span class="p">,(</span><span class="k">lambda</span> <span class="n">tmpl</span><span class="p">,</span><span class="n">err_tmpl</span><span class="p">,</span><span class="n">rendering</span><span class="p">,</span><span class="n">args</span><span class="p">,</span><span class="n">t</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cats</span><span class="o">.</span><span class="n">apply_template</span><span class="p">:</span><span class="n">t</span><span class="p">(</span><span class="n">tmpl</span><span class="p">,</span><span class="n">err_tmpl</span><span class="p">,</span><span class="n">rendering</span><span class="p">,</span><span class="n">xpose</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">args</span><span class="p">))),</span><span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">conn</span></div>
+
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="XposeClient.do_get"><a class="viewcode-back" href="../../mod_client.html#XPOSE.client.XposeClient.do_get">[docs]</a>  <span class="k">def</span> <span class="nf">do_get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Input: url-encoded form with one field ``sql`` whose value is the name of a prepared sql query; the other fields provide the named parameters in that query.</span>
+
+<span class="sd">Output (text/json): list of entries resulting from the execution of the query; each row is a dictionary where the fields are column names from the query.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_qsl</span><span class="p">()</span>
+    <span class="n">sql</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prepared</span><span class="p">[</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;sql&#39;</span><span class="p">]]</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+      <span class="n">conn</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
+      <span class="n">resp</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span><span class="n">form</span><span class="p">)]</span>
+      <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">resp</span><span class="p">),</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span><span class="s1">&#39;text/json&#39;</span><span class="p">,</span><span class="s1">&#39;Last-Modified&#39;</span><span class="p">:</span><span class="n">http_ts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index_db</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_mtime</span><span class="p">)}</span></div>
+
+  <span class="nd">@cached_property</span>
+  <span class="k">def</span> <span class="nf">url_base</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_server_root</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">rebase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span><span class="n">path</span><span class="p">:</span><span class="nb">str</span><span class="o">|</span><span class="n">Path</span><span class="p">):</span> <span class="k">return</span> <span class="n">rebase</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url_base</span><span class="o">/</span><span class="s1">&#39;attach&#39;</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="s1">&#39;_&#39;</span><span class="p">))</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

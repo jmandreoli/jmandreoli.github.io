@@ -1,0 +1,602 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IPYDEMO.odesimu — Dynamical system simulation &mdash; IPYDEMO  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="IPYDEMO.fractals — Fractals exploration" href="mod_fractals.html" />
+    <link rel="prev" title="Welcome to IPYDEMO’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            IPYDEMO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.odesimu</span></code> — Dynamical system simulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#an-example">An example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-IPYDEMO.odesimu.core">Available types and functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#IPYDEMO.odesimu.core.ODEEnvironment"><code class="docutils literal notranslate"><span class="pre">ODEEnvironment</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.core.ODEEnvironment.Exception"><code class="docutils literal notranslate"><span class="pre">ODEEnvironment.Exception</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.core.ODEEnvironment.statef"><code class="docutils literal notranslate"><span class="pre">ODEEnvironment.statef</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.core.ODEEnvironment.state"><code class="docutils literal notranslate"><span class="pre">ODEEnvironment.state</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.core.ODEEnvironment.cache_length"><code class="docutils literal notranslate"><span class="pre">ODEEnvironment.cache_length</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.core.ODEEnvironment.cache_period"><code class="docutils literal notranslate"><span class="pre">ODEEnvironment.cache_period</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.core.ODEEnvironment.cache_last"><code class="docutils literal notranslate"><span class="pre">ODEEnvironment.cache_last</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.core.ODEEnvironment.cache"><code class="docutils literal notranslate"><span class="pre">ODEEnvironment.cache</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.core.ODEEnvironment.init_y"><code class="docutils literal notranslate"><span class="pre">ODEEnvironment.init_y</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.core.ODEEnvironment.reset"><code class="docutils literal notranslate"><span class="pre">ODEEnvironment.reset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.core.ODEEnvironment.run"><code class="docutils literal notranslate"><span class="pre">ODEEnvironment.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.core.ODEEnvironment.cached_states"><code class="docutils literal notranslate"><span class="pre">ODEEnvironment.cached_states</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#IPYDEMO.odesimu.core.System"><code class="docutils literal notranslate"><span class="pre">System</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.core.System.factory"><code class="docutils literal notranslate"><span class="pre">System.factory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.core.System.fun"><code class="docutils literal notranslate"><span class="pre">System.fun</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.core.System.jac"><code class="docutils literal notranslate"><span class="pre">System.jac</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.core.System.makestate"><code class="docutils literal notranslate"><span class="pre">System.makestate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.core.System.displayer"><code class="docutils literal notranslate"><span class="pre">System.displayer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.core.System.launch"><code class="docutils literal notranslate"><span class="pre">System.launch()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#IPYDEMO.odesimu.util.buffered"><code class="docutils literal notranslate"><span class="pre">buffered()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#IPYDEMO.odesimu.util.blurred"><code class="docutils literal notranslate"><span class="pre">blurred()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#IPYDEMO.odesimu.util.DPiecewise"><code class="docutils literal notranslate"><span class="pre">DPiecewise</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.util.DPiecewise.Exception"><code class="docutils literal notranslate"><span class="pre">DPiecewise.Exception</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.util.DPiecewise.tmax"><code class="docutils literal notranslate"><span class="pre">DPiecewise.tmax</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.util.DPiecewise.value"><code class="docutils literal notranslate"><span class="pre">DPiecewise.value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.util.DPiecewise.changepoint"><code class="docutils literal notranslate"><span class="pre">DPiecewise.changepoint</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.util.DPiecewise.reset"><code class="docutils literal notranslate"><span class="pre">DPiecewise.reset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.util.DPiecewise.update"><code class="docutils literal notranslate"><span class="pre">DPiecewise.update()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#IPYDEMO.odesimu.util.PIDController"><code class="docutils literal notranslate"><span class="pre">PIDController</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.util.PIDController.update"><code class="docutils literal notranslate"><span class="pre">PIDController.update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.util.PIDController.reset"><code class="docutils literal notranslate"><span class="pre">PIDController.reset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#IPYDEMO.odesimu.util.period_hook"><code class="docutils literal notranslate"><span class="pre">period_hook()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#IPYDEMO.odesimu.util.target_displayer"><code class="docutils literal notranslate"><span class="pre">target_displayer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#IPYDEMO.odesimu.util.PIDControlledMixin"><code class="docutils literal notranslate"><span class="pre">PIDControlledMixin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.util.PIDControlledMixin.pos"><code class="docutils literal notranslate"><span class="pre">PIDControlledMixin.pos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#IPYDEMO.odesimu.util.PIDControlledMixin.gap"><code class="docutils literal notranslate"><span class="pre">PIDControlledMixin.gap()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mod_fractals.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.fractals</span></code> — Fractals exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod_polyhedra.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.polyhedra</span></code> — Polyhedra exploration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">IPYDEMO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.odesimu</span></code> — Dynamical system simulation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/mod_odesimu.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ipydemo-odesimu-dynamical-system-simulation">
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.odesimu</span></code> — Dynamical system simulation<a class="headerlink" href="#ipydemo-odesimu-dynamical-system-simulation" title="Link to this heading"></a></h1>
+<p>This module provides basic utilities to build system simulations based on ordinary differential equations (ODE).</p>
+<section id="an-example">
+<h2>An example<a class="headerlink" href="#an-example" title="Link to this heading"></a></h2>
+<p>We want to simulate the motion of a simple pendulum. The pivot of the pendulum is attached to a fixed point while the bob concentrates all the mass at a constant distance <span class="math notranslate nohighlight">\(l\)</span> from the pivot. The pendulum is submitted to a constant, uniform gravity field <span class="math notranslate nohighlight">\(g\)</span> oriented downwards, and frictions are ignored. The physical state of this system is entirely represented by the angle <span class="math notranslate nohighlight">\(\theta\)</span> of the pendulum with the downward vertical axis, and its temporal derivative <span class="math notranslate nohighlight">\(\dot{\theta}\)</span>. The equation of this elementary oscillator is given by</p>
+<div class="math notranslate nohighlight">
+\[\ddot{\theta} = -\frac{g}{l}\sin\theta\]</div>
+<p>The following program implements the corresponding simulation.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># File:                 demo/odesimu.py</span>
+<span class="c1"># Contributors:         Jean-Marc Andreoli</span>
+<span class="c1"># Language:             python</span>
+<span class="c1"># Purpose:              Illustration of the odesimu subpackage</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">make</span><span class="w"> </span><span class="kn">import</span> <span class="n">RUN</span><span class="p">;</span> <span class="n">RUN</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span><span class="vm">__file__</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1">#--------------------------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">array</span><span class="p">,</span><span class="n">square</span><span class="p">,</span><span class="n">sqrt</span><span class="p">,</span><span class="n">cos</span><span class="p">,</span><span class="n">sin</span><span class="p">,</span><span class="n">arccos</span><span class="p">,</span><span class="n">arcsin</span><span class="p">,</span><span class="n">degrees</span><span class="p">,</span><span class="n">radians</span><span class="p">,</span><span class="n">pi</span><span class="p">,</span><span class="n">isclose</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">myutil.simpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpySimulation</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..odesimu</span><span class="w"> </span><span class="kn">import</span> <span class="n">System</span>
+<span class="n">Trajectory</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Trajectory&#39;</span><span class="p">,</span><span class="s1">&#39;periodicity alpha T name display&#39;</span><span class="p">)</span>
+<span class="n">Periodicity</span> <span class="o">=</span> <span class="n">Enum</span><span class="p">(</span><span class="s1">&#39;Periodicity&#39;</span><span class="p">,</span><span class="s1">&#39;Aperiodic Periodic IncrementalPeriodic&#39;</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Pendulum</span> <span class="p">(</span><span class="n">System</span><span class="p">):</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">L</span><span class="p">,</span><span class="n">G</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">L</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">G</span><span class="o">/</span><span class="n">L</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">fun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">state</span><span class="p">):</span> <span class="c1"># required</span>
+    <span class="n">theta</span><span class="p">,</span><span class="n">dtheta</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="k">return</span> <span class="n">array</span><span class="p">((</span><span class="n">dtheta</span><span class="p">,</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)))</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">jac</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">state</span><span class="p">):</span> <span class="c1"># optional</span>
+    <span class="n">theta</span><span class="p">,</span><span class="n">dtheta</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="k">return</span> <span class="n">array</span><span class="p">(((</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span><span class="mi">0</span><span class="p">)))</span>
+
+  <span class="nd">@staticmethod</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">makestate</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span><span class="n">dtheta</span><span class="o">=</span><span class="mf">0.</span><span class="p">):</span> <span class="c1"># required</span>
+    <span class="k">return</span> <span class="n">radians</span><span class="p">((</span><span class="n">theta</span><span class="p">,</span> <span class="n">dtheta</span><span class="p">))</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">displayer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">env</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">refsize</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span> <span class="c1"># required</span>
+    <span class="n">trajectory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectory</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">init_y</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;trajectory:</span><span class="si">{</span><span class="n">trajectory</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;x-small&#39;</span><span class="p">)</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="mf">1.05</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">L</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="n">L</span><span class="p">,</span><span class="n">L</span><span class="p">),</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="n">L</span><span class="p">,</span><span class="n">L</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">((</span><span class="mf">0.</span><span class="p">,),(</span><span class="mf">0.</span><span class="p">,),</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="n">refsize</span><span class="p">)</span>
+    <span class="n">trajectory</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">a_pole</span><span class="p">,</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">((),(),</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+    <span class="n">a_bob</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">((),(),</span><span class="n">s</span><span class="o">=</span><span class="n">refsize</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">a_tail</span><span class="p">,</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">((),(),</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disp</span><span class="p">():</span>
+      <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cartesian</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+      <span class="n">a_pole</span><span class="o">.</span><span class="n">set_data</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="n">x</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="n">y</span><span class="p">))</span>
+      <span class="n">a_bob</span><span class="o">.</span><span class="n">set_offsets</span><span class="p">(((</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),))</span>
+      <span class="n">a_tail</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cartesian</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">cached_states</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">disp</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">cartesian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">state</span><span class="p">):</span>
+    <span class="n">theta</span><span class="p">,</span><span class="n">dtheta</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="o">*</span><span class="n">array</span><span class="p">((</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span><span class="o">-</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)))</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">trajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">init_y</span><span class="p">):</span> <span class="c1"># precomputes the trajectory</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">quad</span>
+    <span class="n">theta</span><span class="p">,</span><span class="n">dtheta</span> <span class="o">=</span> <span class="n">init_y</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="mf">.5</span><span class="o">*</span><span class="n">square</span><span class="p">(</span><span class="n">dtheta</span><span class="p">)</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="n">E</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span>
+    <span class="k">if</span> <span class="n">isclose</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+      <span class="n">periodicity</span> <span class="o">=</span> <span class="n">Periodicity</span><span class="o">.</span><span class="n">Aperiodic</span><span class="p">;</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;aperiodic&#39;</span><span class="p">;</span> <span class="n">T</span> <span class="o">=</span> <span class="kc">None</span><span class="p">;</span> <span class="n">α</span> <span class="o">=</span> <span class="n">pi</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">c</span><span class="o">&lt;-</span><span class="mi">1</span><span class="p">:</span> <span class="n">periodicity</span> <span class="o">=</span> <span class="n">Periodicity</span><span class="o">.</span><span class="n">IncrementalPeriodic</span><span class="p">;</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;incremental period&#39;</span><span class="p">;</span> <span class="n">α</span> <span class="o">=</span> <span class="n">pi</span>
+      <span class="k">else</span><span class="p">:</span> <span class="n">periodicity</span> <span class="o">=</span> <span class="n">Periodicity</span><span class="o">.</span><span class="n">Periodic</span><span class="p">;</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;half-period&#39;</span><span class="p">;</span> <span class="n">α</span> <span class="o">=</span> <span class="n">arccos</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+      <span class="n">T</span> <span class="o">=</span> <span class="n">pi</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="n">isclose</span><span class="p">(</span><span class="n">α</span><span class="p">,</span><span class="mf">0.</span><span class="p">)</span> <span class="k">else</span> <span class="n">quad</span><span class="p">((</span><span class="k">lambda</span> <span class="n">θ</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="n">cos</span><span class="p">(</span><span class="n">θ</span><span class="p">)</span><span class="o">-</span><span class="n">c</span><span class="p">)),</span><span class="mi">0</span><span class="p">,</span><span class="n">α</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+      <span class="n">T</span> <span class="o">*=</span> <span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">)</span>
+      <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">T</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;CircularArc($R=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">$,$</span><span class="se">\\</span><span class="s1">alpha=</span><span class="si">{</span><span class="n">degrees</span><span class="p">(</span><span class="n">α</span><span class="p">)</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">$) </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">display</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
+      <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Arc</span>
+      <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Trajectory:</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;x-small&#39;</span><span class="p">)</span>
+      <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cartesian</span><span class="p">,((</span><span class="o">-</span><span class="n">α</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="n">α</span><span class="p">,</span><span class="mi">0</span><span class="p">)))),</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+      <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Arc</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span><span class="o">-</span><span class="n">degrees</span><span class="p">(</span><span class="n">α</span><span class="p">),</span><span class="n">degrees</span><span class="p">(</span><span class="n">α</span><span class="p">),</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span><span class="n">ls</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">Trajectory</span><span class="p">(</span><span class="n">periodicity</span><span class="p">,</span><span class="n">α</span><span class="p">,</span><span class="n">T</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">display</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">demo</span><span class="p">():</span>
+  <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="kn">import</span> <span class="n">show</span><span class="p">,</span><span class="n">close</span>
+  <span class="n">syst</span> <span class="o">=</span> <span class="n">Pendulum</span><span class="p">(</span><span class="n">L</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span><span class="n">G</span><span class="o">=</span><span class="mf">9.81</span><span class="p">)</span>
+  <span class="n">R</span> <span class="o">=</span> <span class="n">SimpySimulation</span><span class="p">(</span>
+    <span class="n">syst</span><span class="o">.</span><span class="n">launch</span><span class="p">(</span><span class="n">init_y</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="mf">90.</span><span class="p">,</span><span class="n">dtheta</span><span class="o">=</span><span class="mf">120.</span><span class="p">),</span><span class="n">period</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span><span class="n">cache</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mf">.05</span><span class="p">),</span><span class="n">max_step</span><span class="o">=</span><span class="mf">.05</span><span class="p">),</span>
+    <span class="n">play_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">track</span><span class="o">=</span><span class="p">[</span><span class="mf">6.</span><span class="p">],</span><span class="n">frame_per_stu</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span><span class="n">fig_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">7</span><span class="p">)),</span><span class="n">save_count</span><span class="o">=</span><span class="mi">150</span><span class="p">),</span>
+  <span class="p">)</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">action</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="s1">&#39;get_size_inches&#39;</span><span class="p">,</span><span class="s1">&#39;set_size_inches&#39;</span><span class="p">,</span><span class="s1">&#39;savefig&#39;</span><span class="p">:</span> <span class="nb">setattr</span><span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">board</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="nb">getattr</span><span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">main</span><span class="p">,</span><span class="n">a</span><span class="p">))</span> <span class="c1"># very ugly trick because board is a subfigure</span>
+    <span class="n">R</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">anim</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">RUN</span><span class="o">.</span><span class="n">dir</span><span class="o">/</span><span class="s1">&#39;odesimu.mp4&#39;</span><span class="p">))</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;ffmpeg&#39;</span><span class="p">,</span><span class="s1">&#39;-loglevel&#39;</span><span class="p">,</span><span class="s1">&#39;panic&#39;</span><span class="p">,</span><span class="s1">&#39;-y&#39;</span><span class="p">,</span><span class="s1">&#39;-i&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">RUN</span><span class="o">.</span><span class="n">dir</span><span class="o">/</span><span class="s1">&#39;odesimu.mp4&#39;</span><span class="p">),</span><span class="nb">str</span><span class="p">(</span><span class="n">RUN</span><span class="o">.</span><span class="n">dir</span><span class="o">/</span><span class="s1">&#39;odesimu.gif&#39;</span><span class="p">)])</span>
+    <span class="n">close</span><span class="p">()</span>
+  <span class="n">RUN</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+  <span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The behaviour of the system is captured by class <strong>Pendulum</strong>, which extends class <strong>odesimu.System</strong>. The following methods must be provided:</p>
+<ul class="simple">
+<li><p><strong>fun</strong>, which defines the ODE of the system,</p></li>
+<li><p><strong>makestate</strong>, which converts a user friendly state specification into an actual state</p></li>
+<li><p><strong>displayer</strong>, which takes as input an ODE environment (instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">ODEEnvironment</span></code>) as well as a plot axes (instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.Axes</span></code>) and returns the function which displays the ODE environment onto the plot axes.</p></li>
+</ul>
+<p>Method <strong>jac</strong> is optional. It defines the Jacobian of the ODE, which some ODE solvers can use for optimisation purposes. It is given here, as it is straightforward to compute.</p>
+<p>Method <strong>displayer</strong> performs the following steps:</p>
+<ul class="simple">
+<li><p>apply various configurations to <em>ax</em>, which is an instance of <strong>matplotlib.axes.Axes</strong>: here, set the limits and the title, and draw the pivot and trajectory of the bob, as, in this simple example, it can easily be computed;</p></li>
+<li><p>define the matplotlib artists, initially empty, capturing the dynamic components of the simulation: here <em>a_pole</em> (pendulum’s pole as a straight line segment), <em>a_bob</em> (pendulum’s bob as a single point) and <em>a_tail</em> (tail of the bob, i.e. buffered previous positions of the bob, as a curve);</p></li>
+<li><p>define the display refresher function <em>disp</em> invoked each time a new system state is computed by the ODE solver: it updates the dynamic components of the simulation.</p></li>
+</ul>
+<p>Typical output:</p>
+<a class="reference internal image-reference" href="_images/odesimu.gif"><img alt="_images/odesimu.gif" src="_images/odesimu.gif" style="width: 350.0px; height: 357.0px;" />
+</a>
+</section>
+<section id="module-IPYDEMO.odesimu.core">
+<span id="available-types-and-functions"></span><h2>Available types and functions<a class="headerlink" href="#module-IPYDEMO.odesimu.core" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.ODEEnvironment">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">IPYDEMO.odesimu.core.</span></span><span class="sig-name descname"><span class="pre">ODEEnvironment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">spec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/core.html#ODEEnvironment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.core.ODEEnvironment" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RobustEnvironment</span></code></p>
+<p>An instance of this class represents an abstract dynamical systems (in physics, electronics, hydraulics etc.) governed by an ordinary differential equation (ODE):</p>
+<div class="math notranslate nohighlight">
+\[\begin{array}{rcl}
+\frac{\mathbf{d}y}{\mathbf{d}t} &amp; = &amp; F(t,y)
+\end{array}\]</div>
+<p>where <span class="math notranslate nohighlight">\(t\)</span> is the simulation time and <span class="math notranslate nohighlight">\(y\)</span> is the state. The ODE numerical solver used is taken from module <code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.integrate</span></code> which assumes the state is a <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.array</span></code> instance or a scalar.</p>
+<p>The initial simulation time and state are given by <em>init_t</em> and <em>init_y</em>, respectively. The ODE is solved iteratively on successive, contiguous intervals given by <em>period</em>, the simulation period generator, which generates the spans of the intervals.</p>
+<ul class="simple">
+<li><p>If <em>period</em> is a <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> instance, the interval spans are constant equal to <em>period</em></p></li>
+<li><p>If <em>period</em> is an immutable iterable of <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> instances, the interval spans are taken to be these numbers</p></li>
+<li><p>Otherwise, <em>period</em> must be a generator of <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> instances</p></li>
+</ul>
+<p>Various specifications of the ODE are passed through <em>spec</em> to function <code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.solve_ivp()</span></code>. At least function <span class="math notranslate nohighlight">\(F\)</span> must be passed as keyword argument <code class="docutils literal notranslate"><span class="pre">fun</span></code>.</p>
+<p>The cache specification <em>cache</em> is either <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>, in which case no caching is performed, or a pair of the cache length and the cache period, independent of the simulation period generator. The cache contains the states sampled at a sequence of decreasing multiples of the cache period. The size of the sequence is chosen so that at any time in the current simulation span, the sequence clipped above at that time has length at least equal to the cache length, unless the initial time is reached before.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>init_t</strong> (<em>float</em>) – initial simulation time</p></li>
+<li><p><strong>init_y</strong> (<em>ndarray</em>) – initial simulation state</p></li>
+<li><p><strong>period</strong> (<em>Union</em><em>[</em><em>float</em><em>, </em><em>Iterable</em><em>[</em><em>float</em><em>]</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>float</em><em>]</em><em>]</em>) – period of ODE resolution</p></li>
+<li><p><strong>cache</strong> (<em>ndarray</em>) – cache specification</p></li>
+<li><p><strong>ka</strong> – dictionary of arguments passed to the ODE solver</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.ODEEnvironment.Exception">
+<span class="sig-name descname"><span class="pre">Exception</span></span><a class="headerlink" href="#IPYDEMO.odesimu.core.ODEEnvironment.Exception" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">ODEException</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.ODEEnvironment.statef">
+<span class="sig-name descname"><span class="pre">statef</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#IPYDEMO.odesimu.core.ODEEnvironment.statef" title="Link to this definition"></a></dt>
+<dd><p>Current function of simulation time returning state</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.ODEEnvironment.state">
+<span class="sig-name descname"><span class="pre">state</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#IPYDEMO.odesimu.core.ODEEnvironment.state" title="Link to this definition"></a></dt>
+<dd><p>State at the current instant of the simulation</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.ODEEnvironment.cache_length">
+<span class="sig-name descname"><span class="pre">cache_length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#IPYDEMO.odesimu.core.ODEEnvironment.cache_length" title="Link to this definition"></a></dt>
+<dd><p>Expected length of cache</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.ODEEnvironment.cache_period">
+<span class="sig-name descname"><span class="pre">cache_period</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#IPYDEMO.odesimu.core.ODEEnvironment.cache_period" title="Link to this definition"></a></dt>
+<dd><p>Cache sampling period</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.ODEEnvironment.cache_last">
+<span class="sig-name descname"><span class="pre">cache_last</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#IPYDEMO.odesimu.core.ODEEnvironment.cache_last" title="Link to this definition"></a></dt>
+<dd><p>Index of the last cached state</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.ODEEnvironment.cache">
+<span class="sig-name descname"><span class="pre">cache</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#IPYDEMO.odesimu.core.ODEEnvironment.cache" title="Link to this definition"></a></dt>
+<dd><p>The cache itself (the time axis is the last axis)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.ODEEnvironment.init_y">
+<span class="sig-name descname"><span class="pre">init_y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#IPYDEMO.odesimu.core.ODEEnvironment.init_y" title="Link to this definition"></a></dt>
+<dd><p>Initial state</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.ODEEnvironment.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/core.html#ODEEnvironment.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.core.ODEEnvironment.reset" title="Link to this definition"></a></dt>
+<dd><p>Resets states and cache, and defines a process</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.ODEEnvironment.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">until</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/core.html#ODEEnvironment.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.core.ODEEnvironment.run" title="Link to this definition"></a></dt>
+<dd><p>Executes <code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code> until the given criterion <em>until</em> is met.</p>
+<ul class="simple">
+<li><p>If it is <code class="docutils literal notranslate"><span class="pre">None</span></code> (which is the default), this method will return
+when there are no further events to be processed.</p></li>
+<li><p>If it is an <code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code>, the method will continue
+stepping until this event has been triggered and will return its
+value.  Raises a <code class="xref py py-exc docutils literal notranslate"><span class="pre">RuntimeError</span></code> if there are no further events
+to be processed and the <em>until</em> event was not triggered.</p></li>
+<li><p>If it is a number, the method will continue stepping
+until the environment’s time reaches <em>until</em>.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.ODEEnvironment.cached_states">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cached_states</span></span><a class="headerlink" href="#IPYDEMO.odesimu.core.ODEEnvironment.cached_states" title="Link to this definition"></a></dt>
+<dd><p>States of a sequence of states at previous instants in the simulation</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.System">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">IPYDEMO.odesimu.core.</span></span><span class="sig-name descname"><span class="pre">System</span></span><a class="reference internal" href="_modules/IPYDEMO/odesimu/core.html#System"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.core.System" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Instances of this class gather information for a simulation as implemented by class <code class="xref py py-class docutils literal notranslate"><span class="pre">myutil.simpy.SimpySimulation</span></code>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.System.factory">
+<span class="sig-name descname"><span class="pre">factory</span></span><a class="headerlink" href="#IPYDEMO.odesimu.core.System.factory" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#IPYDEMO.odesimu.core.ODEEnvironment" title="IPYDEMO.odesimu.core.ODEEnvironment"><code class="xref py py-class docutils literal notranslate"><span class="pre">ODEEnvironment</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.System.fun">
+<span class="sig-name descname"><span class="pre">fun</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#IPYDEMO.odesimu.core.System.fun" title="Link to this definition"></a></dt>
+<dd><p>(required) Function <span class="math notranslate nohighlight">\(F\)</span> to use in the ODE <span class="math notranslate nohighlight">\(\frac{\mathbf{d}y}{\mathbf{d}t}=F(t,y)\)</span></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.System.jac">
+<span class="sig-name descname"><span class="pre">jac</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#IPYDEMO.odesimu.core.System.jac" title="Link to this definition"></a></dt>
+<dd><p>(optional) Jacobian of the function of the ODE</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.System.makestate">
+<span class="sig-name descname"><span class="pre">makestate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/core.html#System.makestate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.core.System.makestate" title="Link to this definition"></a></dt>
+<dd><p>Returns a state computed from its arguments. This implementation raises an error and must be overridden in subclasses or at the instance level.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.System.displayer">
+<span class="sig-name descname"><span class="pre">displayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">part_spec</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/core.html#System.displayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.core.System.displayer" title="Link to this definition"></a></dt>
+<dd><p>Returns a default displayer function which, on invocation, displays the current state of the environment <em>env</em> on the board part specified by <em>part_spec</em>. The display can be fine-tuned by keyword arguments <em>ka</em>, which can be specified as a dictionary in the last positional argument of method <a class="reference internal" href="#IPYDEMO.odesimu.core.System.launch" title="IPYDEMO.odesimu.core.System.launch"><code class="xref py py-meth docutils literal notranslate"><span class="pre">launch()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.core.System.launch">
+<span class="sig-name descname"><span class="pre">launch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">displayers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hooks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/core.html#System.launch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.core.System.launch" title="Link to this definition"></a></dt>
+<dd><p>Returns a tuple comprising an instance of class <a class="reference internal" href="#IPYDEMO.odesimu.core.ODEEnvironment" title="IPYDEMO.odesimu.core.ODEEnvironment"><code class="xref py py-class docutils literal notranslate"><span class="pre">ODEEnvironment</span></code></a> and various environment displayers, as expected by <code class="xref py py-class docutils literal notranslate"><span class="pre">myutil.simpy.SimpySimulation</span></code>.</p>
+<ul class="simple">
+<li><p>The ODE is specified by attributes <a class="reference internal" href="#IPYDEMO.odesimu.core.System.fun" title="IPYDEMO.odesimu.core.System.fun"><code class="xref py py-attr docutils literal notranslate"><span class="pre">fun</span></code></a> and <a class="reference internal" href="#IPYDEMO.odesimu.core.System.jac" title="IPYDEMO.odesimu.core.System.jac"><code class="xref py py-attr docutils literal notranslate"><span class="pre">jac</span></code></a> together with the other arguments in <em>ka</em> (the value of key <code class="docutils literal notranslate"><span class="pre">init_y</span></code> is first passed to method <a class="reference internal" href="#IPYDEMO.odesimu.core.System.makestate" title="IPYDEMO.odesimu.core.System.makestate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">makestate()</span></code></a> as keyword arguments if it is a dictionary, otherwise as positional arguments).</p></li>
+<li><p>The displayers are given by <em>displayers</em>; if its last element is a dictionary, it is replaced by the default displayer with that dictionary as keyword arguments, otherwise the default displayer is appended</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function" id="module-IPYDEMO.odesimu.util">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.util.buffered">
+<span class="sig-prename descclassname"><span class="pre">IPYDEMO.odesimu.util.</span></span><span class="sig-name descname"><span class="pre">buffered</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/util.html#buffered"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.util.buffered" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<em>int</em>) – size of the buffer page</p></li>
+<li><p><strong>N</strong> (<em>int</em>) – number of samples taken over each page</p></li>
+<li><p><strong>page</strong> (<em>int</em>) – the index of the initial leftmost buffer page</p></li>
+</ul>
+</dd>
+</dl>
+<p>A functor (decorator) which allows limited buffering of a function over the reals. The set of reals is partitioned into contiguous intervals of length <em>T</em> called pages. Page 0 starts at 0. At any time, two adjacent pages are kept in a buffer, starting with <em>page</em> on the leftmost side. For each buffer page, the values of the function over that page are pre-computed at <em>N</em> equidistant samples. This form of buffering is useful when successive invocations of the function tend to stay within the same page, and the page change rate is lower than the invocation rate. Three cases may occur on an invocation:</p>
+<ul class="simple">
+<li><p>If the argument is within the buffer, the result is computed by interpolation from the pre-computed values.</p></li>
+<li><p>If the argument is in the page which is immediately right-adjacent (resp. left-adjacent) to the buffer, the buffer is shifted one page rightward (resp. leftward) to include the argument and the old leftmost (resp. rightmost) page is dropped.</p></li>
+<li><p>Otherwise the buffer is entirely reset to include the argument in its rightmost (resp. leftmost) page, depending on whether the argument is on the left (resp. right) of the current buffer.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.util.blurred">
+<span class="sig-prename descclassname"><span class="pre">IPYDEMO.odesimu.util.</span></span><span class="sig-name descname"><span class="pre">blurred</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk=1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_ident=&lt;function</span> <span class="pre">&lt;lambda&gt;&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/util.html#blurred"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.util.blurred" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>level</strong> (<em>float</em>) – the degree of blurring, as a positive number</p></li>
+<li><p><strong>offset</strong> – centre of blurring</p></li>
+<li><p><strong>chunk</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<p>A functor (decorator) which applies a multiplicative noise to a function. The multiplicative coefficient follows a log-uniform distribution between -<em>level</em> and <em>level</em>. Two invocations of the blurred function, whether they have the same argument or not, are blurred independently. <em>offset</em> if subtracted to the function before blurring and re-added afterwards.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.util.DPiecewise">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">IPYDEMO.odesimu.util.</span></span><span class="sig-name descname"><span class="pre">DPiecewise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/util.html#DPiecewise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.util.DPiecewise" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Instances of this class implement piecewise constant functions which are dynamically constructed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> (<em>int</em>) – size of the buffer of change points</p></li>
+<li><p><strong>right</strong> (<em>bool</em>) – whether change point intervals include rightmost value (hence function is left-continuous)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Initially, the function is everywhere constant. Whenever a new change point is inserted, it must be greater than all the previous change points and all the arguments at which the function has already been evaluated, otherwise, an exception is raised. When the buffer is exceeded, old change points are forgotten and any attempt to evaluate the function before or at those old change points raises an exception.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.util.DPiecewise.Exception">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Exception</span></span><a class="reference internal" href="_modules/IPYDEMO/odesimu/util.html#DPiecewise.Exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.util.DPiecewise.Exception" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.util.DPiecewise.tmax">
+<span class="sig-name descname"><span class="pre">tmax</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#IPYDEMO.odesimu.util.DPiecewise.tmax" title="Link to this definition"></a></dt>
+<dd><p>largest value at which the function has been evaluated</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.util.DPiecewise.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#IPYDEMO.odesimu.util.DPiecewise.value" title="Link to this definition"></a></dt>
+<dd><p>values on right of changepoints</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.util.DPiecewise.changepoint">
+<span class="sig-name descname"><span class="pre">changepoint</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#IPYDEMO.odesimu.util.DPiecewise.changepoint" title="Link to this definition"></a></dt>
+<dd><p>position of the change points</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.util.DPiecewise.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/util.html#DPiecewise.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.util.DPiecewise.reset" title="Link to this definition"></a></dt>
+<dd><p>(Re)initialises this function with a single change point at time <em>t</em> with value <em>v</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>float</em>)</p></li>
+<li><p><strong>v</strong> (<em>iterable</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.util.DPiecewise.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/util.html#DPiecewise.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.util.DPiecewise.update" title="Link to this definition"></a></dt>
+<dd><p>Sets a new change point at time <em>t</em> with value <em>v</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>float</em>)</p></li>
+<li><p><strong>v</strong> (<em>iterable</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.util.PIDController">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">IPYDEMO.odesimu.util.</span></span><span class="sig-name descname"><span class="pre">PIDController</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gP</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gI</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gD</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/util.html#PIDController"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.util.PIDController" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#IPYDEMO.odesimu.util.DPiecewise" title="IPYDEMO.odesimu.util.DPiecewise"><code class="xref py py-class docutils literal notranslate"><span class="pre">DPiecewise</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Controller</span></code></p>
+<p>Objects of this class implement rudimentary PID controllers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>gP</strong><strong>,</strong><strong>gI</strong><strong>,</strong><strong>gD</strong> – proportional, integration, derivative gains</p>
+</dd>
+</dl>
+<p>An instance of this class defines the control as a piecewise constant function. A new change point is created by invoking method <a class="reference internal" href="#IPYDEMO.odesimu.util.PIDController.update" title="IPYDEMO.odesimu.util.PIDController.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> passing it a time <em>t</em> and state <em>s</em> of the system at that time. The associated control is based on the value of function <em>observe</em> at <em>s</em>, using the PID scheme. Change points must be inserted in chronological order.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.util.PIDController.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/util.html#PIDController.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.util.PIDController.update" title="Link to this definition"></a></dt>
+<dd><p>Sets a new change point at time <em>t</em> with value <em>v</em>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.util.PIDController.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/util.html#PIDController.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.util.PIDController.reset" title="Link to this definition"></a></dt>
+<dd><p>(Re)initialises this function with a single change point at time <em>t</em> with value <em>v</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.util.period_hook">
+<span class="sig-prename descclassname"><span class="pre">IPYDEMO.odesimu.util.</span></span><span class="sig-name descname"><span class="pre">period_hook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">control</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/util.html#period_hook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.util.period_hook" title="Link to this definition"></a></dt>
+<dd><p>Modifies the simulation period of the environment <em>env</em> so that it at each beginning of period, the controller <em>control</em> is reset (first period) or updated (subsequent periods).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>control</strong> (<em>Controller</em>)</p></li>
+<li><p><strong>env</strong> (<a class="reference internal" href="#IPYDEMO.odesimu.core.ODEEnvironment" title="IPYDEMO.odesimu.core.ODEEnvironment"><em>ODEEnvironment</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.util.target_displayer">
+<span class="sig-prename descclassname"><span class="pre">IPYDEMO.odesimu.util.</span></span><span class="sig-name descname"><span class="pre">target_displayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/util.html#target_displayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.util.target_displayer" title="Link to this definition"></a></dt>
+<dd><p>A helper function to create a displayer of a time only function <em>pos</em> returning pairs of scalar coordinates.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.util.PIDControlledMixin">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">IPYDEMO.odesimu.util.</span></span><span class="sig-name descname"><span class="pre">PIDControlledMixin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">control_kw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/util.html#PIDControlledMixin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.util.PIDControlledMixin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A helper mixin class which can be added as <em>first</em> mixin in <a class="reference internal" href="#IPYDEMO.odesimu.core.System" title="IPYDEMO.odesimu.core.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">core.System</span></code></a> sub-classes.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.util.PIDControlledMixin.pos">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/util.html#PIDControlledMixin.pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.util.PIDControlledMixin.pos" title="Link to this definition"></a></dt>
+<dd><p>Returns the position of the target in the Euclidian space as a function of its value <em>x</em>. This implementation assumes position equals value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="IPYDEMO.odesimu.util.PIDControlledMixin.gap">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/IPYDEMO/odesimu/util.html#PIDControlledMixin.gap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#IPYDEMO.odesimu.util.PIDControlledMixin.gap" title="Link to this definition"></a></dt>
+<dd><p>Returns the gap between the observation <em>o</em> of the target and the <em>state</em> of the system. This implementation assumes the observation and state space are identical, and returns the difference between the observation and the state.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to IPYDEMO’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mod_fractals.html" class="btn btn-neutral float-right" title="IPYDEMO.fractals — Fractals exploration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

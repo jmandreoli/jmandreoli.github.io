@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -5,22 +7,18 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PYTOOLS.simpy — Utilities for simpy &mdash; PYTOOLS  documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -104,14 +102,14 @@
 <span id="available-types-and-functions"></span><h2>Available types and functions<a class="headerlink" href="#module-PYTOOLS.simpy" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PYTOOLS.simpy.RobustEnvironment">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.simpy.</span></span><span class="sig-name descname"><span class="pre">RobustEnvironment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">init_t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/simpy.html#RobustEnvironment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.simpy.RobustEnvironment" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.simpy.</span></span><span class="sig-name descname"><span class="pre">RobustEnvironment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">init_t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/simpy.html#RobustEnvironment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.simpy.RobustEnvironment" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Environment</span></code></p>
 <p>Instances of this class are <code class="xref py py-class docutils literal notranslate"><span class="pre">simpy.Environment</span></code> instances with method <code class="xref py py-meth docutils literal notranslate"><span class="pre">run_robust()</span></code>, which extends method <code class="xref py py-class docutils literal notranslate"><span class="pre">run</span></code> to allow jumping back in the past (by rerunning since the initial time until the specified point in the past).</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PYTOOLS.simpy.SimpySimulation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.simpy.</span></span><span class="sig-name descname"><span class="pre">SimpySimulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">play_kw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/simpy.html#SimpySimulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.simpy.SimpySimulation" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PYTOOLS.simpy.</span></span><span class="sig-name descname"><span class="pre">SimpySimulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">play_kw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PYTOOLS/simpy.html#SimpySimulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PYTOOLS.simpy.SimpySimulation" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>An instance of this class controls the rollout of a set <em>content</em> of pairs where the first component is a <a class="reference internal" href="#PYTOOLS.simpy.RobustEnvironment" title="PYTOOLS.simpy.RobustEnvironment"><code class="xref py py-class docutils literal notranslate"><span class="pre">RobustEnvironment</span></code></a> instance and the second component is display specification. Attribute <a class="reference internal" href="#PYTOOLS.simpy.SimpySimulation.player" title="PYTOOLS.simpy.SimpySimulation.player"><code class="xref py py-attr docutils literal notranslate"><span class="pre">player</span></code></a> holds a player object, created by invoking method <code class="xref py py-meth docutils literal notranslate"><span class="pre">player_factory()</span></code> with keyword arguments <em>play_kw</em>. The player object executes the rollout in a timely fashion under user control on a display board (typically a <code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.Figure</span></code>).</p>
 <p>A display specification is a function which takes as input a <code class="xref py py-mod docutils literal notranslate"><span class="pre">simpy.Environment</span></code> instance and a part of the display board as returned by generator method <a class="reference internal" href="#PYTOOLS.simpy.SimpySimulation.parts" title="PYTOOLS.simpy.SimpySimulation.parts"><code class="xref py py-meth docutils literal notranslate"><span class="pre">parts()</span></code></a>, and returns a display function with no input which displays the environment on the specified part as of the time of invocation.</p>

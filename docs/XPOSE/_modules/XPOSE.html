@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XPOSE &mdash; XPOSE  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> XPOSE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../mod_init.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE</span></code> (toplevel) — base definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mod_client.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.client</span></code> — client CGI resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mod_main.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.main</span></code> — dashboard CGI resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mod_server.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.server</span></code> — instance management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mod_attach.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.attach</span></code> — attachment operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mod_access.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.access</span></code> — access control operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mod_initial.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.initial</span></code> — initialisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mod_utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.utils</span></code> — miscellaneous utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">XPOSE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      <li>XPOSE</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for XPOSE</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Creation date:        2022-01-15</span>
+<span class="c1"># Contributors:         Jean-Marc Andreoli</span>
+<span class="c1"># Language:             python</span>
+<span class="c1"># Purpose:              Xpose: a JSON database manager (server side)</span>
+<span class="c1">#</span>
+
+<span class="kn">import</span> <span class="nn">sqlite3</span><span class="o">,</span><span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cached_property</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">get_config</span><span class="p">,</span><span class="n">set_config</span> <span class="c1"># not used, but made available</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">Path</span><span class="p">,</span><span class="s1">&#39;hardlink_to&#39;</span><span class="p">):</span> <span class="c1"># for python versions &lt; 3.10</span>
+  <span class="nb">setattr</span><span class="p">(</span><span class="n">Path</span><span class="p">,</span><span class="s1">&#39;hardlink_to&#39;</span><span class="p">,</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">,</span><span class="n">target</span><span class="p">,</span><span class="n">link_to</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">Path</span><span class="p">,</span><span class="s1">&#39;link_to&#39;</span><span class="p">):</span> <span class="n">link_to</span><span class="p">(</span><span class="n">target</span><span class="p">,</span><span class="bp">self</span><span class="p">))</span>
+  <span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span><span class="p">;</span> <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Method </span><span class="se">\&#39;</span><span class="s1">hardlink_to</span><span class="se">\&#39;</span><span class="s1"> has been added to class </span><span class="se">\&#39;</span><span class="s1">pathlib.Path</span><span class="se">\&#39;</span><span class="s1"> for python version &lt; 3.10&#39;</span><span class="p">)</span>
+<span class="n">sqlite3</span><span class="o">.</span><span class="n">register_converter</span><span class="p">(</span><span class="s1">&#39;JSON&#39;</span><span class="p">,</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">)</span>
+<span class="n">sqlite3</span><span class="o">.</span><span class="n">register_adapter</span><span class="p">(</span><span class="nb">dict</span><span class="p">,</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">)</span>
+<span class="n">sqlite3</span><span class="o">.</span><span class="n">enable_callback_tracebacks</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">#======================================================================================================================</span>
+<div class="viewcode-block" id="XposeBase"><a class="viewcode-back" href="../mod_init.html#XPOSE.XposeBase">[docs]</a><span class="k">class</span> <span class="nc">XposeBase</span><span class="p">:</span>
+  <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">An instances of this base class is a resource for processing Xpose operations. Actual behaviour is defined in subclasses.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1">#======================================================================================================================</span>
+
+  <span class="n">root</span><span class="p">:</span> <span class="n">Path</span>
+  <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Path to the root folder&quot;&quot;&quot;</span>
+  <span class="n">index_db</span><span class="p">:</span> <span class="n">Path</span>
+  <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Path to the index database&quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">path</span><span class="p">:</span><span class="nb">str</span><span class="o">|</span><span class="n">Path</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">index_db</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">/</span><span class="s1">&#39;index.db&#39;</span>
+    <span class="k">return</span> <span class="bp">self</span>
+
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="XposeBase.connect"><a class="viewcode-back" href="../mod_init.html#XPOSE.XposeBase.connect">[docs]</a>  <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Returns a :class:`sqlite3.Connection` opened on the index database. The keyword arguments *ka* are passed as such to the connection constructor. Various subclasses can extend this method in order to make some of the following sqlite functions available in contexts where they are needed:</span>
+
+<span class="sd">* ``create_attach`` *oid* ↦ *attach*: maps the *oid* field to the *attach* fields of an entry</span>
+<span class="sd">* ``delete_attach`` *oid* ↦ :const:`None`: called when an entry with a given *oid* field is deleted</span>
+<span class="sd">* ``authorise`` *level* ↦ *yes-no*: maps an access *level* to a *yes-no* boolean indicating whether access is granted at that level, given credentials from the context</span>
+<span class="sd">* ``authoriser`` *level*, *path* ↦ :const:`None`: sets the access control to *path* to the given *level*</span>
+<span class="sd">* ``apply_template`` *tmpl*, *err_tmpl*, *rendering*, *args* ↦ :const:`None`: applies a genshi template *tmpl* rendered as *rendering* with arguments *args*; in case of error, applies template *err_tmpl* instead</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+    <span class="k">return</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index_db</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">)</span></div></div>
+
+<span class="c1">#======================================================================================================================</span>
+<span class="k">class</span> <span class="nc">WithCatsMixin</span><span class="p">:</span>
+<span class="c1">#======================================================================================================================</span>
+  <span class="n">root</span><span class="p">:</span> <span class="n">Path</span>
+  <span class="nd">@cached_property</span>
+  <span class="k">def</span> <span class="nf">cats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="s1">&#39;Cats&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="n">Cats</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">/</span><span class="s1">&#39;cats&#39;</span><span class="p">)</span>
+
+<span class="c1">#======================================================================================================================</span>
+<div class="viewcode-block" id="Cats"><a class="viewcode-back" href="../mod_init.html#XPOSE.Cats">[docs]</a><span class="k">class</span> <span class="nc">Cats</span><span class="p">:</span>
+  <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">An instance of this class manages all the xpose instance&#39;s categories (field ``cat`` in the index).</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1">#======================================================================================================================</span>
+
+  <span class="n">validators</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Any</span><span class="p">]</span>
+
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">root</span><span class="p">:</span><span class="n">Path</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">validators</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="Cats.initial"><a class="viewcode-back" href="../mod_init.html#XPOSE.Cats.initial">[docs]</a>  <span class="k">def</span> <span class="nf">initial</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Initialises all the categories found (file ``init.py`` in any recursive sub-folder of ``cats``).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+    <span class="k">for</span> <span class="n">pcat</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;**/init.py&#39;</span><span class="p">):</span>
+      <span class="n">exec</span><span class="p">(</span><span class="n">pcat</span><span class="o">.</span><span class="n">read_text</span><span class="p">(),{</span><span class="s1">&#39;cat&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">(</span><span class="n">pcat</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="p">),</span><span class="o">**</span><span class="n">ka</span><span class="p">})</span></div>
+
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="Cats.validate"><a class="viewcode-back" href="../mod_init.html#XPOSE.Cats.validate">[docs]</a>  <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">cat</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span><span class="n">value</span><span class="p">:</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Checks that *value*, viewed as a json object, conforms to the json schema associated with *cat*.</span>
+
+<span class="sd">:param cat: the category against which to validate</span>
+<span class="sd">:param value: the value to validate</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+    <span class="n">validator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validators</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cat</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">validator</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="kn">from</span> <span class="nn">jsonschema</span> <span class="kn">import</span> <span class="n">Draft202012Validator</span><span class="p">,</span><span class="n">RefResolver</span>
+      <span class="n">base</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">/</span><span class="n">cat</span><span class="o">/</span><span class="s1">&#39;schema.json&#39;</span>
+      <span class="k">with</span> <span class="n">base</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">u</span><span class="p">:</span> <span class="n">schema</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+      <span class="n">Draft202012Validator</span><span class="o">.</span><span class="n">check_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">validators</span><span class="p">[</span><span class="n">cat</span><span class="p">]</span> <span class="o">=</span> <span class="n">validator</span> <span class="o">=</span> <span class="n">Draft202012Validator</span><span class="p">(</span><span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span><span class="o">.</span><span class="n">evolve</span><span class="p">(</span><span class="n">resolver</span><span class="o">=</span><span class="n">RefResolver</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;file://</span><span class="si">{</span><span class="n">base</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,{}))</span>
+    <span class="n">validator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+  <span class="nd">@cached_property</span>
+  <span class="k">def</span> <span class="nf">template_loader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">genshi.template</span> <span class="kn">import</span> <span class="n">TemplateLoader</span>
+    <span class="k">return</span> <span class="n">TemplateLoader</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">),</span><span class="n">auto_reload</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">load_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">tmpl</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_loader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">tmpl</span><span class="p">)</span>
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="Cats.apply_template"><a class="viewcode-back" href="../mod_init.html#XPOSE.Cats.apply_template">[docs]</a>  <span class="k">def</span> <span class="nf">apply_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">tmpl</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span><span class="n">err_tmpl</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span><span class="n">rendering</span><span class="p">:</span><span class="nb">str</span><span class="o">|</span><span class="kc">None</span><span class="p">,</span><span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Applies a template specified by *tmpl* with a set of variables specified by *args*. All templates are found in folder ``templates`` with relative path specifying the template role and category, and suffix ``.xhtml``.</span>
+
+<span class="sd">:param tmpl: genshi template path (relative to the root)</span>
+<span class="sd">:param err_tmpl: genshi template path, executed, with no variable, in case of error</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+    <span class="k">try</span><span class="p">:</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_template</span><span class="p">(</span><span class="n">tmpl</span><span class="p">)</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">rendering</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_template</span><span class="p">(</span><span class="n">err_tmpl</span><span class="p">)</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">rendering</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

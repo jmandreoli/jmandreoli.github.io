@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XPOSE.server &mdash; XPOSE  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> XPOSE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_init.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE</span></code> (toplevel) — base definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_client.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.client</span></code> — client CGI resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_main.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.main</span></code> — dashboard CGI resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_server.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.server</span></code> — instance management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_attach.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.attach</span></code> — attachment operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_access.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.access</span></code> — access control operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_initial.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.initial</span></code> — initialisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mod_utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">XPOSE.utils</span></code> — miscellaneous utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">XPOSE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+          <li><a href="../XPOSE.html">XPOSE</a> &raquo;</li>
+      <li>XPOSE.server</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for XPOSE.server</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Creation date:        2022-01-15</span>
+<span class="c1"># Contributors:         Jean-Marc Andreoli</span>
+<span class="c1"># Language:             python</span>
+<span class="c1"># Purpose:              Xpose: instance management</span>
+<span class="c1">#</span>
+
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span><span class="nn">sqlite3</span><span class="o">,</span><span class="nn">shutil</span><span class="o">,</span><span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">XposeBase</span><span class="p">,</span> <span class="n">WithCatsMixin</span>
+<span class="kn">from</span> <span class="nn">.attach</span> <span class="kn">import</span> <span class="n">WithAttachMixin</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">CGIMixin</span><span class="p">,</span><span class="n">Backup</span><span class="p">,</span><span class="n">http_raise</span><span class="p">,</span><span class="n">http_ts</span><span class="p">,</span><span class="n">set_config</span><span class="p">,</span><span class="n">get_config</span><span class="p">,</span><span class="n">default_attach_namer</span>
+
+<span class="n">XposeSchema</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">CREATE TABLE Entry (</span>
+<span class="s1">  oid INTEGER PRIMARY KEY AUTOINCREMENT,</span>
+<span class="s1">  version INTEGER NOT NULL,</span>
+<span class="s1">  cat TEXT NOT NULL,</span>
+<span class="s1">  value TEXT NOT NULL, -- JSON</span>
+<span class="s1">  attach TEXT NULLABLE,</span>
+<span class="s1">  created DATETIME NOT NULL,</span>
+<span class="s1">  modified DATETIME NOT NULL,</span>
+<span class="s1">  access TEXT NULLABLE,</span>
+<span class="s1">  memo TEXT NULLABLE, -- JSON</span>
+<span class="s1">  uid TEXT UNIQUE GENERATED ALWAYS AS ( format(&quot;</span><span class="si">%x%05x</span><span class="s1">&quot;,unixepoch(datetime(created)),substring(created,1+instr(created,&quot;.&quot;))) ) STORED</span>
+<span class="s1">);</span>
+
+<span class="s1">CREATE TRIGGER EntryTriggerInsert AFTER INSERT ON Entry</span>
+<span class="s1">  BEGIN UPDATE Entry SET attach=create_attach(oid) WHERE oid=NEW.oid; END;</span>
+<span class="s1">CREATE TRIGGER EntryTriggerUpdateAccess AFTER UPDATE OF access ON Entry</span>
+<span class="s1">  BEGIN SELECT authoriser(NEW.access,NEW.attach); END;</span>
+<span class="s1">CREATE TRIGGER EntryTriggerUpdateAttach AFTER UPDATE OF attach ON Entry</span>
+<span class="s1">  BEGIN SELECT authoriser(NEW.access,NEW.attach); END;</span>
+<span class="s1">CREATE TRIGGER EntryTriggerDelete AFTER DELETE ON Entry</span>
+<span class="s1">  BEGIN SELECT delete_attach(OLD.attach); END;</span>
+
+<span class="s1">CREATE INDEX EntryIndexCat ON Entry ( cat );</span>
+<span class="s1">CREATE INDEX EntryIndexModified ON Entry ( modified );</span>
+<span class="s1">CREATE INDEX EntryIndexCreated ON Entry ( created );</span>
+
+<span class="s1">CREATE TABLE Short (</span>
+<span class="s1">  entry INTEGER PRIMARY KEY REFERENCES Entry,</span>
+<span class="s1">  value TEXT NOT NULL</span>
+<span class="s1">) WITHOUT ROWID;</span>
+
+<span class="s1">CREATE TRIGGER ShortTriggerBeforeDelete BEFORE DELETE ON Entry</span>
+<span class="s1">  BEGIN DELETE FROM Short WHERE entry=OLD.oid; END;</span>
+<span class="s1">CREATE TRIGGER ShortTriggerBeforeUpdate BEFORE UPDATE OF value ON Entry</span>
+<span class="s1">  BEGIN DELETE FROM Short WHERE entry=OLD.oid; END;</span>
+
+<span class="s1">CREATE VIEW EntryFull AS -- Use only with detect_types=sqlite3.PARSE_COLNAMES</span>
+<span class="s1">  SELECT version,cat,value AS &quot;value [JSON]&quot;,attach AS &quot;attach [ATTACH]&quot;,created,modified,access,memo AS &quot;memo [JSON]&quot; FROM Entry;</span>
+
+<span class="s1">CREATE VIEW EntryShort AS</span>
+<span class="s1">  SELECT oid,version,cat,Entry.value AS value,attach,created,modified,access,memo,uid,Short.value AS short FROM Entry LEFT JOIN Short ON Short.entry=oid;</span>
+<span class="s1">&#39;&#39;&#39;</span>
+
+<span class="n">RoutingCode</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;#!</span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="si">}</span><span class="s1"></span>
+<span class="s1">from os import environ, umask</span>
+<span class="s1">from http.cookies import SimpleCookie</span>
+<span class="s1">from pathlib import Path</span>
+<span class="s1">from </span><span class="si">{</span><span class="n">__package__</span><span class="si">}</span><span class="s1"> import get_config</span>
+<span class="s1">umask(0o7)</span>
+<span class="s1">variant = &#39;.&#39; if (morsel:=SimpleCookie(environ.get(&#39;HTTP_COOKIE&#39;,&#39;&#39;)).get(&#39;xpose-variant&#39;)) is None else morsel.coded_value</span>
+<span class="s1">path = Path(__file__).resolve().parent/variant</span>
+<span class="s1">get_config(path/&#39;.routes&#39;,environ[&#39;PATH_INFO&#39;][1:]).setup(path).process_cgi()&#39;&#39;&#39;</span>
+
+<span class="c1">#======================================================================================================================</span>
+<div class="viewcode-block" id="XposeServer"><a class="viewcode-back" href="../../mod_server.html#XPOSE.server.XposeServer">[docs]</a><span class="k">class</span> <span class="nc">XposeServer</span> <span class="p">(</span><span class="n">XposeBase</span><span class="p">,</span><span class="n">WithCatsMixin</span><span class="p">,</span><span class="n">WithAttachMixin</span><span class="p">,</span><span class="n">CGIMixin</span><span class="p">):</span>
+  <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">An instance of this class is a CGI resource managing a whole Xpose instance.</span>
+
+<span class="sd">:param authoriser: callable taking as input an access level and a path, and restricting access to that path to that level</span>
+<span class="sd">:param attach_namer: callable taking as input a whole number and returning a string suitable as a path name (no conflict)</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1">#======================================================================================================================</span>
+
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">authoriser</span><span class="p">:</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">],</span><span class="kc">None</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="k">lambda</span> <span class="n">level</span><span class="p">,</span><span class="n">path</span><span class="p">:</span> <span class="kc">None</span><span class="p">),</span><span class="n">attach_namer</span><span class="p">:</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">int</span><span class="p">],</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="n">default_attach_namer</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">authoriser</span> <span class="o">=</span> <span class="n">authoriser</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">attach_namer</span> <span class="o">=</span> <span class="n">attach_namer</span>
+
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="XposeServer.dump"><a class="viewcode-back" href="../../mod_server.html#XPOSE.server.XposeServer.dump">[docs]</a>  <span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">meta</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">**</span><span class="n">queries</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Any</span><span class="p">]:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Executes a batch of SQL queries (SELECT only) specified by *queries* (key-value pairs are label-query pairs). Returns a dictionary with the same keys and values set to the results of the queries. The dictionary *meta* holds a description of the batch. It is augmented with details about the execution, and added to the result under key ``meta``.</span>
+
+<span class="sd">Table (view) ``EntryFull`` can be used in queries instead of ``Entry`` to produce listings suitable for method :meth:`load` (field ``attach`` is converted appropriately). In particular, when *queries* is empty, it is replaced by::</span>
+
+<span class="sd">   {&#39;listing&#39;:&#39;SELECT * FROM EntryFull&#39;}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">attach_contents</span><span class="p">(</span><span class="n">attach</span><span class="p">,</span><span class="n">root</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">attach</span><span class="o">.</span><span class="n">root</span><span class="p">):</span>
+      <span class="n">p</span> <span class="o">=</span> <span class="n">root</span><span class="o">/</span><span class="n">attach</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span> <span class="c1"># sqlite converters&#39; arguments are always bytes</span>
+      <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">p</span><span class="p">)),</span><span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">))</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;**/*&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">f</span><span class="o">.</span><span class="n">is_dir</span><span class="p">())</span> <span class="ow">or</span> <span class="kc">None</span>
+    <span class="n">sqlite3</span><span class="o">.</span><span class="n">register_converter</span><span class="p">(</span><span class="s1">&#39;ATTACH&#39;</span><span class="p">,</span><span class="n">attach_contents</span><span class="p">)</span>
+    <span class="n">queries_</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">queries</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{</span><span class="s1">&#39;listing&#39;</span><span class="p">:</span><span class="s1">&#39;SELECT * FROM EntryFull&#39;</span><span class="p">}</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">detect_types</span><span class="o">=</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">PARSE_COLNAMES</span><span class="p">,</span><span class="n">isolation_level</span><span class="o">=</span><span class="s1">&#39;IMMEDIATE&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+      <span class="n">conn</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
+      <span class="n">R</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">label</span><span class="p">:[</span><span class="nb">dict</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)]</span> <span class="k">for</span> <span class="n">label</span><span class="p">,</span><span class="n">sql</span> <span class="ow">in</span> <span class="n">queries_</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+      <span class="n">user_version</span><span class="p">,</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;PRAGMA user_version&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+      <span class="n">R</span><span class="p">[</span><span class="s1">&#39;meta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;root&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">),</span><span class="s1">&#39;ts&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">index_db</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_mtime</span><span class="p">,</span><span class="s1">&#39;user_version&#39;</span><span class="p">:</span><span class="n">user_version</span><span class="p">,</span><span class="o">**</span><span class="p">(</span><span class="n">meta</span> <span class="ow">or</span> <span class="p">{})}</span>
+    <span class="k">return</span> <span class="n">R</span></div>
+
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="XposeServer.load"><a class="viewcode-back" href="../../mod_server.html#XPOSE.server.XposeServer.load">[docs]</a>  <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">listing</span><span class="p">:</span><span class="nb">list</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Loads some entries in the index database. Entries are validated, and behaviour is transactional. The ``attach`` field in each *listing* entry must be either :const:`None` or a dictionary where each key is a relative path within the entry attachment directory and the value is an absolute path to be hard-linked to that local path. Note that sub-directories (which cannot be hard-linked) never need to be explicitly created as attachments, as they are created as need be to store file attachments.</span>
+
+<span class="sd">:param listing: the list of entries to load into the index database</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">listing</span><span class="p">:</span> <span class="k">return</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+      <span class="n">conn</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
+      <span class="n">fields</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">field</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;PRAGMA table_info(Entry)&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">field</span><span class="o">:=</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span><span class="o">!=</span><span class="s1">&#39;oid&#39;</span><span class="p">)</span> <span class="c1"># note: table_info returns only non-hidden fields</span>
+    <span class="k">def</span> <span class="nf">entry</span><span class="p">(</span><span class="n">row</span><span class="p">,</span><span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">,</span><span class="n">field_set</span><span class="o">=</span><span class="nb">frozenset</span><span class="p">(</span><span class="n">fields</span><span class="p">)):</span>
+      <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">==</span> <span class="n">field_set</span><span class="p">,</span> <span class="nb">set</span><span class="p">(</span><span class="n">row</span><span class="p">)</span><span class="o">^</span><span class="n">field_set</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">cats</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;cat&#39;</span><span class="p">],</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
+      <span class="n">contents</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;attach&#39;</span><span class="p">];</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;attach&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+      <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">),</span><span class="n">contents</span>
+    <span class="n">listing_</span><span class="p">,</span><span class="n">contents_</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span><span class="n">listing</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">create_attach</span><span class="p">(</span><span class="n">oid</span><span class="p">,</span><span class="n">namer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">attach_namer</span><span class="p">,</span><span class="n">root</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">attach</span><span class="o">.</span><span class="n">root</span><span class="p">,</span><span class="n">contents_</span><span class="o">=</span><span class="nb">iter</span><span class="p">(</span><span class="n">contents_</span><span class="p">)):</span>
+      <span class="n">attach</span> <span class="o">=</span> <span class="n">namer</span><span class="p">(</span><span class="n">oid</span><span class="p">)</span>
+      <span class="n">contents</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">contents_</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">contents</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">root</span><span class="o">/</span><span class="n">attach</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span><span class="n">src</span> <span class="ow">in</span> <span class="n">contents</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+          <span class="k">if</span> <span class="n">name</span><span class="o">==</span><span class="s1">&#39;.htaccess&#39;</span><span class="p">:</span> <span class="k">continue</span> <span class="c1"># top-level access control is handled elsewhere</span>
+          <span class="n">trg</span> <span class="o">=</span> <span class="n">p</span><span class="o">/</span><span class="n">name</span>
+          <span class="n">trg</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+          <span class="n">trg</span><span class="o">.</span><span class="n">hardlink_to</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+      <span class="k">return</span> <span class="n">attach</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">isolation_level</span><span class="o">=</span><span class="s1">&#39;IMMEDIATE&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+      <span class="n">conn</span><span class="o">.</span><span class="n">create_function</span><span class="p">(</span><span class="s1">&#39;create_attach&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">create_attach</span><span class="p">,</span><span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <span class="n">conn</span><span class="o">.</span><span class="n">create_function</span><span class="p">(</span><span class="s1">&#39;authoriser&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">,(</span><span class="k">lambda</span> <span class="n">access</span><span class="p">,</span><span class="n">attach</span><span class="p">,</span><span class="n">auth</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">authoriser</span><span class="p">,</span><span class="n">root</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">attach</span><span class="o">.</span><span class="n">root</span><span class="p">:</span> <span class="n">auth</span><span class="p">(</span><span class="n">access</span><span class="p">,</span><span class="n">root</span><span class="o">/</span><span class="n">attach</span><span class="p">)),</span><span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <span class="n">sql</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;INSERT INTO Entry (</span><span class="si">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span><span class="si">}</span><span class="s1">) VALUES (</span><span class="si">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span><span class="o">*</span><span class="p">[</span><span class="s2">&quot;?&quot;</span><span class="p">])</span><span class="si">}</span><span class="s1">)&#39;</span>
+      <span class="n">conn</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span><span class="n">listing_</span><span class="p">)</span></div>
+
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="XposeServer.precompute_trigger"><a class="viewcode-back" href="../../mod_server.html#XPOSE.server.XposeServer.precompute_trigger">[docs]</a>  <span class="k">def</span> <span class="nf">precompute_trigger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">table</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span><span class="n">cat</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span><span class="n">defn</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span><span class="n">when</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Declares a trigger after ``INSERT`` and ``UPDATE`` operations on the ``Entry`` table, when the ``cat`` field is *cat*. The triggered action must be an insertion into *table*. Suppose for example that a category ``meeting`` specifies, in its json schema, an attribute ``title`` and ``setting``, itself with attributes ``date`` and ``time``. We could have:</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">   title = &#39;json_extract(NEW.value,&quot;$.title&quot;)&#39;</span>
+<span class="sd">   date = &#39;json_extract(NEW.value,&quot;$.setting.date&quot;)&#39;</span>
+<span class="sd">   time = &#39;json_extract(NEW.value,&quot;$.setting.time&quot;)&#39;</span>
+<span class="sd">   defn = f&#39;VALUES NEW.oid,format(&quot;%s [%s at %s]&quot;,{title},{date},{time})&#39;</span>
+<span class="sd">   precompute_trigger(&#39;Short&#39;,&#39;meeting&#39;,defn)</span>
+
+<span class="sd">The resulting triggers are:</span>
+
+<span class="sd">.. code-block:: sql</span>
+
+<span class="sd">   CREATE TRIGGER ShortTriggerInsertMeeting AFTER INSERT ON Entry WHEN NEW.cat=&quot;meeting&quot;</span>
+<span class="sd">   BEGIN INSERT INTO Short VALUES NEW.oid,format(&quot;%s [%s at %s]&quot;,json_extract(NEW.value,&quot;$.title&quot;),json_extract(NEW.value,&quot;$.setting.date&quot;),json_extract(NEW.value,&quot;$.setting.time&quot;)); END;</span>
+<span class="sd">   CREATE TRIGGER ShortTriggerUpdateMeeting AFTER UPDATE ON Entry WHEN NEW.cat=&quot;meeting&quot;</span>
+<span class="sd">   BEGIN INSERT INTO Short VALUES NEW.oid,format(&quot;%s [%s at %s]&quot;,json_extract(NEW.value,&quot;$.title&quot;),json_extract(NEW.value,&quot;$.setting.date&quot;),json_extract(NEW.value,&quot;$.setting.time&quot;)); END</span>
+
+<span class="sd">:param table: the target table populated by the trigger</span>
+<span class="sd">:param cat: the category (field ``cat``) for which the trigger executes</span>
+<span class="sd">:param when: (optional) additional condition for the trigger to execute</span>
+<span class="sd">:param defn: what to insert into the target table, as an SQL ``SELECT`` statement or ``VALUES`` clause</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">create_trigger</span><span class="p">(</span><span class="n">op</span><span class="p">):</span>
+      <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">CREATE TRIGGER </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s1">Trigger</span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="si">}{</span><span class="n">cat_</span><span class="si">}{</span><span class="n">when_</span><span class="si">}</span><span class="s1"></span>
+<span class="s1">AFTER </span><span class="si">{</span><span class="n">op</span><span class="si">}</span><span class="s1"> ON Entry WHEN NEW.cat=&#39;</span><span class="si">{</span><span class="n">cat</span><span class="si">}</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">when</span><span class="si">}</span><span class="s1"></span>
+<span class="s1">BEGIN</span>
+<span class="s1">  INSERT INTO </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s1"></span>
+<span class="si">{</span><span class="n">defn</span><span class="si">}</span><span class="s1">;</span>
+<span class="s1">END&#39;&#39;&#39;</span>
+    <span class="n">defn</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">defn</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="n">cat_</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">cat</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">))</span>
+    <span class="n">when</span><span class="p">,</span><span class="n">when_</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">when</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39; AND </span><span class="si">{</span><span class="n">when</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">when</span><span class="p">)</span><span class="si">:</span><span class="s1">05x</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">script</span> <span class="o">=</span> <span class="s1">&#39;;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">create_trigger</span><span class="p">(</span><span class="n">op</span><span class="p">)</span> <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;INSERT&#39;</span><span class="p">,</span><span class="s1">&#39;UPDATE OF value&#39;</span><span class="p">))</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span> <span class="n">conn</span><span class="o">.</span><span class="n">executescript</span><span class="p">(</span><span class="n">script</span><span class="p">)</span></div>
+
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="XposeServer.do_get"><a class="viewcode-back" href="../../mod_server.html#XPOSE.server.XposeServer.do_get">[docs]</a>  <span class="k">def</span> <span class="nf">do_get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Input: url-encoded form where each field specifies a label-query pair, passed to method :meth:`dump`.</span>
+
+<span class="sd">Output (text/json): output of method :meth:`dump`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_qsl</span><span class="p">()</span>
+    <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;source&#39;</span><span class="p">:</span><span class="n">form</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;meta&#39;</span><span class="p">,</span><span class="s1">&#39;XposeDump&#39;</span><span class="p">)}</span> <span class="c1"># meta field could carry json encoded dict rather than just source name</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span><span class="o">**</span><span class="n">form</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span><span class="n">indent</span><span class="o">=</span><span class="mi">1</span><span class="p">),{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span><span class="s1">&#39;text/json&#39;</span><span class="p">,</span><span class="s1">&#39;Content-Disposition&#39;</span><span class="p">:</span><span class="s1">&#39;attachment; filename=&quot;xpose-dump.json&quot;&#39;</span><span class="p">,</span><span class="s1">&#39;Last-Modified&#39;</span><span class="p">:</span><span class="n">http_ts</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s1">&#39;meta&#39;</span><span class="p">][</span><span class="s1">&#39;ts&#39;</span><span class="p">])}</span></div>
+
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="XposeServer.do_post"><a class="viewcode-back" href="../../mod_server.html#XPOSE.server.XposeServer.do_post">[docs]</a>  <span class="k">def</span> <span class="nf">do_post</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">No input expected. Two phases:</span>
+
+<span class="sd">* Phase 1: when the root contains a ``config.py`` file, transfer [real-&gt;shadow] *self* is the real instance, *target* is ``./shadow`` from root.</span>
+<span class="sd">* Phase 2: when the root does not contain a ``config.py`` file, transfer [shadow-&gt;real] *self* is the shadow instance (must be named ``shadow``), *target* is ``..`` from root.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">/</span><span class="s1">&#39;config.py&#39;</span>
+    <span class="n">target_is_shadow</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">target_is_shadow</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span> <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">/</span><span class="s1">&#39;shadow&#39;</span><span class="p">;</span> <span class="n">target</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># Phase 1</span>
+    <span class="k">else</span><span class="p">:</span> <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;shadow&#39;</span><span class="p">;</span> <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">parent</span><span class="p">;</span> <span class="n">config</span> <span class="o">=</span> <span class="n">target</span><span class="o">/</span><span class="s1">&#39;config.py&#39;</span> <span class="c1"># Phase 2</span>
+    <span class="n">release</span><span class="p">,</span><span class="n">n_upgrades</span><span class="p">,</span><span class="n">n_loaded</span> <span class="o">=</span> <span class="n">initial</span><span class="p">(</span><span class="n">config</span><span class="p">,</span><span class="n">target</span><span class="p">,</span><span class="n">target_is_shadow</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">dump</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s1">&#39;data-release&#39;</span><span class="p">:</span><span class="n">release</span><span class="p">,</span><span class="s1">&#39;upgrades&#39;</span><span class="p">:</span><span class="n">n_upgrades</span><span class="p">,</span><span class="s1">&#39;loaded&#39;</span><span class="p">:</span><span class="n">n_loaded</span><span class="p">}),{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span><span class="s1">&#39;text/json&#39;</span><span class="p">}</span></div>
+
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="XposeServer.do_put"><a class="viewcode-back" href="../../mod_server.html#XPOSE.server.XposeServer.do_put">[docs]</a>  <span class="k">def</span> <span class="nf">do_put</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Input: JSON formatted dump from another Xpose instance (or :const:`None`).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+    <span class="n">dump</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_input</span><span class="p">()</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">/</span><span class="s1">&#39;config.py&#39;</span>
+    <span class="n">release</span><span class="p">,</span><span class="n">n_upgrades</span><span class="p">,</span><span class="n">n_loaded</span> <span class="o">=</span> <span class="n">initial</span><span class="p">(</span><span class="n">config</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="n">dump</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s1">&#39;data-release&#39;</span><span class="p">:</span><span class="n">release</span><span class="p">,</span><span class="s1">&#39;upgrades&#39;</span><span class="p">:</span><span class="n">n_upgrades</span><span class="p">,</span><span class="s1">&#39;loaded&#39;</span><span class="p">:</span><span class="n">n_loaded</span><span class="p">}),{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span><span class="s1">&#39;text/json&#39;</span><span class="p">}</span></div></div>
+
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="initial"><a class="viewcode-back" href="../../mod_server.html#XPOSE.server.initial">[docs]</a><span class="k">def</span> <span class="nf">initial</span><span class="p">(</span><span class="n">config</span><span class="p">:</span><span class="n">Path</span><span class="p">,</span><span class="n">target</span><span class="p">:</span><span class="n">Path</span><span class="p">,</span><span class="n">target_is_shadow</span><span class="p">:</span><span class="nb">bool</span><span class="p">,</span><span class="n">dump</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]):</span>
+  <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Initialises an Xpose instance.</span>
+
+<span class="sd">:param config: path to config file</span>
+<span class="sd">:param target: path to directory to initialise</span>
+<span class="sd">:param target_is_shadow: whether *target* is a shadow directory</span>
+<span class="sd">:param dump: dump of an existing instance (as obtained by method :meth:`dump`)</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1">#----------------------------------------------------------------------------------------------------------------------</span>
+  <span class="kn">from</span> <span class="nn">.main</span> <span class="kn">import</span> <span class="n">XposeMain</span><span class="p">,</span><span class="n">XposeAttach</span>
+  <span class="c1"># retrieve configuration -&gt; cats, routes, release, upgrades</span>
+  <span class="k">assert</span> <span class="n">config</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span>
+  <span class="n">cfg</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{};</span> <span class="n">exec</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">read_text</span><span class="p">(),</span><span class="n">cfg</span><span class="p">)</span>
+  <span class="n">cats</span><span class="p">:</span><span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">cfg</span><span class="p">[</span><span class="s1">&#39;cats&#39;</span><span class="p">])</span>
+  <span class="k">assert</span> <span class="n">cats</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span>
+  <span class="n">routes</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">XposeBase</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="p">(</span><span class="n">r</span><span class="o">:=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;routes&#39;</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+  <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">XposeBase</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">routes</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+  <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">default</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;main&#39;</span><span class="p">,</span><span class="n">XposeMain</span><span class="p">),(</span><span class="s1">&#39;attach&#39;</span><span class="p">,</span><span class="n">XposeAttach</span><span class="p">),(</span><span class="s1">&#39;manage&#39;</span><span class="p">,</span><span class="n">XposeServer</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">routes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">routes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">default</span><span class="p">()</span>
+  <span class="n">release</span><span class="p">:</span><span class="nb">int</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;release&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+  <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">release</span><span class="p">,</span><span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="n">release</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+  <span class="n">upgrades</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">list</span><span class="p">],</span><span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;upgrade_</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">release</span><span class="p">)]</span>
+  <span class="c1"># collect current entry listing</span>
+  <span class="k">if</span> <span class="n">dump</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">listing</span> <span class="o">=</span> <span class="n">n_upgrades</span> <span class="o">=</span> <span class="n">n_loaded</span> <span class="o">=</span> <span class="kc">None</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">listing</span> <span class="o">=</span> <span class="n">dump</span><span class="p">[</span><span class="s1">&#39;listing&#39;</span><span class="p">]</span>
+    <span class="n">user_version</span> <span class="o">=</span> <span class="n">dump</span><span class="p">[</span><span class="s1">&#39;meta&#39;</span><span class="p">][</span><span class="s1">&#39;user_version&#39;</span><span class="p">]</span>
+    <span class="c1"># upgrade entries</span>
+    <span class="n">n_upgrades</span> <span class="o">=</span> <span class="n">release</span> <span class="o">-</span> <span class="n">user_version</span>
+    <span class="k">if</span> <span class="n">target_is_shadow</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+      <span class="k">assert</span> <span class="n">n_upgrades</span><span class="o">&gt;=</span><span class="mi">0</span>
+      <span class="k">for</span> <span class="n">upg</span> <span class="ow">in</span> <span class="n">upgrades</span><span class="p">[</span><span class="n">user_version</span><span class="p">:]:</span> <span class="n">upg</span><span class="p">(</span><span class="n">listing</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span> <span class="k">assert</span> <span class="n">n_upgrades</span><span class="o">==</span><span class="mi">0</span> <span class="c1"># forces any upgrade to go through shadow first</span>
+    <span class="n">n_loaded</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">listing</span><span class="p">)</span>
+  <span class="k">with</span> <span class="n">Backup</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="k">as</span> <span class="n">backup</span><span class="p">:</span>
+    <span class="c1"># set cats</span>
+    <span class="n">cats_</span> <span class="o">=</span> <span class="n">backup</span><span class="p">(</span><span class="s1">&#39;cats&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">target_is_shadow</span><span class="p">:</span> <span class="n">cats_</span><span class="o">.</span><span class="n">symlink_to</span><span class="p">(</span><span class="n">cats</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span> <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">cats</span><span class="p">,</span><span class="n">cats_</span><span class="p">,</span><span class="n">symlinks</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># set route.py</span>
+    <span class="n">route_</span> <span class="o">=</span> <span class="n">backup</span><span class="p">(</span><span class="s1">&#39;route.py&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">target_is_shadow</span><span class="p">:</span> <span class="n">route_</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">RoutingCode</span><span class="p">);</span> <span class="n">route_</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="mo">0o750</span><span class="p">)</span>
+    <span class="c1"># set .routes</span>
+    <span class="n">routes_</span> <span class="o">=</span> <span class="n">backup</span><span class="p">(</span><span class="s1">&#39;.routes&#39;</span><span class="p">)</span>
+    <span class="n">routes_</span><span class="o">.</span><span class="n">mkdir</span><span class="p">();</span> <span class="n">set_config</span><span class="p">(</span><span class="n">routes_</span><span class="p">,</span><span class="o">**</span><span class="n">routes</span><span class="p">)</span>
+    <span class="c1"># set attach</span>
+    <span class="n">attach_</span> <span class="o">=</span> <span class="n">backup</span><span class="p">(</span><span class="s1">&#39;attach&#39;</span><span class="p">)</span>
+    <span class="n">attach_</span><span class="o">.</span><span class="n">mkdir</span><span class="p">();(</span><span class="n">attach_</span><span class="o">/</span><span class="s1">&#39;.uploaded&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+    <span class="c1"># set index.db</span>
+    <span class="n">backup</span><span class="p">(</span><span class="s1">&#39;index.db&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span> <span class="c1"># to set correct mode</span>
+    <span class="n">xpose</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">routes_</span><span class="p">,</span><span class="s1">&#39;manage&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">xpose</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+      <span class="n">conn</span><span class="o">.</span><span class="n">executescript</span><span class="p">(</span><span class="n">XposeSchema</span><span class="p">)</span>
+      <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;PRAGMA user_version = </span><span class="si">{</span><span class="n">release</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">xpose</span><span class="o">.</span><span class="n">cats</span><span class="o">.</span><span class="n">initial</span><span class="p">(</span><span class="n">xpose</span><span class="o">=</span><span class="n">xpose</span><span class="p">)</span>
+    <span class="c1"># load entry listing</span>
+    <span class="k">if</span> <span class="n">listing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="n">xpose</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">listing</span><span class="p">)</span>
+  <span class="c1"># result</span>
+  <span class="k">return</span> <span class="n">release</span><span class="p">,</span><span class="n">n_upgrades</span><span class="p">,</span><span class="n">n_loaded</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

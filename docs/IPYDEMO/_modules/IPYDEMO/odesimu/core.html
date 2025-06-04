@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IPYDEMO.odesimu.core &mdash; IPYDEMO  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            IPYDEMO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../mod_odesimu.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.odesimu</span></code> — Dynamical system simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mod_fractals.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.fractals</span></code> — Fractals exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mod_polyhedra.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">IPYDEMO.polyhedra</span></code> — Polyhedra exploration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">IPYDEMO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">IPYDEMO.odesimu.core</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for IPYDEMO.odesimu.core</h1><div class="highlight"><pre>
+<span></span><span class="c1"># File:                 odesimu/core.py</span>
+<span class="c1"># Creation date:        2015-03-19</span>
+<span class="c1"># Contributors:         Jean-Marc Andreoli</span>
+<span class="c1"># Language:             python</span>
+<span class="c1"># Purpose:              ODE simulation and visualisation</span>
+<span class="c1">#</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span><span class="p">;</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">repeat</span><span class="p">,</span> <span class="n">islice</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve_ivp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">myutil.simpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">RobustEnvironment</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">ndarray</span><span class="p">,</span><span class="n">array</span><span class="p">,</span><span class="n">arange</span><span class="p">,</span><span class="n">concatenate</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="s1">&#39;ODEEnvironment&#39;</span><span class="p">,</span> <span class="s1">&#39;System&#39;</span><span class="p">,</span>
+
+<span class="c1">#==================================================================================================</span>
+<div class="viewcode-block" id="ODEEnvironment">
+<a class="viewcode-back" href="../../../mod_odesimu.html#IPYDEMO.odesimu.core.ODEEnvironment">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ODEEnvironment</span> <span class="p">(</span><span class="n">RobustEnvironment</span><span class="p">):</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">An instance of this class represents an abstract dynamical systems (in physics, electronics, hydraulics etc.) governed by an ordinary differential equation (ODE):</span>
+
+<span class="sd">.. math::</span>
+
+<span class="sd">   \begin{array}{rcl}</span>
+<span class="sd">   \frac{\mathbf{d}y}{\mathbf{d}t} &amp; = &amp; F(t,y)</span>
+<span class="sd">   \end{array}</span>
+
+<span class="sd">where :math:`t` is the simulation time and :math:`y` is the state. The ODE numerical solver used is taken from module :mod:`scipy.integrate` which assumes the state is a :class:`numpy.array` instance or a scalar.</span>
+
+<span class="sd">The initial simulation time and state are given by *init_t* and *init_y*, respectively. The ODE is solved iteratively on successive, contiguous intervals given by *period*, the simulation period generator, which generates the spans of the intervals.</span>
+
+<span class="sd">* If *period* is a :class:`float` instance, the interval spans are constant equal to *period*</span>
+<span class="sd">* If *period* is an immutable iterable of :class:`float` instances, the interval spans are taken to be these numbers</span>
+<span class="sd">* Otherwise, *period* must be a generator of :class:`float` instances</span>
+
+<span class="sd">Various specifications of the ODE are passed through *spec* to function :func:`scipy.integrate.solve_ivp`. At least function :math:`F` must be passed as keyword argument ``fun``.</span>
+
+<span class="sd">The cache specification *cache* is either :const:`None`, in which case no caching is performed, or a pair of the cache length and the cache period, independent of the simulation period generator. The cache contains the states sampled at a sequence of decreasing multiples of the cache period. The size of the sequence is chosen so that at any time in the current simulation span, the sequence clipped above at that time has length at least equal to the cache length, unless the initial time is reached before.</span>
+
+<span class="sd">:param init_t: initial simulation time</span>
+<span class="sd">:param init_y: initial simulation state</span>
+<span class="sd">:param period: period of ODE resolution</span>
+<span class="sd">:param cache: cache specification</span>
+<span class="sd">:param ka: dictionary of arguments passed to the ODE solver</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1">#==================================================================================================</span>
+  <span class="ne">Exception</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="s1">&#39;ODEException&#39;</span><span class="p">,(</span><span class="ne">RuntimeError</span><span class="p">,),{})</span>
+  <span class="n">init_y</span><span class="p">:</span> <span class="n">ndarray</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initial state&quot;&quot;&quot;</span>
+  <span class="n">statef</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span><span class="n">ndarray</span><span class="p">]</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Current function of simulation time returning state&quot;&quot;&quot;</span>
+  <span class="n">state</span><span class="p">:</span> <span class="n">ndarray</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;State at the current instant of the simulation&quot;&quot;&quot;</span>
+  <span class="n">cache_length</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Expected length of cache&quot;&quot;&quot;</span>
+  <span class="n">cache_period</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Cache sampling period&quot;&quot;&quot;</span>
+  <span class="n">cache_last</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Index of the last cached state&quot;&quot;&quot;</span>
+  <span class="n">cache</span><span class="p">:</span> <span class="n">ndarray</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The cache itself (the time axis is the last axis)&quot;&quot;&quot;</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">period</span><span class="p">:</span><span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span><span class="n">Callable</span><span class="p">[[],</span><span class="nb">float</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">cache</span><span class="p">:</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">float</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">init_t</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span><span class="n">init_y</span><span class="p">:</span><span class="n">ndarray</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">**</span><span class="n">spec</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">period</span><span class="p">):</span> <span class="n">period_</span> <span class="o">=</span> <span class="n">period</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">period</span><span class="p">,</span><span class="nb">float</span><span class="p">):</span> <span class="k">assert</span> <span class="n">period</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">;</span> <span class="n">period_</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">repeat</span><span class="p">,</span><span class="n">period</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span> <span class="k">assert</span> <span class="nb">all</span><span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">islice</span><span class="p">(</span><span class="n">period</span><span class="p">,</span><span class="mi">10</span><span class="p">));</span> <span class="n">period_</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="nb">iter</span><span class="p">,</span><span class="n">period</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">period_</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cache_init</span><span class="p">(</span><span class="n">cache</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">init_y</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">init_y</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">spec</span> <span class="o">=</span> <span class="n">spec</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">init_t</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ODEEnvironment.reset">
+<a class="viewcode-back" href="../../../mod_odesimu.html#IPYDEMO.odesimu.core.ODEEnvironment.reset">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Resets states and cache, and defines a process&quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trajectory</span><span class="p">())</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">statef</span> <span class="o">=</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">init_y</span><span class="p">:</span><span class="n">y</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_y</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cache_reset</span><span class="p">()</span></div>
+
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">trajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">():</span>
+      <span class="n">t_f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="o">+</span><span class="n">p</span>
+      <span class="n">r</span> <span class="o">=</span> <span class="n">solve_ivp</span><span class="p">(</span><span class="n">t_span</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="p">,</span><span class="n">t_f</span><span class="p">),</span><span class="n">y0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">statef</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="p">),</span><span class="n">dense_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">)</span>
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">r</span><span class="o">.</span><span class="n">success</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">statef</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error_statef</span><span class="p">,</span><span class="n">message</span><span class="o">=</span><span class="n">r</span><span class="o">.</span><span class="n">message</span><span class="p">);</span> <span class="k">break</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">statef</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">sol</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">cache_update</span><span class="p">(</span><span class="n">t_f</span><span class="p">)</span>
+      <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ODEEnvironment.run">
+<a class="viewcode-back" href="../../../mod_odesimu.html#IPYDEMO.odesimu.core.ODEEnvironment.run">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">until</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statef</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="p">)</span></div>
+
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">error_statef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span> <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">Exception</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">cache_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">spec</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">spec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_reset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_update</span> <span class="o">=</span> <span class="n">noop</span>
+    <span class="k">else</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_length</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_period</span> <span class="o">=</span> <span class="n">spec</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">cache_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_y</span><span class="p">[:,</span><span class="kc">None</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cache_last</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">init_t</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_period</span><span class="p">)</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">cache_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t_f</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">t_f</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">init_t</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_period</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span><span class="o">&gt;</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_last</span><span class="p">:</span>
+      <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statef</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">init_t</span><span class="o">+</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_last</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_period</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">x</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[:,:</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_length</span><span class="p">]),</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">cache_last</span> <span class="o">=</span> <span class="n">n</span>
+
+  <span class="nd">@property</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">cached_states</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;States of a sequence of states at previous instants in the simulation&quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_last</span><span class="o">-</span><span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">init_t</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_period</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[:,</span><span class="n">n</span><span class="p">:</span><span class="n">n</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_length</span><span class="p">]</span></div>
+
+
+<span class="c1">#==================================================================================================</span>
+<div class="viewcode-block" id="System">
+<a class="viewcode-back" href="../../../mod_odesimu.html#IPYDEMO.odesimu.core.System">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">System</span><span class="p">:</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Instances of this class gather information for a simulation as implemented by class :class:`myutil.simpy.SimpySimulation`.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+<span class="c1">#==================================================================================================</span>
+  <span class="n">factory</span> <span class="o">=</span> <span class="n">ODEEnvironment</span>
+  <span class="n">fun</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;(required) Function :math:`F` to use in the ODE :math:`\frac{\mathbf{d}y}{\mathbf{d}t}=F(t,y)`&quot;&quot;&quot;</span>
+  <span class="n">jac</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;(optional) Jacobian of the function of the ODE&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="System.makestate">
+<a class="viewcode-back" href="../../../mod_odesimu.html#IPYDEMO.odesimu.core.System.makestate">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">makestate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns a state computed from its arguments. This implementation raises an error and must be overridden in subclasses or at the instance level.&quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="System.displayer">
+<a class="viewcode-back" href="../../../mod_odesimu.html#IPYDEMO.odesimu.core.System.displayer">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">displayer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">env</span><span class="p">,</span><span class="n">part_spec</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns a default displayer function which, on invocation, displays the current state of the environment *env* on the board part specified by *part_spec*. The display can be fine-tuned by keyword arguments *ka*, which can be specified as a dictionary in the last positional argument of method :meth:`launch`.&quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+  <span class="n">launch_defaults</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="viewcode-block" id="System.launch">
+<a class="viewcode-back" href="../../../mod_odesimu.html#IPYDEMO.odesimu.core.System.launch">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">launch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">displayers</span><span class="p">,</span><span class="n">hooks</span><span class="o">=</span><span class="p">(),</span><span class="n">init_y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Returns a tuple comprising an instance of class :class:`ODEEnvironment` and various environment displayers, as expected by :class:`myutil.simpy.SimpySimulation`.</span>
+
+<span class="sd">* The ODE is specified by attributes :attr:`fun` and :attr:`jac` together with the other arguments in *ka* (the value of key ``init_y`` is first passed to method :meth:`makestate` as keyword arguments if it is a dictionary, otherwise as positional arguments).</span>
+<span class="sd">* The displayers are given by *displayers*; if its last element is a dictionary, it is replaced by the default displayer with that dictionary as keyword arguments, otherwise the default displayer is appended</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">init_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">makestate</span><span class="p">(</span><span class="o">**</span><span class="n">init_y</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init_y</span><span class="p">,</span><span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">makestate</span><span class="p">(</span><span class="o">*</span><span class="n">init_y</span><span class="p">)</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="n">init_y</span><span class="o">=</span><span class="n">init_y</span><span class="p">,</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">fun</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fun</span><span class="p">,</span><span class="n">jac</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">jac</span><span class="p">,</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">launch_defaults</span><span class="p">),</span><span class="o">**</span><span class="n">ka</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">hooks</span><span class="p">:</span> <span class="n">env</span> <span class="o">=</span> <span class="n">h</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+    <span class="n">displayers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">displayers</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">displayers</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">displayers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="nb">dict</span><span class="p">):</span> <span class="n">displayers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">displayer</span><span class="p">,</span><span class="o">**</span><span class="n">displayers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span> <span class="n">displayers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">displayer</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">env</span><span class="p">,</span><span class="o">*</span><span class="n">displayers</span></div>
+</div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">noop</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="o">**</span><span class="n">ka</span><span class="p">):</span> <span class="k">pass</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Jean-Marc Andreoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
